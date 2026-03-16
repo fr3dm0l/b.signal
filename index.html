@@ -846,28 +846,16 @@
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // Form submission
+    // Form submission via Cloudflare Worker proxy
     async function submitForm(email) {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1024,
-          mcp_servers: [{
-            type: 'url',
-            url: 'https://gmail.mcp.claude.com/mcp',
-            name: 'gmail'
-          }],
-          messages: [{
-            role: 'user',
-            content: `Sende sofort via Gmail eine professionelle E-Mail auf Deutsch an: ${email}\nBetreff: Ihr Pilot-Zugang zu b.signal — München Nord-West\nBody (max. 130 Wörter, plain text, kein Markdown):\n- Bestätigung der Anfrage\n- b.signal scannt Ratsinformationssysteme, Amtsblätter und Lokalmedien, um Planungssignale zu identifizieren bevor sie zur Marktnachricht werden\n- Pilotbericht für München Nord-West folgt innerhalb von 24 Stunden\n- Limitierung: 10 Partner pro Sektor — garantiert echten Wettbewerbsvorteil\n- Ton: Peer-to-Peer zwischen Profis, sachlich, keine Ausrufezeichen\n- Unterzeichnet: "Das b.signal Team"\nSende die E-Mail jetzt.`
-          }]
-        })
+        body: JSON.stringify({ email })
       });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
-      if (!data.content?.length) throw new Error('empty');
+      if (!data.ok) throw new Error(data.error || 'unknown');
     }
 
     async function handleSubmit(e, formId) {
