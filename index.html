@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>b.signal — KI-gestützte Planungssignale für Projektentwickler</title>
+  <meta name="description" content="b.signal identifiziert Planungssignale aus Ratsinformationssystemen, Amtsblättern und Lokalmedien — bevor sie zur Marktnachricht werden.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Source+Sans+3:wght@300;400;600&family=Source+Serif+4:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --paper:      #F8F6F1;
+      --white:      #FFFFFF;
+      --ink:        #0A0A0A;
+      --muted:      #5A5A52;
+      --dim:        #9A9A90;
+      --rule:       #D8D5CC;
+      --coral:      #FF7F50;
+      --coral-dark: #E8663A;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-weight: 400;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* ── NAV ─────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 3px solid var(--ink);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      height: 64px;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .nav-left, .nav-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-left { justify-content: flex-start; gap: 28px; }
+    .nav-right { justify-content: flex-end; }
+
+    .nav-left a {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .nav-left a:hover { color: var(--ink); }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: 22px;
+      color: var(--ink);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .logo .dot { color: var(--coral); }
+
+    .btn-coral {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      background: var(--coral);
+      border: none;
+      padding: 10px 22px;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-coral:hover { background: var(--coral-dark); }
+
+    /* ── HERO ─────────────────────────────────── */
+    .hero {
+      background: var(--white);
+      padding: 80px 0 88px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 0;
+      align-items: start;
+    }
+
+    .hero-left { padding-right: 56px; }
+
+    .eyebrow {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--coral);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 20px;
+      font-variant: all-small-caps;
+    }
+
+    .hero-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 80px;
+      font-weight: 300;
+      line-height: 1.05;
+      margin-bottom: 28px;
+      color: var(--ink);
+    }
+
+    .hero-headline .coral { color: var(--coral); }
+
+    .hero-deck {
+      font-family: 'Source Serif 4', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 540px;
+    }
+
+    .hero-right {
+      border-left: 1px solid var(--rule);
+      padding-left: 48px;
+    }
+
+    .hero-right .form-label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .hero-right .form-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 300;
+      line-height: 1.3;
+      margin-bottom: 14px;
+      color: var(--ink);
+    }
+
+    .hero-right .form-desc {
+      font-family: 'Source Serif 4', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    /* ── FORMS ────────────────────────────────── */
+    .form-row {
+      display: flex;
+      gap: 0;
+    }
+
+    .form-row input[type="email"] {
+      flex: 1;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      padding: 12px 16px;
+      border: 1px solid var(--rule);
+      border-right: none;
+      background: var(--white);
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-row input[type="email"]::placeholder { color: var(--dim); }
+    .form-row input[type="email"]:focus { border-color: var(--ink); }
+
+    .form-row .btn-coral {
+      white-space: nowrap;
+      border: 1px solid var(--coral);
+      flex-shrink: 0;
+    }
+
+    .form-row .btn-coral .spinner {
+      display: none;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: var(--white);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    .form-row .btn-coral.loading .btn-text { display: none; }
+    .form-row .btn-coral.loading .spinner { display: inline-block; }
+    .form-row .btn-coral.loading { pointer-events: none; opacity: 0.8; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .form-hint {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 11px;
+      color: var(--dim);
+      margin-top: 10px;
+    }
+
+    .form-success {
+      display: none;
+      padding: 16px 20px;
+      background: #f0f7f0;
+      border: 1px solid #c0d8c0;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 14px;
+      color: var(--ink);
+    }
+
+    .form-error {
+      display: none;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 13px;
+      color: var(--coral);
+      margin-top: 8px;
+    }
+
+    /* ── SECTION COMMONS ──────────────────────── */
+    .section-tag {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--coral);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 48px;
+      font-variant: all-small-caps;
+    }
+
+    section { padding: 96px 0; }
+
+    /* ── FEATURES ──────────────────────────────── */
+    .features { background: var(--paper); }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+    }
+
+    .feature-num {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--dim);
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .feature-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 6px;
+      color: var(--ink);
+    }
+
+    .feature-subtitle {
+      font-family: 'Source Serif 4', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 15px;
+      color: var(--coral);
+      margin-bottom: 16px;
+    }
+
+    .feature-text {
+      font-family: 'Source Serif 4', serif;
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    /* ── PROBLEM ───────────────────────────────── */
+    .problem { background: var(--white); }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 40px;
+      align-items: start;
+      margin-bottom: 56px;
+    }
+
+    .problem-vs {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--dim);
+      padding-top: 40px;
+    }
+
+    .problem-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 400;
+      margin-bottom: 20px;
+      color: var(--ink);
+    }
+
+    .problem-item {
+      font-family: 'Source Serif 4', serif;
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--muted);
+      padding: 8px 0;
+    }
+
+    .problem-item::before {
+      content: "—";
+      color: var(--coral);
+      margin-right: 10px;
+      font-weight: 400;
+    }
+
+    .problem-conclusion {
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 300;
+      line-height: 1.5;
+      color: var(--ink);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .problem-conclusion em {
+      font-style: italic;
+      color: var(--coral);
+    }
+
+    /* ── PRODUKT ───────────────────────────────── */
+    .produkt { background: var(--paper); }
+
+    .produkt-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--rule);
+    }
+
+    .produkt-card { padding: 48px; }
+
+    .produkt-card.dark {
+      background: var(--ink);
+      color: var(--white);
+    }
+
+    .produkt-card.light {
+      background: var(--white);
+      border-left: 1px solid var(--rule);
+    }
+
+    .produkt-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 400;
+      margin-bottom: 24px;
+    }
+
+    .produkt-detail {
+      font-family: 'Source Serif 4', serif;
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.7;
+      padding: 4px 0;
+    }
+
+    .produkt-card.dark .produkt-detail { color: rgba(255,255,255,0.7); }
+    .produkt-card.light .produkt-detail { color: var(--muted); }
+
+    .produkt-detail::before {
+      content: "—";
+      color: var(--coral);
+      margin-right: 10px;
+    }
+
+    .produkt-footnote {
+      text-align: center;
+      font-family: 'Source Serif 4', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 14px;
+      color: var(--dim);
+      margin-top: 32px;
+    }
+
+    /* ── PRICING ───────────────────────────────── */
+    .pricing { background: var(--paper); }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .pricing-card {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      padding: 40px 32px;
+      position: relative;
+    }
+
+    .pricing-card.featured {
+      border: 2px solid var(--coral);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: -1px;
+      right: 24px;
+      background: var(--coral);
+      color: var(--white);
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 6px 14px;
+      text-transform: uppercase;
+    }
+
+    .pricing-name {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--dim);
+      margin-bottom: 12px;
+    }
+
+    .pricing-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 300;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .pricing-unit {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 13px;
+      color: var(--dim);
+      margin-bottom: 28px;
+    }
+
+    .pricing-feature {
+      font-family: 'Source Serif 4', serif;
+      font-weight: 300;
+      font-size: 14px;
+      color: var(--muted);
+      padding: 6px 0;
+    }
+
+    .pricing-feature::before {
+      content: "—";
+      color: var(--coral);
+      margin-right: 8px;
+    }
+
+    /* ── CTA ───────────────────────────────────── */
+    .cta {
+      background: var(--ink);
+      color: var(--white);
+      text-align: center;
+    }
+
+    .cta .eyebrow { color: var(--coral); }
+
+    .cta-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 68px;
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      color: var(--white);
+    }
+
+    .cta-headline em {
+      font-style: italic;
+      opacity: 0.5;
+    }
+
+    .cta-deck {
+      font-family: 'Source Serif 4', serif;
+      font-weight: 300;
+      font-size: 17px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.6);
+      max-width: 560px;
+      margin: 0 auto 40px;
+    }
+
+    .cta .form-row { max-width: 480px; margin: 0 auto; }
+
+    .cta .form-row input[type="email"] {
+      background: transparent;
+      border-color: rgba(255,255,255,0.2);
+      color: var(--white);
+    }
+
+    .cta .form-row input[type="email"]::placeholder { color: rgba(255,255,255,0.35); }
+    .cta .form-row input[type="email"]:focus { border-color: rgba(255,255,255,0.5); }
+
+    .cta .form-hint { color: rgba(255,255,255,0.35); text-align: center; }
+    .cta .form-error { text-align: center; }
+
+    .cta .form-success {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.15);
+      color: var(--white);
+    }
+
+    /* ── FOOTER ────────────────────────────────── */
+    footer {
+      background: var(--white);
+      border-top: 3px solid var(--ink);
+      padding: 32px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--ink); }
+
+    .footer-copy {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 12px;
+      color: var(--dim);
+    }
+
+    /* ── SCROLL REVEAL ─────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-left { padding-right: 0; margin-bottom: 48px; }
+      .hero-right { border-left: none; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 40px; }
+      .hero-headline { font-size: 52px; }
+      .features-grid { grid-template-columns: 1fr; gap: 40px; }
+      .problem-grid { grid-template-columns: 1fr; }
+      .problem-vs { display: none; }
+      .produkt-grid { grid-template-columns: 1fr; }
+      .produkt-card.light { border-left: none; border-top: 1px solid var(--rule); }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+      .cta-headline { font-size: 44px; }
+      .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+    }
+
+    @media (max-width: 600px) {
+      .nav-left { display: none; }
+      .nav-right { flex: 0; }
+      .hero-headline { font-size: 40px; }
+      .cta-headline { font-size: 36px; }
+      section { padding: 64px 0; }
+      .container { padding: 0 20px; }
+      .nav-inner { padding: 0 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-left">
+        <a href="#problem">Das Problem</a>
+        <a href="#produkt">Das Produkt</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+      <a href="#" class="logo">b<span class="dot">.</span>signal</a>
+      <div class="nav-right">
+        <a href="#cta" class="btn-coral">Pilot-Zugang</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-left reveal">
+          <div class="eyebrow">Pilotprogramm · München Nord-West · 10 Plätze</div>
+          <h1 class="hero-headline">Ihr Markt sendet<br><span class="coral">Signale.</span><br>Hören Sie hin.</h1>
+          <p class="hero-deck">b.signal identifiziert Planungssignale, bevor sie zur Marktnachricht werden — wöchentlich, kuratiert, exklusiv für Projektentwickler, die früher wissen wollen.</p>
+        </div>
+        <div class="hero-right reveal">
+          <div class="form-label">Pilotbericht anfordern</div>
+          <div class="form-sub">Der erste Report gehört Ihnen — kostenlos.</div>
+          <p class="form-desc">Tragen Sie Ihre E-Mail ein. Wir senden Ihnen den Pilotbericht für den Sektor München Nord-West direkt zu.</p>
+          <form id="heroForm" onsubmit="return handleSubmit(event, 'hero')">
+            <div class="form-row">
+              <input type="email" placeholder="name@unternehmen.de" required>
+              <button type="submit" class="btn-coral">
+                <span class="btn-text">Bericht erhalten</span>
+                <span class="spinner"></span>
+              </button>
+            </div>
+            <div class="form-hint">Kostenlos · Kein Spam · Jederzeit abmeldbar</div>
+            <div class="form-error"></div>
+          </form>
+          <div class="form-success">Vielen Dank. Ihr Pilotbericht für München Nord-West wird Ihnen in Kürze zugestellt.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="container">
+      <div class="section-tag reveal">Was b.signal leistet</div>
+      <div class="features-grid">
+        <div class="reveal">
+          <div class="feature-num">01 — Scanning</div>
+          <div class="feature-title">Dark Data, lesbar gemacht</div>
+          <div class="feature-subtitle"></div>
+          <p class="feature-text">Ratsinformationssysteme, Amtsblätter, Lokalmedien — tausende fragmentierte Portale, analysiert von KI-Agenten, die auch technisch veraltete Verwaltungs-PDFs lesen.</p>
+        </div>
+        <div class="reveal">
+          <div class="feature-num">02 — Kuratierung</div>
+          <div class="feature-title">Signal statt Rauschen</div>
+          <div class="feature-subtitle"></div>
+          <p class="feature-text">Keine Massendaten. Jede Woche drei bewertete Signale — gewichtet nach Flächenpotenzial, Planungsfortschritt und Eigentümerstruktur.</p>
+        </div>
+        <div class="reveal">
+          <div class="feature-num">03 — Zeitvorsprung</div>
+          <div class="feature-title">Früher handeln, besser positionieren</div>
+          <div class="feature-subtitle"></div>
+          <p class="feature-text">Wenn ein Projekt auf Neubaukompass erscheint, ist es verbrannt. b.signal informiert Monate früher — zwischen politischer Idee und Baugenehmigung.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="problem" id="problem">
+    <div class="container">
+      <div class="section-tag reveal">Die Informations-Lücke</div>
+      <div class="problem-grid reveal">
+        <div>
+          <div class="problem-card-title">Analoge Suche</div>
+          <div class="problem-item">Langsam — manuelle Sichtung hunderter Quellen</div>
+          <div class="problem-item">Fehleranfällig — relevante Signale gehen unter</div>
+          <div class="problem-item">Teuer — Personalkosten ohne Skalierung</div>
+          <div class="problem-item">Zu spät — wenn Sie es finden, wissen es andere längst</div>
+        </div>
+        <div class="problem-vs">vs.</div>
+        <div>
+          <div class="problem-card-title">Daten-Giganten</div>
+          <div class="problem-item">Verbrannt — jeder Marktteilnehmer sieht dasselbe</div>
+          <div class="problem-item">Eigentümer bereits kontaktiert — kein First-Mover-Vorteil</div>
+          <div class="problem-item">Preis am Maximum — kein Verhandlungsspielraum</div>
+          <div class="problem-item">Zu spät — Projekte sind längst im Markt bekannt</div>
+        </div>
+      </div>
+      <div class="problem-conclusion reveal">
+        Das Resultat: Projektentwickler agieren reaktiv.<br>
+        <em>b.signal schließt diese Lücke.</em>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUKT -->
+  <section class="produkt" id="produkt">
+    <div class="container">
+      <div class="section-tag reveal">Das Produkt</div>
+      <div class="produkt-grid reveal">
+        <div class="produkt-card dark">
+          <div class="produkt-card-title">The Signal</div>
+          <div class="produkt-detail">Wöchentlich</div>
+          <div class="produkt-detail">3 Planungssignale</div>
+          <div class="produkt-detail">Jeden Montag 7:00 Uhr</div>
+          <div class="produkt-detail">Quellenlinks</div>
+          <div class="produkt-detail">Bewertung Dringlichkeit &amp; Potenzial</div>
+        </div>
+        <div class="produkt-card light">
+          <div class="produkt-card-title">The Intelligence</div>
+          <div class="produkt-detail">Auf Anfrage</div>
+          <div class="produkt-detail">PDF-Dossier</div>
+          <div class="produkt-detail">Flurstücks-Details</div>
+          <div class="produkt-detail">Grundbuchdaten</div>
+          <div class="produkt-detail">GFZ-Einschätzung</div>
+          <div class="produkt-detail">Historische Planungshistorie</div>
+        </div>
+      </div>
+      <p class="produkt-footnote reveal">Start: München Nord-West · Zugang limitiert auf 10 Partner pro Sektor · Nächste Sektoren: Stuttgart, Berlin-Speckgürtel</p>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-tag reveal">Preismodell</div>
+      <div class="pricing-grid">
+        <div class="pricing-card featured reveal">
+          <div class="pricing-badge">Jetzt verfügbar</div>
+          <div class="pricing-name">Pilot-Phase</div>
+          <div class="pricing-price">150 €</div>
+          <div class="pricing-unit">pro Monat</div>
+          <div class="pricing-feature">Monatlich kündbar</div>
+          <div class="pricing-feature">The Signal</div>
+          <div class="pricing-feature">1 Sektor</div>
+          <div class="pricing-feature">Onboarding-Gespräch</div>
+        </div>
+        <div class="pricing-card reveal">
+          <div class="pricing-name">Alpha-Service</div>
+          <div class="pricing-price">450–1.000 €</div>
+          <div class="pricing-unit">pro Monat pro Sektor</div>
+          <div class="pricing-feature">The Signal + The Intelligence</div>
+          <div class="pricing-feature">1–3 Sektoren</div>
+          <div class="pricing-feature">Dossiers auf Anfrage</div>
+        </div>
+        <div class="pricing-card reveal">
+          <div class="pricing-name">Enterprise</div>
+          <div class="pricing-price">Auf Anfrage</div>
+          <div class="pricing-unit">&nbsp;</div>
+          <div class="pricing-feature">Exklusiv-Zugang</div>
+          <div class="pricing-feature">Eigentümerdaten</div>
+          <div class="pricing-feature">API-Zugang</div>
+          <div class="pricing-feature">SLA</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="cta">
+    <div class="container">
+      <div class="eyebrow reveal">Werden Sie Teil des Pilotprogramms</div>
+      <h2 class="cta-headline reveal">10 Plätze.<br><em>Einer davon gehört Ihnen.</em></h2>
+      <p class="cta-deck reveal">Der Zugang zum Pilotprogramm für München Nord-West ist auf zehn Partner limitiert. Das garantiert Ihnen einen echten Wettbewerbsvorteil.</p>
+      <div class="reveal">
+        <form id="ctaForm" onsubmit="return handleSubmit(event, 'cta')">
+          <div class="form-row">
+            <input type="email" placeholder="name@unternehmen.de" required>
+            <button type="submit" class="btn-coral">
+              <span class="btn-text">Pilot-Zugang anfragen</span>
+              <span class="spinner"></span>
+            </button>
+          </div>
+          <div class="form-hint">Kostenlos · Kein Spam · Jederzeit abmeldbar</div>
+          <div class="form-error"></div>
+        </form>
+        <div class="form-success">Vielen Dank. Ihr Pilotbericht für München Nord-West wird Ihnen in Kürze zugestellt.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <a href="#" class="logo">b<span class="dot">.</span>signal</a>
+        <div class="footer-links">
+          <a href="#">Impressum</a>
+          <a href="#">Datenschutz</a>
+          <a href="#">Kontakt</a>
+        </div>
+        <div class="footer-copy">&copy; 2025 b.signal. Alle Rechte vorbehalten.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Form submission
+    async function submitForm(email) {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1024,
+          mcp_servers: [{
+            type: 'url',
+            url: 'https://gmail.mcp.claude.com/mcp',
+            name: 'gmail'
+          }],
+          messages: [{
+            role: 'user',
+            content: `Sende sofort via Gmail eine professionelle E-Mail auf Deutsch an: ${email}\nBetreff: Ihr Pilot-Zugang zu b.signal — München Nord-West\nBody (max. 130 Wörter, plain text, kein Markdown):\n- Bestätigung der Anfrage\n- b.signal scannt Ratsinformationssysteme, Amtsblätter und Lokalmedien, um Planungssignale zu identifizieren bevor sie zur Marktnachricht werden\n- Pilotbericht für München Nord-West folgt innerhalb von 24 Stunden\n- Limitierung: 10 Partner pro Sektor — garantiert echten Wettbewerbsvorteil\n- Ton: Peer-to-Peer zwischen Profis, sachlich, keine Ausrufezeichen\n- Unterzeichnet: "Das b.signal Team"\nSende die E-Mail jetzt.`
+          }]
+        })
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      if (!data.content?.length) throw new Error('empty');
+    }
+
+    async function handleSubmit(e, formId) {
+      e.preventDefault();
+      const form = e.target;
+      const wrapper = form.parentElement;
+      const input = form.querySelector('input[type="email"]');
+      const btn = form.querySelector('.btn-coral');
+      const errorEl = form.querySelector('.form-error');
+      const successEl = wrapper.querySelector('.form-success');
+      const email = input.value.trim();
+
+      if (!email) return false;
+
+      errorEl.style.display = 'none';
+      btn.classList.add('loading');
+
+      try {
+        await submitForm(email);
+        form.style.display = 'none';
+        successEl.style.display = 'block';
+      } catch (err) {
+        errorEl.textContent = 'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.';
+        errorEl.style.display = 'block';
+      } finally {
+        btn.classList.remove('loading');
+      }
+
+      return false;
+    }
+  </script>
+
+</body>
+</html>
