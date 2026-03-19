@@ -3,8 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>b.signal — KI-gestützte Planungssignale für Projektentwickler</title>
-  <meta name="description" content="b.signal identifiziert Planungssignale aus Ratsinformationssystemen, Amtsblättern und Lokalmedien — bevor sie zur Marktnachricht werden.">
+  <title>b.signal — KI-gestützte Planungssignale für Projektentwickler | München</title>
+  <meta name="description" content="b.signal scannt Ratsinformationssysteme, Amtsblätter und Lokalmedien automatisch nach Planungssignalen — bevor sie zur Marktnachricht werden. Exklusiv für Projektentwickler in München Nord-West.">
+  <link rel="canonical" href="https://fr3dm0l.github.io/b.signal/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://fr3dm0l.github.io/b.signal/">
+  <meta property="og:title" content="b.signal — Baurecht entsteht in Ausschüssen. Nicht in Portalen.">
+  <meta property="og:description" content="KI-gestützter Intelligence-Dienst für Projektentwickler. Planungssignale identifizieren, bevor sie zur Marktnachricht werden. Pilot: München Nord-West.">
+  <meta property="og:locale" content="de_DE">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="b.signal — Planungssignale vor dem Markt">
+  <meta name="twitter:description" content="KI scannt RIS, Amtsblätter und Lokalmedien. Wöchentlicher Intelligence-Report für Projektentwickler.">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Source+Sans+3:wght@300;400;600&family=Source+Serif+4:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
@@ -589,6 +603,79 @@
       color: var(--dim);
     }
 
+    /* ── SOCIAL PROOF BAR ──────────────────────── */
+    .social-proof-bar {
+      background: var(--ink);
+      padding: 14px 48px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .sp-item {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.03em;
+    }
+    .sp-item strong { color: white; font-weight: 600; }
+    .sp-divider { color: rgba(255,255,255,0.2); }
+
+    /* ── PRICING CTAs ─────────────────────────── */
+    .price-cta {
+      display: block;
+      margin-top: 24px;
+      padding: 12px;
+      background: var(--coral);
+      color: white;
+      text-align: center;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .price-cta:hover { background: var(--coral-dark); }
+    .price-cta-ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--rule);
+    }
+    .price-cta-ghost:hover { background: var(--paper); }
+
+    /* ── FAQ ───────────────────────────────────── */
+    .faq-wrap {
+      padding: 72px 48px;
+      background: var(--white);
+      border-top: 1px solid var(--rule);
+    }
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 48px;
+    }
+    .faq-item {
+      border-top: 1px solid var(--rule);
+      padding-top: 24px;
+    }
+    .faq-item h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+    .faq-item p {
+      font-family: 'Source Serif 4', serif;
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
     /* ── SCROLL REVEAL ─────────────────────────── */
     .reveal {
       opacity: 0;
@@ -615,6 +702,8 @@
       .produkt-grid { grid-template-columns: 1fr; }
       .produkt-card.light { border-left: none; border-top: 1px solid var(--rule); }
       .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+      .faq-grid { grid-template-columns: 1fr; }
+      .faq-wrap { padding: 52px 24px; }
       .cta-headline { font-size: 44px; }
       .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
     }
@@ -652,7 +741,7 @@
     <div class="container">
       <div class="hero-grid">
         <div class="hero-left reveal">
-          <div class="eyebrow">Pilotprogramm · München Nord-West · 10 Plätze</div>
+          <div class="eyebrow">Pilotprogramm · München Nord-West · Noch 7 von 10 Plätzen verfügbar</div>
           <h1 class="hero-headline">Ihr Markt sendet<br><span class="coral">Signale.</span><br>Hören Sie hin.</h1>
           <p class="hero-deck">b.signal identifiziert Planungssignale, bevor sie zur Marktnachricht werden — wöchentlich, kuratiert, exklusiv für Projektentwickler, die früher wissen wollen.</p>
         </div>
@@ -668,7 +757,7 @@
                 <span class="spinner"></span>
               </button>
             </div>
-            <div class="form-hint">Kostenlos · Kein Spam · Jederzeit abmeldbar</div>
+            <div class="form-hint">Kostenlos · Kein Spam · Jederzeit abmeldbar · <a href='#' style='color:inherit'>Datenschutz</a></div>
             <div class="form-error"></div>
           </form>
           <div class="form-success">Vielen Dank. Ihr Pilotbericht für München Nord-West wird Ihnen in Kürze zugestellt.</div>
@@ -676,6 +765,15 @@
       </div>
     </div>
   </section>
+
+  <!-- SOCIAL PROOF BAR -->
+  <div class="social-proof-bar">
+    <span class="sp-item">Scannt <strong>täglich</strong> über 200 kommunale Portale</span>
+    <span class="sp-divider">·</span>
+    <span class="sp-item">Ø <strong>6–12 Monate</strong> Vorsprung vor dem Markt</span>
+    <span class="sp-divider">·</span>
+    <span class="sp-item"><strong>10 Partner</strong> pro Sektor — limitiert</span>
+  </div>
 
   <!-- FEATURES -->
   <section class="features">
@@ -773,6 +871,7 @@
           <div class="pricing-feature">The Signal</div>
           <div class="pricing-feature">1 Sektor</div>
           <div class="pricing-feature">Onboarding-Gespräch</div>
+          <a href="#cta" class="price-cta">Pilot-Zugang anfragen</a>
         </div>
         <div class="pricing-card reveal">
           <div class="pricing-name">Alpha-Service</div>
@@ -781,6 +880,7 @@
           <div class="pricing-feature">The Signal + The Intelligence</div>
           <div class="pricing-feature">1–3 Sektoren</div>
           <div class="pricing-feature">Dossiers auf Anfrage</div>
+          <a href="#cta" class="price-cta price-cta-ghost">Mehr erfahren</a>
         </div>
         <div class="pricing-card reveal">
           <div class="pricing-name">Enterprise</div>
@@ -790,6 +890,32 @@
           <div class="pricing-feature">Eigentümerdaten</div>
           <div class="pricing-feature">API-Zugang</div>
           <div class="pricing-feature">SLA</div>
+          <a href="#cta" class="price-cta price-cta-ghost">Kontakt aufnehmen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-wrap">
+    <div class="container">
+      <div class="section-tag reveal">Häufige Fragen</div>
+      <div class="faq-grid reveal">
+        <div class="faq-item">
+          <h3>Wie lange dauert es bis zum ersten Bericht?</h3>
+          <p>Nach Ihrer Anmeldung erhalten Sie innerhalb von 24 Stunden Ihren ersten Pilotbericht für den Sektor München Nord-West.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Wie exklusiv ist der Zugang wirklich?</h3>
+          <p>Wir limitieren den Zugang auf 10 Partner pro Sektor. Sobald ein Sektor voll ist, gibt es keine weiteren Zugänge — das garantiert Ihnen einen echten Wettbewerbsvorteil.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Welche Datenquellen werden gescannt?</h3>
+          <p>Ratsinformationssysteme (RIS) aller relevanten Kommunen, amtliche Amtsblätter, Flächennutzungspläne sowie lokale Medien und politische Verlautbarungen zur Stadtentwicklung.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Kann ich jederzeit kündigen?</h3>
+          <p>Die Pilot-Phase ist monatlich kündbar, ohne Mindestlaufzeit. Keine versteckten Kosten.</p>
         </div>
       </div>
     </div>
@@ -810,7 +936,7 @@
               <span class="spinner"></span>
             </button>
           </div>
-          <div class="form-hint">Kostenlos · Kein Spam · Jederzeit abmeldbar</div>
+          <div class="form-hint">Kostenlos · Kein Spam · Jederzeit abmeldbar · <a href='#' style='color:inherit'>Datenschutz</a></div>
           <div class="form-error"></div>
         </form>
         <div class="form-success">Vielen Dank. Ihr Pilotbericht für München Nord-West wird Ihnen in Kürze zugestellt.</div>
@@ -886,6 +1012,25 @@
 
       return false;
     }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "b.signal",
+    "description": "KI-gestützter Intelligence-Dienst für Projektentwickler im deutschen Immobilienmarkt",
+    "applicationCategory": "BusinessApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "150",
+      "priceCurrency": "EUR"
+    },
+    "areaServed": {
+      "@type": "City",
+      "name": "München"
+    }
+  }
   </script>
 
 </body>
