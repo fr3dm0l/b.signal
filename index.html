@@ -981,7 +981,7 @@
       });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
-      if (!data.ok) throw new Error(data.error || 'unknown');
+      if (!(data.success === true || (data.content && data.content.length > 0))) throw new Error(data.error || 'unknown');
     }
 
     async function handleSubmit(e, formId) {
