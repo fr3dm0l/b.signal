@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>b.signal — Concierge MVP Workflow v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FAF8F4; --ink: #1A1816; --ink-2: #3D3A35; --ink-3: #6B6760; --ink-4: #9B9890;
+    --rule: #DDD9D0; --coral: #FF7F50; --coral-dark: #E8663A; --coral-pale: #FFF0EA;
+    --teal: #2A7B6F; --teal-pale: #EAF4F2; --amber: #B8860B; --amber-pale: #FDF8EA;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-sans: 'Source Sans 3', sans-serif;
+    --font-mono: 'Source Code Pro', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--font-sans); font-size: 15px; line-height: 1.7; }
+  .site-header { border-bottom: 2px solid var(--ink); padding: 20px 40px 16px; display: flex; align-items: baseline; gap: 24px; }
+  .logo { font-family: var(--font-serif); font-size: 22px; font-weight: 600; }
+  .logo span { color: var(--coral); }
+  .tagline { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+  .doc-meta { margin-left: auto; font-size: 12px; color: var(--ink-4); }
+  .container { max-width: 900px; margin: 0 auto; padding: 48px 40px 80px; }
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--coral); margin-bottom: 8px; }
+  h1 { font-family: var(--font-serif); font-size: 38px; font-weight: 500; line-height: 1.15; margin-bottom: 16px; }
+  h2 { font-family: var(--font-serif); font-size: 24px; font-weight: 500; margin-top: 52px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--rule); }
+  h3 { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); margin-top: 28px; margin-bottom: 10px; }
+  .intro-block { background: var(--ink); color: var(--paper); padding: 28px 32px; border-radius: 2px; margin: 32px 0 40px; }
+  .intro-block p { font-size: 15px; line-height: 1.65; font-weight: 300; }
+  .intro-block strong { font-weight: 600; color: #FF9F78; }
+  .flow { display: flex; margin: 24px 0; }
+  .flow-step { flex: 1; padding: 16px 12px; border: 1px solid var(--rule); border-right: none; text-align: center; }
+  .flow-step:first-child { border-radius: 2px 0 0 2px; }
+  .flow-step:last-child { border-right: 1px solid var(--rule); border-radius: 0 2px 2px 0; }
+  .flow-step.hl { background: var(--ink); color: white; }
+  .flow-num { font-family: var(--font-serif); font-size: 26px; line-height: 1; margin-bottom: 4px; }
+  .flow-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .flow-sub { font-size: 11px; color: var(--ink-4); margin-top: 2px; }
+  .flow-step.hl .flow-sub { color: rgba(255,255,255,0.5); }
+  .tab-nav { display: flex; border-bottom: 2px solid var(--ink); margin-bottom: 32px; }
+  .tab-btn { padding: 12px 22px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border: none; background: none; cursor: pointer; color: var(--ink-3); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
+  .tab-btn:hover { color: var(--ink); }
+  .tab-btn.active { color: var(--coral); border-bottom-color: var(--coral); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  .prompt-card { border: 1px solid var(--rule); border-radius: 2px; margin: 20px 0; overflow: hidden; }
+  .prompt-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: #F2EFE8; border-bottom: 1px solid var(--rule); flex-wrap: wrap; gap: 8px; }
+  .prompt-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); }
+  .prompt-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; }
+  .bp { background: #E8F7FA; color: #0E8A9E; }
+  .bc { background: var(--coral-pale); color: var(--coral-dark); }
+  .prompt-body { padding: 20px; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.8; color: var(--ink-2); background: white; white-space: pre-wrap; position: relative; }
+  .pv { background: #FFF3CD; color: #7A5A00; padding: 1px 5px; border-radius: 2px; font-weight: 500; }
+  .copy-btn { position: absolute; top: 12px; right: 12px; background: var(--ink); color: white; border: none; font-family: var(--font-sans); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 14px; border-radius: 2px; cursor: pointer; transition: background 0.15s; }
+  .copy-btn:hover { background: var(--coral); }
+  .copy-btn.copied { background: var(--teal); }
+  .info-box { padding: 14px 18px; border-left: 3px solid; margin: 18px 0; border-radius: 0 2px 2px 0; }
+  .info-box.tip { border-color: var(--teal); background: var(--teal-pale); }
+  .info-box.warn { border-color: var(--amber); background: var(--amber-pale); }
+  .info-box.sig { border-color: var(--coral); background: var(--coral-pale); }
+  .ibl { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 5px; }
+  .tip .ibl { color: var(--teal); } .warn .ibl { color: var(--amber); } .sig .ibl { color: var(--coral-dark); }
+  .info-box p { font-size: 13.5px; color: var(--ink-2); }
+  .url-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 14px 0; }
+  .url-table th { text-align: left; padding: 8px 12px; background: #F2EFE8; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--rule); }
+  .url-table td { padding: 9px 12px; border-bottom: 1px solid var(--rule); color: var(--ink-2); vertical-align: top; }
+  .url-table tr:last-child td { border-bottom: none; }
+  .url-table a { color: var(--coral-dark); text-decoration: none; font-family: var(--font-mono); font-size: 11px; word-break: break-all; display: block; }
+  .url-table a:hover { text-decoration: underline; }
+  .lkb { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 6px; border-radius: 2px; background: #EEF2FF; color: #3730A3; white-space: nowrap; margin-bottom: 3px; }
+  .checklist { list-style: none; margin: 14px 0; }
+  .checklist li { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--rule); font-size: 14px; color: var(--ink-2); }
+  .checklist li:last-child { border-bottom: none; }
+  .cb { width: 17px; height: 17px; border: 1.5px solid var(--rule); border-radius: 2px; flex-shrink: 0; margin-top: 2px; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+  .cb:hover { border-color: var(--coral); }
+  .cb.chk { background: var(--coral); border-color: var(--coral); color: white; }
+  .ct { font-size: 11px; color: var(--ink-4); margin-left: auto; white-space: nowrap; padding-left: 12px; }
+  .brief-preview { border: 1px solid var(--rule); border-radius: 2px; overflow: hidden; margin: 24px 0; }
+  .brief-hdr { background: var(--ink); color: var(--paper); padding: 20px 28px 16px; }
+  .brief-logo { font-family: var(--font-serif); font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+  .brief-logo span { color: #FF9F78; }
+  .brief-subj { font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.7); margin-top: 5px; }
+  .brief-meta { font-size: 11px; color: #6B6760; margin-top: 3px; }
+  .brief-body { padding: 28px; background: white; }
+  .brief-intro { font-size: 14.5px; color: var(--ink-2); line-height: 1.65; margin-bottom: 22px; font-style: italic; border-left: 3px solid var(--rule); padding-left: 16px; }
+  .sc { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--rule); }
+  .sc:last-of-type { border-bottom: none; }
+  .stags { margin-bottom: 7px; }
+  .st { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; margin-right: 4px; }
+  .sh { background: #FFE8E0; color: #C0441A; }
+  .sm { background: #FFF3CD; color: #7A5A00; }
+  .sty { background: #EEF2FF; color: #3730A3; }
+  .so { background: #F0FDF4; color: #166534; }
+  .stitle { font-family: var(--font-serif); font-size: 17px; font-weight: 500; margin-bottom: 5px; }
+  .stxt { font-size: 13.5px; color: var(--ink-2); line-height: 1.65; }
+  .sfrueh { margin-top: 8px; font-size: 13px; color: var(--ink-3); padding: 8px 12px; background: var(--coral-pale); border-left: 2px solid var(--coral); }
+  .bclosing { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--ink-3); font-style: italic; }
+  .sektor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  .sk { border: 1px solid var(--rule); border-radius: 2px; overflow: hidden; }
+  .sk.now { border-color: var(--coral); }
+  .sk-hdr { padding: 10px 16px; background: #F2EFE8; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); display: flex; align-items: center; gap: 8px; }
+  .sk.now .sk-hdr { background: var(--coral); color: white; }
+  .dot { width: 7px; height: 7px; background: var(--coral); border-radius: 50%; }
+  .sk.now .dot { background: white; }
+  .sk-body { padding: 14px 16px; font-size: 13px; color: var(--ink-2); line-height: 1.8; }
+  hr.rule { border: none; border-top: 1px solid var(--rule); margin: 40px 0; }
+  p { margin-bottom: 14px; color: var(--ink-2); }
+  strong { font-weight: 600; color: var(--ink); }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="logo">b<span>.</span>signal</div>
+  <div class="tagline">Concierge MVP — Betriebshandbuch v2</div>
+  <div class="doc-meta">Sektor München NW Umland · LK Dachau + LK FFB + LK München Nord</div>
+</header>
+<div class="container">
+  <div class="section-label">Wöchentlicher Workflow</div>
+  <h1>Vom Rohdaten-Scan<br>zum Signal-Brief.<br>30 Minuten pro Woche.</h1>
+  <div class="intro-block">
+    <p>Konkret zugeschnitten auf deinen ersten Sektor: <strong>LK Dachau + LK Fürstenfeldbruck + LK München (Nord)</strong>. Alle URLs sind real und aus deiner Perplexity-Liste verifiziert. Alle Prompts sind copy-paste-fertig. Du führst 2 Perplexity-Scans durch, gibst alles in Claude, bekommst eine kuratierte Signalliste und einen versandfertigen Brief.</p>
+  </div>
+  <div class="flow">
+    <div class="flow-step"><div class="flow-num">1</div><div class="flow-label">Behörden-Scan</div><div class="flow-sub">Perplexity · ~12 min</div></div>
+    <div class="flow-step"><div class="flow-num">2</div><div class="flow-label">Medien-Scan</div><div class="flow-sub">Perplexity · ~8 min</div></div>
+    <div class="flow-step hl"><div class="flow-num">3</div><div class="flow-label">Kuratierung</div><div class="flow-sub">Claude · ~5 min</div></div>
+    <div class="flow-step"><div class="flow-num">4</div><div class="flow-label">Signal-Brief</div><div class="flow-sub">Claude · ~5 min</div></div>
+  </div>
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('prompts',this)">Prompts</button>
+    <button class="tab-btn" onclick="switchTab('quellen',this)">Quellenregister</button>
+    <button class="tab-btn" onclick="switchTab('brief',this)">Brief-Vorlage</button>
+    <button class="tab-btn" onclick="switchTab('sektoren',this)">Sektorplan</button>
+    <button class="tab-btn" onclick="switchTab('checklist',this)">Checkliste</button>
+  </div>
+
+  <!-- PROMPTS -->
+  <div class="tab-content active" id="tab-prompts">
+    <h2>Prompt 1 — Behörden-Primärscan</h2>
+    <p>Jeden <strong>Montag früh</strong>. Scannt RIS, Amtsblätter und Bundesanzeiger für alle Gemeinden deines Sektors.</p>
+    <div class="prompt-card">
+      <div class="prompt-header">
+        <span class="prompt-title">Behörden-Scan München NW Umland</span>
+        <span class="prompt-badge bp">Perplexity Pro</span>
+      </div>
+      <div class="prompt-body" id="p1">Durchsuche folgende Quellen für die vergangenen 7–10 Tage und liste ALLE planungsrechtlich relevanten Vorgänge auf.
+
+SEKTOR: München Nord-West Umland
+LANDKREISE: LK Dachau | LK Fürstenfeldbruck | LK München (nördlicher Teil)
+
+AMTSBLÄTTER LANDKREISE:
+- https://www.landratsamt-dachau.de/Aktuelles/Amtsblätter/Amtsblätter-2026/
+- https://www.lra-ffb.de/amt-service/veroeffentlichungen/amtsblaetter
+- https://www.landkreis-muenchen.de/landratsamt/veroeffentlichungen/amtsblatt/
+- https://www.dachau.de/dachauer-amtsblatt
+
+RATSINFORMATIONSSYSTEME:
+- Dachau: https://ris.dachau.de/sitzungen
+- Karlsfeld: https://karlsfeld.ris-portal.de
+- Olching: https://ratsinfo2.olching.de/
+- Puchheim: https://buergerinfo-puchheim.digitalfabrix.de
+- Germering: https://buergerinfo-germering.digitalfabrix.de
+- Unterschleißheim: https://www.unterschleissheim.de/rathaus-politik-buergerservice-online/buergerbeteiligung/buergerinformationssystem.html
+- Garching: https://www.garching.de/infosystem
+- Fürstenfeldbruck: https://buergerinfo-fuerstenfeldbruck.digitalfabrix.de/
+
+BUNDESANZEIGER:
+- https://www.bundesanzeiger.de
+- Suche: ("Dachau" ODER "Karlsfeld" ODER "Olching" ODER "Puchheim" ODER "Germering" ODER "Unterschleißheim" ODER "Garching") UND ("Bebauungsplan" ODER "Flächennutzungsplan")
+
+ALLE Nutzungsarten erfassen:
+Wohnen, Gewerbe, Einzelhandel/Nahversorgung, Logistik, PV/Energie,
+Rechenzentren, Gemischte Nutzung, Sonstiges
+
+PRO TREFFER ausgeben:
+1. Datum
+2. Kommune
+3. Vorgang (Titel/Beschluss)
+4. Nutzungsart
+5. Status (Aufstellung / Auslegung §3.1 / Auslegung §3.2 / Beschluss / Inkrafttreten)
+6. Fläche / Größenordnung (falls erkennbar)
+7. Investor / Träger (falls bekannt)
+8. Direkte URL oder Quellenangabe
+
+Nur reale Funde ausgeben. Keine Platzhalter. Nicht erreichbare Quellen kurz vermerken.
+<button class="copy-btn" onclick="copyPrompt('p1',this)">Kopieren</button></div>
+    </div>
+    <div class="info-box tip"><div class="ibl">Tipp — Amtsblatt als PDF</div><p>Falls Perplexity Amtsblatt-PDFs nicht direkt lesen kann: aktuelles PDF herunterladen und direkt in Claude als Datei hochladen. Claude extrahiert zuverlässiger als Perplexity bei verschachtelten Behörden-PDFs.</p></div>
+
+    <h2>Prompt 2 — Medien & Kontext</h2>
+    <p>Lokalmedien liefern politische Signale und Kontext, die in Behördenquellen noch nicht auftauchen — oft 2–4 Wochen Vorsprung vor dem offiziellen Verfahren.</p>
+    <div class="prompt-card">
+      <div class="prompt-header">
+        <span class="prompt-title">Medien-Scan München NW Umland</span>
+        <span class="prompt-badge bp">Perplexity Pro</span>
+      </div>
+      <div class="prompt-body" id="p2">Suche in folgenden Quellen nach Artikeln der letzten 7 Tage zu Stadtentwicklung, Bauprojekten und Planungsrecht im Münchner Umland Nord-West:
+
+MEDIEN:
+- sueddeutsche.de/muenchen (Landkreise Dachau, Fürstenfeldbruck)
+- merkur.de (Lokales: Dachau, FFB, Landkreis München)
+- wochenanzeiger.de (Karlsfeld, Dachau, Germering, Puchheim, Olching)
+- abendzeitung-muenchen.de
+
+GEMEINDEN IM FOKUS:
+Dachau, Karlsfeld, Olching, Puchheim, Germering, Fürstenfeldbruck,
+Unterschleißheim, Garching, Oberschleißheim, Neufahrn, Röhrmoos
+
+SUCHBEGRIFFE (kombiniert mit Gemeindename):
+"Bebauungsplan" ODER "Baurecht" ODER "Flächennutzung" ODER
+"Wohnungsbau" ODER "Gewerbegebiet" ODER "Einzelhandel" ODER
+"Nahversorgung" ODER "Supermarkt" ODER "Fachmarkt" ODER
+"Grundstück" ODER "Investor" ODER "Projektentwickler" ODER
+"Logistik" ODER "Solarpark" ODER "Rechenzentrum"
+
+PRO ARTIKEL ausgeben:
+1. Quelle + Datum
+2. Überschrift
+3. Kernaussage (2–3 Sätze)
+4. Adresse / Gebiet (falls genannt)
+5. Politische Signale: Widerstände, Unterstützung, Stimmungslage
+6. Genannte Akteure (Investor, Entwickler, Gemeinde)
+7. URL
+<button class="copy-btn" onclick="copyPrompt('p2',this)">Kopieren</button></div>
+    </div>
+
+    <h2>Prompt 3 — Kuratierung & Scoring</h2>
+    <p>Das Herzstück. Alle Rohdaten aus Prompt 1 + 2 hinein. Claude klassifiziert, bewertet und erklärt das Frühsignal-Potenzial. Output ist deine interne Signalliste — vollständig, wie deine Perplexity-Tabelle, aber mit Handlungsempfehlungen.</p>
+    <div class="info-box warn"><div class="ibl">Rohdaten übergeben — zwei Wege, beide funktionieren</div>
+    <p><strong>Option A — Datei hochladen (empfohlen):</strong> Excel- oder CSV-Datei aus Perplexity direkt in Claude ziehen. Den Rohdaten-Block im Prompt weglassen — Claude sieht die Datei automatisch. Funktioniert auch mit zwei Dateien gleichzeitig.<br><br>
+    <strong>Option B — Text einfügen:</strong> Ausgabe aus Prompt 1 + 2 in die markierten Platzhalter kopieren. Für Wochen wo Perplexity nur Text ausgibt.</p></div>
+    <div class="prompt-card">
+      <div class="prompt-header">
+        <span class="prompt-title">Klassifizierung & Scoring</span>
+        <span class="prompt-badge bc">Claude</span>
+      </div>
+      <div class="prompt-body" id="p3">Du bist Experte für deutsches Baurecht (BauGB, BayBO) und Projektentwicklung im Münchner Umland. Ich betreibe b.signal, einen Frühwarndienst für Planungssignale für Projektentwickler, Investoren und Einzelhändler.
+
+Analysiere die beigefügten Rohdaten (hochgeladene Datei oder Text unten).
+Klassifiziere jeden relevanten Eintrag nach Schema unten. Irrelevantes stillschweigend ignorieren.
+
+<span class="pv">[ → Datei hochgeladen: kein weiterer Text nötig, direkt weiter mit SEKTOR ]</span>
+<span class="pv">[ → Kein Upload: Ausgabe aus Prompt 1 + 2 hier einfügen, dann weiter mit SEKTOR ]</span>
+
+
+SEKTOR: München Nord-West Umland (LK Dachau, LK Fürstenfeldbruck, LK München Nord)
+ZIELGRUPPE: Projektentwickler und Investoren aller Nutzungsarten (Wohnen, Gewerbe, Einzelhandel/Nahversorgung, Logistik, Energie, Mixed-Use)
+
+Für jeden relevanten Eintrag:
+
+---
+SIGNAL #[Nr.]
+Datum: [Datum]
+Ort: [Gemeinde + Adresse/Gebiet]
+Typ: [bplan_aufstellung | bplan_aenderung | fnp_aenderung | auslegung_§3.1 | auslegung_§3.2 | satzungsbeschluss | veraenderungssperre | wettbewerb | medien_signal | grundstueck_verfuegbar]
+Nutzungsart: [Wohnen | Gewerbe | Einzelhandel/Nahversorgung | Logistik | PV/Energie | Rechenzentrum | Gemischt | Sonstiges]
+Größe: [ha oder m² BGF, falls bekannt, sonst "unbekannt"]
+Investor/Träger: [Name oder "unbekannt"]
+Score: [1–10]
+Priorität: [HOCH | MITTEL | BEOBACHTEN]
+
+Zusammenfassung:
+[2–3 Sätze: Was passiert, wo, aktueller Verfahrensstand]
+
+Frühsignal-Erklärung:
+[Warum jetzt relevant? Was könnte daraus werden? Welches Zeitfenster haben Entwickler/Investoren noch?]
+
+Nächste behördliche Schritte:
+[Was passiert planungsrechtlich als nächstes und wann?]
+
+Handlungsempfehlung:
+[Konkret: Was sollte ein Projektentwickler, Investor oder Einzelhändler jetzt tun?]
+---
+
+Scoring:
+9–10 = unmittelbarer Handlungsbedarf, echtes Zeitfenster jetzt offen
+7–8 = relevantes Frühsignal, in 4–8 Wochen beobachten
+5–6 = laufendes Verfahren, langfristig relevant
+1–4 = abgeschlossen, zu früh, oder nicht handlungsrelevant
+
+Abschließend: Wochenresümee 3–4 Sätze. Welche 1–2 Signale haben höchstes Handlungspotenzial?
+<button class="copy-btn" onclick="copyPrompt('p3',this)">Kopieren</button></div>
+    </div>
+
+    <h2>Prompt 4 — Signal-Brief</h2>
+    <p>Aus der Signalliste wird der versandfertige Nutzer-Brief. Ton: erfahrener Kollege, kein Marketing. Max. 400 Wörter.</p>
+    <div class="prompt-card">
+      <div class="prompt-header">
+        <span class="prompt-title">Signal-Brief generieren</span>
+        <span class="prompt-badge bc">Claude</span>
+      </div>
+      <div class="prompt-body" id="p4">Erstelle den wöchentlichen b.signal-Brief für Sektor München Nord-West Umland.
+
+=== KLASSIFIZIERTE SIGNALE ===
+<span class="pv">[HIER vollständige Ausgabe aus Prompt 3 einfügen]</span>
+=== ENDE ===
+
+Empfänger: <span class="pv">[Projektentwickler, aktiv in LK Dachau / LK FFB / LK München Nord, alle Nutzungsarten]</span>
+Kalenderwoche: <span class="pv">[KW XX · Datum]</span>
+
+STRUKTUR:
+Betreff: b.signal KW [XX] · [Anzahl] Signale · München NW Umland
+
+1. Einstieg — 1 Satz, spezifisch zur Woche (kein Boilerplate)
+2. Top-Signal — ausführlich, mit Frühsignal-Erklärung und Handlungsempfehlung
+3. Weitere Signale Score ≥6 — je 3–4 Zeilen, kompakt
+4. Auf dem Radar (Score 4–5) — kurze Liste: Ort + Vorgang + nächster Termin
+5. Abschluss — Was beobachten wir nächste Woche? (1–2 Sätze)
+
+TON: Professionell, direkt, kein Marketingsprech. Wie ein erfahrener Kollege.
+LÄNGE: Max. 400 Wörter. SPRACHE: Deutsch.
+<button class="copy-btn" onclick="copyPrompt('p4',this)">Kopieren</button></div>
+    </div>
+  </div>
+
+  <!-- QUELLEN -->
+  <div class="tab-content" id="tab-quellen">
+    <h2>Quellenregister — Sektor München NW Umland</h2>
+    <p>Alle verifizierten URLs aus deiner Perplexity-Recherche vom 14. März 2026.</p>
+    <h3>Amtsblätter — Landkreisebene</h3>
+    <table class="url-table">
+      <thead><tr><th>Institution</th><th>URL</th></tr></thead>
+      <tbody>
+        <tr><td><span class="lkb">LK Dachau</span><br>LRA Dachau — Amtsblätter 2026</td><td><a href="https://www.landratsamt-dachau.de/Aktuelles/Amtsblätter/Amtsblätter-2026/" target="_blank">landratsamt-dachau.de/…/Amtsblätter-2026</a></td></tr>
+        <tr><td><span class="lkb">LK FFB</span><br>LRA Fürstenfeldbruck — Amtsblätter</td><td><a href="https://www.lra-ffb.de/amt-service/veroeffentlichungen/amtsblaetter" target="_blank">lra-ffb.de/…/amtsblaetter</a></td></tr>
+        <tr><td><span class="lkb">LK München</span><br>Landkreis München — Amtsblatt</td><td><a href="https://www.landkreis-muenchen.de/landratsamt/veroeffentlichungen/amtsblatt/" target="_blank">landkreis-muenchen.de/…/amtsblatt</a></td></tr>
+        <tr><td><span class="lkb">Stadt Dachau</span><br>Dachauer Amtsblatt digital</td><td><a href="https://www.dachau.de/dachauer-amtsblatt" target="_blank">dachau.de/dachauer-amtsblatt</a></td></tr>
+      </tbody>
+    </table>
+    <h3>Ratsinformationssysteme</h3>
+    <table class="url-table">
+      <thead><tr><th>Gemeinde</th><th>URLs</th></tr></thead>
+      <tbody>
+        <tr><td><span class="lkb">LK Dachau</span><br>Dachau</td><td><a href="https://ris.dachau.de/sitzungen" target="_blank">ris.dachau.de/sitzungen</a><a href="https://www.dachau.de/stadtplanerische-projekte/" target="_blank">dachau.de/stadtplanerische-projekte</a></td></tr>
+        <tr><td><span class="lkb">LK Dachau</span><br>Karlsfeld</td><td><a href="https://karlsfeld.ris-portal.de" target="_blank">karlsfeld.ris-portal.de</a><a href="https://www.karlsfeld.de/bebauungsplan-nr-90b-1-aenderung-ludl-gelaende-anna-quartier" target="_blank">karlsfeld.de/bp-90b (Anna-Quartier)</a></td></tr>
+        <tr><td><span class="lkb">LK FFB</span><br>Olching</td><td><a href="https://ratsinfo2.olching.de/" target="_blank">ratsinfo2.olching.de</a></td></tr>
+        <tr><td><span class="lkb">LK FFB</span><br>Puchheim</td><td><a href="https://buergerinfo-puchheim.digitalfabrix.de" target="_blank">buergerinfo-puchheim.digitalfabrix.de</a><a href="https://www.puchheim.de/bebauungsplaene" target="_blank">puchheim.de/bebauungsplaene</a></td></tr>
+        <tr><td><span class="lkb">LK FFB</span><br>Germering</td><td><a href="https://buergerinfo-germering.digitalfabrix.de" target="_blank">buergerinfo-germering.digitalfabrix.de</a><a href="https://www.germering.de/germering/site.nsf/id/pa_de_bebauungsplaene_und_flaechennutzungsplan.html" target="_blank">germering.de/bebauungsplaene</a></td></tr>
+        <tr><td><span class="lkb">LK FFB</span><br>Fürstenfeldbruck</td><td><a href="https://buergerinfo-fuerstenfeldbruck.digitalfabrix.de/" target="_blank">buergerinfo-fuerstenfeldbruck.digitalfabrix.de</a><a href="https://www.fuerstenfeldbruck.de/ffb/web.nsf/id/pa_bekanntmachungen_stadt.html" target="_blank">fuerstenfeldbruck.de/bekanntmachungen</a></td></tr>
+        <tr><td><span class="lkb">LK München</span><br>Unterschleißheim</td><td><a href="https://www.unterschleissheim.de/rathaus-politik-buergerservice-online/buergerbeteiligung/buergerinformationssystem.html" target="_blank">unterschleissheim.de/buergerinformationssystem</a></td></tr>
+        <tr><td><span class="lkb">LK München</span><br>Garching</td><td><a href="https://www.garching.de/infosystem" target="_blank">garching.de/infosystem</a><a href="https://www.garching.de/bauen" target="_blank">garching.de/bauen</a></td></tr>
+      </tbody>
+    </table>
+    <h3>Überregionale Quellen</h3>
+    <table class="url-table">
+      <thead><tr><th>Quelle</th><th>Nutzung</th><th>URL</th></tr></thead>
+      <tbody>
+        <tr><td>Bundesanzeiger</td><td>§3 BauGB Bekanntmachungen</td><td><a href="https://www.bundesanzeiger.de" target="_blank">bundesanzeiger.de</a></td></tr>
+        <tr><td>EU TED</td><td>Wettbewerbe, Ausschreibungen</td><td><a href="https://ted.europa.eu" target="_blank">ted.europa.eu</a></td></tr>
+        <tr><td>Süddeutsche Zeitung</td><td>LK Dachau / FFB</td><td><a href="https://www.sueddeutsche.de/muenchen" target="_blank">sueddeutsche.de/muenchen</a></td></tr>
+        <tr><td>Merkur</td><td>Umland lokale Berichte</td><td><a href="https://www.merkur.de/lokales/muenchen" target="_blank">merkur.de/lokales/muenchen</a></td></tr>
+        <tr><td>Wochenanzeiger</td><td>Stadtteil-Ebene, frühe Signale</td><td><a href="https://www.wochenanzeiger.de" target="_blank">wochenanzeiger.de</a></td></tr>
+      </tbody>
+    </table>
+    <div class="info-box sig"><div class="ibl">Goldene Quellen für diesen Sektor</div><p>Deine Perplexity-Liste zeigt 3 besonders ergiebige Quellen: <strong>Dachau Amtsblatt</strong> (viele parallele Verfahren), <strong>Germering RIS</strong> (Kreuzlinger Feld + Hochrainweg sind lang laufende Großprojekte), <strong>Karlsfeld RIS</strong> (Anna-Quartier mit CG Elementum — aktives Hochkomplexverfahren).</p></div>
+  </div>
+
+  <!-- BRIEF -->
+  <div class="tab-content" id="tab-brief">
+    <h2>Signal-Brief — Beispiel-Output</h2>
+    <p>So sieht der fertige Brief aus — basierend auf deiner hochgeladenen Perplexity-Liste vom 14. März 2026. Das ist was deine Pilot-Nutzer erhalten.</p>
+    <div class="brief-preview">
+      <div class="brief-hdr">
+        <div class="brief-logo">b<span>.</span>signal</div>
+        <div class="brief-subj">b.signal KW 11/12 · 5 Signale · München NW Umland</div>
+        <div class="brief-meta">LK Dachau · LK Fürstenfeldbruck · LK München Nord · 14. März 2026</div>
+      </div>
+      <div class="brief-body">
+        <p class="brief-intro">Karlsfeld stoppt, Puchheim beschleunigt, Garching beginnt zu bauen — eine ungewöhnlich aktive Woche mit einem echten Zeitfenster in Puchheim.</p>
+        <div class="sc">
+          <div class="stags"><span class="st sh">Score 9</span><span class="st sty">Wettbewerb · EU-Ausschreibung</span><span class="st so">Puchheim</span></div>
+          <div class="stitle">Baugebiet Alpenstraße — EU-Wettbewerb läuft, Stadtratsbeschluss liegt vor</div>
+          <div class="stxt">Puchheim hat am 02.03. eine EU-weite Vergabebekanntmachung für den städtebaulichen Realisierungswettbewerb "Baugebiet Alpenstraße" veröffentlicht. Quartier zwischen Alpenstraße und kleinem Ascherbach: ~350 Personen Wohnraum + Kita. Wettbewerbs-Abschluss geplant Herbst 2026.</div>
+          <div class="sfrueh">Frühsignal: Der Wettbewerb definiert das städtebauliche Konzept — wer jetzt Eigentümerstrukturen prüft und erste Kontakte knüpft, handelt vor der Preisbildung. Nach Wettbewerbs-Entscheidung Herbst 2026 beginnt das BP-Verfahren.</div>
+        </div>
+        <div class="sc">
+          <div class="stags"><span class="st sh">Score 8</span><span class="st sty">Auslegung abgebrochen</span><span class="st so">Karlsfeld</span></div>
+          <div class="stitle">Anna-Quartier (LUDL-Gelände) — Auslegung gestoppt, zweite Runde kommt</div>
+          <div class="stxt">Die öffentliche Auslegung von BP 90b (25.345 m², ~300 WE + Handel + Hotel-Tower 39m, Investor CG Elementum) wurde am 11.03. vorzeitig abgebrochen. Nach städtebaulichem Vertrag folgt zweite Auslegung — Baurecht-Ziel April 2026. Parallel: Gemeinderat hat Umwidmung angrenzender Flächen zu Urbanem Gebiet beschlossen.</div>
+          <div class="sfrueh">Frühsignal: Abbruch = Nachjustierung, kein Rückschritt. Das Projekt kommt. Wer Nachbarflächen im Blick hat: Umwidmung ist bereits beschlossen.</div>
+        </div>
+        <div class="sc">
+          <div class="stags"><span class="st sh">Score 8</span><span class="st sty">Gewerbegebiet · §3.1</span><span class="st so">Germering</span></div>
+          <div class="stitle">Gewerbegebiet Nördlich Hochrainweg — 3,2 ha an der B2, Beteiligung abgeschlossen</div>
+          <div class="stxt">Frühzeitige Beteiligung (§ 3 Abs. 1) lief bis 16.01.2026. Ca. 32.000 m² zwischen Hochrainweg und B2, Nutzung Handwerk/Mittelstand, 9. FNP-Änderung im Parallelverfahren. Abwägung läuft, öffentliche Auslegung folgt.</div>
+          <div class="sfrueh">Frühsignal: Direktlage B2 mit Autobahnnähe. Nach Abwägung folgt §3 Abs. 2 Auslegung — das Zeitfenster für Nutzer-Akquise ist jetzt.</div>
+        </div>
+        <div class="sc">
+          <div class="stags"><span class="st sm">Score 7</span><span class="st sty">30ha Quartier · Erschließung</span><span class="st so">Garching</span></div>
+          <div class="stitle">Kommunikationszone Garching — Erschließung begonnen, 200.000 m² GF bis 2033</div>
+          <div class="stxt">30-ha-Quartier zwischen Ortskern und TUM-Campus: Straßenbau ab Februar 2026. Zwei Bauabschnitte bis 2033. Genossenschaft gegründet, WipflerPLAN als Erschließungsträger.</div>
+          <div class="sfrueh">Frühsignal: Erschließungsbeginn = Bauplatz-Vergabe in 12–24 Monaten. Jetzt ist der Moment, die Baufeld-Struktur zu verstehen.</div>
+        </div>
+        <p class="bclosing">Nächste Woche beobachten: Bauausschuss Puchheim (17.03.), Bau- und Werkausschuss Karlsfeld (18.03.) — Anna-Quartier Folgethemen nach Auslegungsabbruch. Germering Stadtentwicklungsausschuss (19.03.) — Kreuzlinger Feld und Hochrainweg.</p>
+      </div>
+    </div>
+    <div class="info-box tip"><div class="ibl">Was dieser Brief zeigt</div><p>Das ist der Unterschied zwischen deiner rohen Perplexity-Tabelle (20+ Einträge, vollständig) und dem kuratierten Brief (4–5 Signale, priorisiert, mit Handlungsempfehlung). <strong>Die Tabelle ist die Datenbank für deine Website. Der Brief ist das Produkt, für das Nutzer zahlen.</strong></p></div>
+  </div>
+
+  <!-- SEKTOREN -->
+  <div class="tab-content" id="tab-sektoren">
+    <h2>Sektorplan — Wachstumspfad</h2>
+    <p>Jeder Sektor = 3–4 Landkreise mit logischer Markteinheit aus Entwickler-Perspektive. Neuer Sektor onboarden = Prompt 1+2 anpassen (~2h), Struktur bleibt identisch.</p>
+    <div class="sektor-grid">
+      <div class="sk now">
+        <div class="sk-hdr"><div class="dot"></div>München NW Umland · Jetzt</div>
+        <div class="sk-body"><strong>LK Dachau</strong> — Dachau, Karlsfeld, Röhrmoos<br><strong>LK Fürstenfeldbruck</strong> — Germering, Puchheim, Olching, FFB<br><strong>LK München (Nord)</strong> — Garching, Unterschleißheim, Oberschleißheim<br><br><span style="font-size:12px;color:var(--ink-4)">~15 Gemeinden · bereits durch Perplexity-Liste validiert</span></div>
+      </div>
+      <div class="sk">
+        <div class="sk-hdr">München SO Umland · Phase 2</div>
+        <div class="sk-body"><strong>LK Ebersberg</strong> — Ebersberg, Markt Schwaben, Zorneding<br><strong>LK München (Ost/Süd)</strong> — Ottobrunn, Haar, Vaterstetten<br><strong>LK Rosenheim (Nord)</strong> — Rosenheim, Kolbermoor<br><br><span style="font-size:12px;color:var(--ink-4)">Ausbau wenn NW Umland erste zahlende Nutzer hat</span></div>
+      </div>
+      <div class="sk">
+        <div class="sk-hdr">München Stadt · Phase 2–3</div>
+        <div class="sk-body"><strong>Stadtgebiet München</strong> — Stadtrat-RIS, 25 Bezirksausschüsse, Amtsblatt LHM<br><br>Eigener Sektor — andere Preisklasse, andere Verfahrensdichte, eher institutionelle Entwickler.<br><br><span style="font-size:12px;color:var(--ink-4)">Komplexester Sektor — erst nach Proof-of-Concept</span></div>
+      </div>
+      <div class="sk">
+        <div class="sk-hdr">Stuttgart / Frankfurt · Phase 3+</div>
+        <div class="sk-body"><strong>Stuttgart</strong> — LK Böblingen, LK Ludwigsburg, LK Esslingen<br><strong>Frankfurt</strong> — Main-Taunus, Hochtaunus, LK Offenbach<br><br><span style="font-size:12px;color:var(--ink-4)">Prompt-Anpassung: ~2h. Quellen-Recherche: ~1 Tag.</span></div>
+      </div>
+    </div>
+    <div class="info-box sig"><div class="ibl">Skalierungslogik</div><p>Du tauschst in Prompt 1 + 2 die Landkreisnamen, Gemeinden und RIS-URLs aus. Das dauert 2 Stunden. Prompt 3 + 4 (Kuratierung + Brief) bleiben <strong>identisch für jeden Sektor</strong> — kein neues System, nur neue Konfiguration.</p></div>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="tab-content" id="tab-checklist">
+    <h2>Wöchentliche Checkliste</h2>
+    <p>Jeden <strong>Montag früh</strong>. Ziel: bis 9 Uhr fertig, Brief raus.</p>
+    <ul class="checklist">
+      <li><div class="cb" onclick="toggleCheck(this)"></div><span><strong>Prompt 1</strong> in Perplexity — Behörden-Scan (alle RIS + Amtsblätter)</span><span class="ct">~12 min</span></li>
+      <li><div class="cb" onclick="toggleCheck(this)"></div><span><strong>Amtsblatt-PDFs prüfen</strong> — falls nicht lesbar: manuell laden, in Claude hochladen</span><span class="ct">~3 min</span></li>
+      <li><div class="cb" onclick="toggleCheck(this)"></div><span><strong>Prompt 2</strong> in Perplexity — Medien-Scan</span><span class="ct">~8 min</span></li>
+      <li><div class="cb" onclick="toggleCheck(this)"></div><span><strong>Rohdaten übergeben</strong> — Excel/CSV direkt in Claude hochladen <em>oder</em> Text aus Prompt 1 + 2 einfügen</span><span class="ct">~2 min</span></li>
+      <li><div class="cb" onclick="toggleCheck(this)"></div><span><strong>Prompt 3</strong> in Claude — Klassifizierung und Scoring (bei Datei-Upload: Platzhalter weglassen)</span><span class="ct">~5 min</span></li>
+      <li><div class="cb" onclick="toggleCheck(this)"></div><span><strong>Scores plausibilisieren</strong> — Top-Signale mit eigener Einschätzung abgleichen</span><span class="ct">~3 min</span></li>
+      <li><div class="cb" onclick="toggleCheck(this)"></div><span><strong>Prompt 4</strong> in Claude — Signal-Brief generieren</span><span class="ct">~3 min</span></li>
+      <li><div class="cb" onclick="toggleCheck(this)"></div><span><strong>Brief versenden</strong> — kurze Durchsicht, dann raus</span><span class="ct">~2 min</span></li>
+      <li><div class="cb" onclick="toggleCheck(this)"></div><span><strong>Reaktionen notieren</strong> — Was hat Resonanz? Für Prompt-Tuning</span><span class="ct">laufend</span></li>
+    </ul>
+    <div class="info-box tip"><div class="ibl">Wann automatisieren?</div><p>Sobald <strong>3 zahlende Nutzer</strong> den Brief beziehen, lohnt sich der Bau des Python-Scrapers. Bis dahin validierst du Zahlungsbereitschaft — schneller und günstiger als jede Infrastruktur.</p></div>
+  </div>
+</div>
+<script>
+function switchTab(id,btn){document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');btn.classList.add('active');}
+function copyPrompt(id,btn){const el=document.getElementById(id);const text=el.innerText.replace('Kopieren','').trim();navigator.clipboard.writeText(text).then(()=>{btn.textContent='✓ Kopiert';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Kopieren';btn.classList.remove('copied');},2000);});}
+function toggleCheck(el){el.classList.toggle('chk');el.textContent=el.classList.contains('chk')?'✓':'';}
+</script>
+</body>
+</html>
