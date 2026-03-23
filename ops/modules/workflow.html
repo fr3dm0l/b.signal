@@ -26,18 +26,19 @@
   h1 { font-family: var(--font-serif); font-size: 38px; font-weight: 500; line-height: 1.15; margin-bottom: 16px; }
   h2 { font-family: var(--font-serif); font-size: 24px; font-weight: 500; margin-top: 52px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--rule); }
   h3 { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); margin-top: 28px; margin-bottom: 10px; }
-  .intro-block { background: var(--ink); color: var(--paper); padding: 28px 32px; border-radius: 2px; margin: 32px 0 40px; }
-  .intro-block p { font-size: 15px; line-height: 1.65; font-weight: 300; }
-  .intro-block strong { font-weight: 600; color: #FF9F78; }
+  .intro-block { background: var(--teal-pale); border-left: 3px solid var(--teal); padding: 22px 28px; border-radius: 2px; margin: 32px 0 40px; }
+  .intro-block p { font-size: 15px; line-height: 1.65; font-weight: 400; color: var(--ink-2); }
+  .intro-block strong { font-weight: 600; color: var(--teal); }
   .flow { display: flex; margin: 24px 0; }
-  .flow-step { flex: 1; padding: 16px 12px; border: 1px solid var(--rule); border-right: none; text-align: center; }
+  .flow-step { flex: 1; padding: 16px 12px; border: 1px solid var(--rule); border-right: none; text-align: center; cursor: pointer; transition: all 0.15s; }
+  .flow-step:hover { background: var(--coral-pale); }
   .flow-step:first-child { border-radius: 2px 0 0 2px; }
   .flow-step:last-child { border-right: 1px solid var(--rule); border-radius: 0 2px 2px 0; }
-  .flow-step.hl { background: var(--ink); color: white; }
+  .flow-step.hl { background: var(--coral-pale); border-color: var(--coral); border-right: 1px solid var(--coral); }
+  .flow-step.hl + .flow-step { border-left: none; }
   .flow-num { font-family: var(--font-serif); font-size: 26px; line-height: 1; margin-bottom: 4px; }
   .flow-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
   .flow-sub { font-size: 11px; color: var(--ink-4); margin-top: 2px; }
-  .flow-step.hl .flow-sub { color: rgba(255,255,255,0.5); }
   .tab-nav { display: flex; border-bottom: 2px solid var(--ink); margin-bottom: 32px; }
   .tab-btn { padding: 12px 22px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border: none; background: none; cursor: pointer; color: var(--ink-3); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
   .tab-btn:hover { color: var(--ink); }
@@ -77,11 +78,11 @@
   .cb.chk { background: var(--coral); border-color: var(--coral); color: white; }
   .ct { font-size: 11px; color: var(--ink-4); margin-left: auto; white-space: nowrap; padding-left: 12px; }
   .brief-preview { border: 1px solid var(--rule); border-radius: 2px; overflow: hidden; margin: 24px 0; }
-  .brief-hdr { background: var(--ink); color: var(--paper); padding: 20px 28px 16px; }
+  .brief-hdr { background: #F2EFE8; color: var(--ink); padding: 20px 28px 16px; border-bottom: 1px solid var(--rule); }
   .brief-logo { font-family: var(--font-serif); font-size: 20px; font-weight: 600; margin-bottom: 4px; }
-  .brief-logo span { color: #FF9F78; }
-  .brief-subj { font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.7); margin-top: 5px; }
-  .brief-meta { font-size: 11px; color: #6B6760; margin-top: 3px; }
+  .brief-logo span { color: var(--coral); }
+  .brief-subj { font-size: 14px; font-weight: 400; color: var(--ink-3); margin-top: 5px; }
+  .brief-meta { font-size: 11px; color: var(--ink-4); margin-top: 3px; }
   .brief-body { padding: 28px; background: white; }
   .brief-intro { font-size: 14.5px; color: var(--ink-2); line-height: 1.65; margin-bottom: 22px; font-style: italic; border-left: 3px solid var(--rule); padding-left: 16px; }
   .sc { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--rule); }
@@ -122,10 +123,10 @@
     <p>Konkret zugeschnitten auf deinen ersten Sektor: <strong>LK Dachau + LK Fürstenfeldbruck + LK München (Nord)</strong>. Alle URLs sind real und aus deiner Perplexity-Liste verifiziert. Alle Prompts sind copy-paste-fertig. Du führst 2 Perplexity-Scans durch, gibst alles in Claude, bekommst eine kuratierte Signalliste und einen versandfertigen Brief.</p>
   </div>
   <div class="flow">
-    <div class="flow-step"><div class="flow-num">1</div><div class="flow-label">Behörden-Scan</div><div class="flow-sub">Perplexity · ~12 min</div></div>
-    <div class="flow-step"><div class="flow-num">2</div><div class="flow-label">Medien-Scan</div><div class="flow-sub">Perplexity · ~8 min</div></div>
-    <div class="flow-step hl"><div class="flow-num">3</div><div class="flow-label">Kuratierung</div><div class="flow-sub">Claude · ~5 min</div></div>
-    <div class="flow-step"><div class="flow-num">4</div><div class="flow-label">Signal-Brief</div><div class="flow-sub">Claude · ~5 min</div></div>
+    <div class="flow-step" onclick="switchTab('prompts',document.querySelectorAll('.tab-btn')[0])"><div class="flow-num">1</div><div class="flow-label">Behörden-Scan</div><div class="flow-sub">Perplexity · ~12 min</div></div>
+    <div class="flow-step" onclick="switchTab('prompts',document.querySelectorAll('.tab-btn')[0])"><div class="flow-num">2</div><div class="flow-label">Medien-Scan</div><div class="flow-sub">Perplexity · ~8 min</div></div>
+    <div class="flow-step hl" onclick="switchTab('brief',document.querySelectorAll('.tab-btn')[2])"><div class="flow-num">3</div><div class="flow-label">Kuratierung</div><div class="flow-sub">Claude · ~5 min</div></div>
+    <div class="flow-step" onclick="switchTab('brief',document.querySelectorAll('.tab-btn')[2])"><div class="flow-num">4</div><div class="flow-label">Signal-Brief</div><div class="flow-sub">Claude · ~5 min</div></div>
   </div>
   <div class="tab-nav">
     <button class="tab-btn active" onclick="switchTab('prompts',this)">Prompts</button>

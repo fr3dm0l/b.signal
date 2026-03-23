@@ -6,461 +6,182 @@
 <title>b.signal — ops</title>
 <meta name="robots" content="noindex, nofollow">
 <style>
-  /* ============================================
-     b.signal ops — utilitarian dashboard
-     Stack: pure HTML/CSS/JS, no dependencies
-     Auth: SHA-256 hashed password, sessionStorage
-     ============================================ */
-
   :root {
-    --bg: #0a0a0a;
-    --surface: #141414;
-    --surface-2: #1c1c1c;
-    --surface-3: #242424;
-    --border: #2a2a2a;
-    --border-hover: #3a3a3a;
-    --text: #e0e0e0;
-    --text-muted: #707070;
-    --text-dim: #505050;
-    --accent: #f0f0f0;
-    --green: #2dd4a0;
-    --green-dim: rgba(45, 212, 160, 0.12);
-    --amber: #f5a623;
-    --amber-dim: rgba(245, 166, 35, 0.12);
-    --red: #ef4444;
-    --red-dim: rgba(239, 68, 68, 0.12);
-    --mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
-    --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    --radius: 6px;
+    --bg: #F7F5F1;
+    --surface: #EFECE6;
+    --surface-2: #E8E4DD;
+    --surface-3: #DDD9D0;
+    --border: #D5D0C8;
+    --border-hover: #C0BAB0;
+    --text: #1A1816;
+    --text-muted: #6B6760;
+    --text-dim: #9B9890;
+    --accent: #1A1816;
+    --green: #2A7B6F;
+    --green-dim: rgba(42, 123, 111, 0.1);
+    --amber: #B8860B;
+    --amber-dim: rgba(184, 134, 11, 0.1);
+    --red: #C43030;
+    --red-dim: rgba(196, 48, 48, 0.08);
+    --coral: #FF7F50;
+    --coral-dim: rgba(255, 127, 80, 0.1);
+    --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    --sans: -apple-system, BlinkMacSystemFont, sans-serif;
+    --radius: 4px;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--mono); background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
 
-  body {
-    font-family: var(--mono);
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  /* ---- AUTH GATE ---- */
-  #auth-gate {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 2rem;
-  }
-
-  .auth-box {
-    width: 100%;
-    max-width: 360px;
-    text-align: center;
-  }
-
-  .auth-logo {
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 3rem;
-  }
-
-  .auth-logo span {
-    color: var(--green);
-  }
-
-  .auth-input-wrap {
-    position: relative;
-    margin-bottom: 1rem;
-  }
-
-  .auth-input-wrap input {
-    width: 100%;
-    padding: 0.85rem 1rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 0.85rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .auth-input-wrap input:focus {
-    border-color: var(--text-muted);
-  }
-
-  .auth-input-wrap input::placeholder {
-    color: var(--text-dim);
-  }
-
-  .auth-btn {
-    width: 100%;
-    padding: 0.85rem;
-    background: var(--accent);
-    color: var(--bg);
-    border: none;
-    border-radius: var(--radius);
-    font-family: var(--mono);
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    cursor: pointer;
-    transition: opacity 0.2s;
-  }
-
+  /* AUTH */
+  #auth-gate { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; }
+  .auth-box { width: 100%; max-width: 360px; text-align: center; }
+  .auth-logo { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 3rem; }
+  .auth-logo span { color: var(--green); }
+  .auth-input-wrap { margin-bottom: 1rem; }
+  .auth-input-wrap input { width: 100%; padding: 0.85rem 1rem; background: white; border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-family: var(--mono); font-size: 0.85rem; outline: none; transition: border-color 0.2s; }
+  .auth-input-wrap input:focus { border-color: var(--text-muted); }
+  .auth-input-wrap input::placeholder { color: var(--text-dim); }
+  .auth-btn { width: 100%; padding: 0.85rem; background: var(--accent); color: #FAF8F4; border: none; border-radius: var(--radius); font-family: var(--mono); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; cursor: pointer; transition: opacity 0.2s; }
   .auth-btn:hover { opacity: 0.85; }
-
-  .auth-error {
-    margin-top: 1rem;
-    font-size: 0.75rem;
-    color: var(--red);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
+  .auth-error { margin-top: 1rem; font-size: 0.75rem; color: var(--red); opacity: 0; transition: opacity 0.3s; }
   .auth-error.visible { opacity: 1; }
+  .auth-hint { margin-top: 2.5rem; font-size: 0.65rem; color: var(--text-dim); }
 
-  .auth-hint {
-    margin-top: 2.5rem;
-    font-size: 0.65rem;
-    color: var(--text-dim);
-  }
+  /* APP SHELL */
+  #app-shell { display: none; min-height: 100vh; }
+  #app-shell.active { display: flex; flex-direction: column; }
 
-  /* ---- APP SHELL ---- */
-  #app-shell {
-    display: none;
-    min-height: 100vh;
-  }
-
-  #app-shell.active {
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* ---- TOP BAR ---- */
-  .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 1.5rem;
-    height: 48px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    flex-shrink: 0;
-  }
-
-  .topbar-left {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-  }
-
-  .topbar-brand {
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
+  /* TOPBAR */
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; height: 48px; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+  .topbar-left { display: flex; align-items: center; gap: 1.5rem; }
+  .topbar-brand { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
   .topbar-brand span { color: var(--green); }
+  .topbar-env { font-size: 0.6rem; padding: 0.2rem 0.5rem; background: var(--green-dim); color: var(--green); border-radius: 3px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .topbar-actions { display: flex; align-items: center; gap: 0.5rem; }
+  .qa-btn { font-size: 0.65rem; font-family: var(--mono); padding: 0.3rem 0.7rem; border: 1px solid var(--border); border-radius: 3px; background: white; color: var(--text-muted); cursor: pointer; text-decoration: none; transition: all 0.15s; display: flex; align-items: center; gap: 0.35rem; }
+  .qa-btn:hover { border-color: var(--green); color: var(--green); background: var(--green-dim); }
+  .topbar-right { display: flex; align-items: center; gap: 1rem; }
+  .topbar-time { font-size: 0.7rem; color: var(--text-dim); }
+  .topbar-logout { font-size: 0.65rem; color: var(--text-dim); cursor: pointer; padding: 0.3rem 0.6rem; border: 1px solid var(--border); border-radius: 3px; background: none; font-family: var(--mono); transition: all 0.2s; }
+  .topbar-logout:hover { color: var(--red); border-color: var(--red); }
 
-  .topbar-env {
-    font-size: 0.6rem;
-    padding: 0.2rem 0.5rem;
-    background: var(--green-dim);
-    color: var(--green);
-    border-radius: 3px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
+  /* LAYOUT */
+  .layout { display: flex; flex: 1; min-height: calc(100vh - 48px); }
 
-  .topbar-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
+  /* SIDEBAR */
+  .sidebar { width: 220px; background: var(--surface); border-right: 1px solid var(--border); padding: 1.5rem 0; flex-shrink: 0; display: flex; flex-direction: column; justify-content: space-between; }
+  .nav-section-label { font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); padding: 0 1.25rem; margin-bottom: 0.75rem; }
+  .nav-item { display: flex; align-items: center; gap: 0.7rem; padding: 0.6rem 1.25rem; font-size: 0.78rem; color: var(--text-muted); cursor: pointer; transition: all 0.15s; border-left: 2px solid transparent; }
+  .nav-item:hover { color: var(--text); background: var(--surface-2); }
+  .nav-item.active { color: var(--accent); background: var(--surface-2); border-left-color: var(--green); }
+  .nav-item.disabled { color: var(--text-dim); cursor: not-allowed; opacity: 0.5; }
+  .nav-item.disabled:hover { background: none; color: var(--text-dim); }
+  .nav-icon { font-size: 0.85rem; width: 1.2rem; text-align: center; flex-shrink: 0; }
+  .nav-badge { margin-left: auto; font-size: 0.55rem; padding: 0.1rem 0.4rem; border-radius: 3px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .nav-badge.soon { background: var(--surface-3); color: var(--text-dim); }
+  .nav-badge.live { background: var(--green-dim); color: var(--green); }
 
-  .topbar-time {
-    font-size: 0.7rem;
-    color: var(--text-dim);
-  }
+  /* KW PROGRESS */
+  .kw-progress { margin: 1.5rem 1.25rem 0; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .kw-progress-label { font-size: 0.6rem; color: var(--text-dim); margin-bottom: 0.5rem; display: flex; justify-content: space-between; }
+  .kw-progress-count { font-weight: 600; color: var(--green); }
+  .kw-progress-bar { height: 4px; background: var(--surface-3); border-radius: 2px; overflow: hidden; }
+  .kw-progress-fill { height: 100%; background: var(--green); border-radius: 2px; transition: width 0.4s ease; width: 0%; }
+  .kw-progress-steps { margin-top: 0.6rem; font-size: 0.6rem; color: var(--text-dim); line-height: 1.8; }
+  .kw-step { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; }
+  .kw-step:hover { color: var(--text-muted); }
+  .kw-step-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--surface-3); flex-shrink: 0; }
+  .kw-step-dot.done { background: var(--green); }
 
-  .topbar-logout {
-    font-size: 0.65rem;
-    color: var(--text-dim);
-    cursor: pointer;
-    padding: 0.3rem 0.6rem;
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    background: none;
-    font-family: var(--mono);
-    transition: all 0.2s;
-  }
+  .sidebar-footer { padding: 1rem 1.25rem; border-top: 1px solid var(--border); }
+  .sidebar-footer-text { font-size: 0.6rem; color: var(--text-dim); line-height: 1.6; }
 
-  .topbar-logout:hover {
-    color: var(--red);
-    border-color: var(--red);
-  }
+  /* MAIN */
+  .main { flex: 1; overflow-y: auto; padding: 2rem; background: var(--bg); }
 
-  /* ---- LAYOUT ---- */
-  .layout {
-    display: flex;
-    flex: 1;
-    min-height: calc(100vh - 48px);
-  }
+  /* MODULES */
+  .module-panel { display: none; }
+  .module-panel.active { display: block; animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  .module-header { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+  .module-title { font-size: 1.1rem; font-weight: 600; color: var(--accent); margin-bottom: 0.4rem; }
+  .module-desc { font-size: 0.75rem; color: var(--text-muted); }
 
-  /* ---- SIDEBAR ---- */
-  .sidebar {
-    width: 220px;
-    background: var(--surface);
-    border-right: 1px solid var(--border);
-    padding: 1.5rem 0;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
+  /* WORKFLOW */
+  .workflow-embed { width: 100%; min-height: 70vh; background: white; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .workflow-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 50vh; color: var(--text-dim); gap: 1rem; }
 
-  .nav-section-label {
-    font-size: 0.55rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    padding: 0 1.25rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-    padding: 0.6rem 1.25rem;
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: all 0.15s;
-    border-left: 2px solid transparent;
-  }
-
-  .nav-item:hover {
-    color: var(--text);
-    background: var(--surface-2);
-  }
-
-  .nav-item.active {
-    color: var(--accent);
-    background: var(--surface-2);
-    border-left-color: var(--green);
-  }
-
-  .nav-item.disabled {
-    color: var(--text-dim);
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
-
-  .nav-item.disabled:hover {
-    background: none;
-    color: var(--text-dim);
-  }
-
-  .nav-icon {
-    font-size: 0.85rem;
-    width: 1.2rem;
-    text-align: center;
-    flex-shrink: 0;
-  }
-
-  .nav-badge {
-    margin-left: auto;
-    font-size: 0.55rem;
-    padding: 0.1rem 0.4rem;
-    border-radius: 3px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  .nav-badge.soon {
-    background: var(--surface-3);
-    color: var(--text-dim);
-  }
-
-  .nav-badge.live {
-    background: var(--green-dim);
-    color: var(--green);
-  }
-
-  .sidebar-footer {
-    padding: 1rem 1.25rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .sidebar-footer-text {
-    font-size: 0.6rem;
-    color: var(--text-dim);
-    line-height: 1.6;
-  }
-
-  /* ---- MAIN CONTENT ---- */
-  .main {
-    flex: 1;
-    overflow-y: auto;
-    padding: 2rem;
-    background: var(--bg);
-  }
-
-  /* ---- MODULE PANELS ---- */
-  .module-panel {
-    display: none;
-  }
-
-  .module-panel.active {
-    display: block;
-    animation: fadeIn 0.2s ease;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .module-header {
-    margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .module-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--accent);
-    margin-bottom: 0.4rem;
-  }
-
-  .module-desc {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-  }
-
-  /* ---- WORKFLOW MODULE ---- */
-  .workflow-embed {
-    width: 100%;
-    min-height: 70vh;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
-
-  .workflow-embed iframe {
-    width: 100%;
-    height: 80vh;
-    border: none;
-  }
-
-  .workflow-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 50vh;
-    color: var(--text-dim);
-    gap: 1rem;
-  }
-
-  .workflow-placeholder-icon {
-    font-size: 2rem;
-    opacity: 0.4;
-  }
-
-  .workflow-placeholder-text {
-    font-size: 0.8rem;
-    text-align: center;
-    line-height: 1.8;
-  }
-
-  /* ---- PLACEHOLDER MODULES ---- */
-  .placeholder-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1rem;
-    margin-top: 1.5rem;
-  }
-
-  .placeholder-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    transition: border-color 0.2s;
-  }
-
-  .placeholder-card:hover {
-    border-color: var(--border-hover);
-  }
-
-  .placeholder-card-title {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    margin-bottom: 0.5rem;
-  }
-
-  .placeholder-card-value {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--accent);
-    margin-bottom: 0.3rem;
-  }
-
-  .placeholder-card-sub {
-    font-size: 0.65rem;
-    color: var(--text-dim);
-  }
-
-  .status-dot {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    margin-right: 0.4rem;
-    vertical-align: middle;
-  }
-
+  /* STATS */
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .stat-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; }
+  .stat-card-title { font-size: 0.65rem; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+  .stat-card-value { font-size: 1.4rem; font-weight: 700; color: var(--accent); margin-bottom: 0.2rem; }
+  .stat-card-sub { font-size: 0.6rem; color: var(--text-dim); }
+  .status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 0.4rem; vertical-align: middle; }
   .status-dot.green { background: var(--green); }
-  .status-dot.amber { background: var(--amber); }
-  .status-dot.red { background: var(--red); }
 
-  /* ---- RESPONSIVE ---- */
+  /* SIGNAL TABLE */
+  .signal-table-wrap { background: white; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .signal-table-header { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1rem; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .signal-table-title { font-size: 0.7rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .signal-table-actions { display: flex; gap: 0.5rem; }
+  .st-btn { font-size: 0.6rem; font-family: var(--mono); padding: 0.25rem 0.6rem; border: 1px solid var(--border); border-radius: 3px; background: white; color: var(--text-muted); cursor: pointer; transition: all 0.15s; }
+  .st-btn:hover { border-color: var(--green); color: var(--green); }
+  .st-btn.primary { background: var(--green); color: white; border-color: var(--green); }
+  .st-btn.primary:hover { opacity: 0.85; }
+  table.signal-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  .signal-table th { text-align: left; padding: 0.6rem 1rem; font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); border-bottom: 1px solid var(--border); background: var(--surface); cursor: pointer; user-select: none; }
+  .signal-table th:hover { color: var(--text); }
+  .signal-table td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); color: var(--text-muted); vertical-align: top; }
+  .signal-table tr:last-child td { border-bottom: none; }
+  .signal-table tr:hover td { background: var(--surface); }
+  .signal-table .score { font-weight: 700; text-align: center; width: 50px; }
+  .score-high { color: var(--coral); }
+  .score-mid { color: var(--amber); }
+  .score-low { color: var(--text-dim); }
+  .signal-table .title-cell { color: var(--text); font-weight: 500; }
+  .signal-table .tag { display: inline-block; font-size: 0.55rem; padding: 0.1rem 0.4rem; border-radius: 2px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+  .tag-ris { background: var(--green-dim); color: var(--green); }
+  .tag-media { background: #E3F2FD; color: #1565C0; }
+  .tag-amtsblatt { background: var(--amber-dim); color: var(--amber); }
+  .signal-empty { text-align: center; padding: 3rem; color: var(--text-dim); font-size: 0.8rem; }
+
+  /* PLACEHOLDER MODULES */
+  .placeholder-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+  .placeholder-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; }
+  .placeholder-card-title { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem; }
+  .placeholder-card-value { font-size: 1.5rem; font-weight: 700; color: var(--accent); margin-bottom: 0.3rem; }
+  .placeholder-card-sub { font-size: 0.65rem; color: var(--text-dim); }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,24,22,0.3); z-index: 100; align-items: center; justify-content: center; }
+  .modal-overlay.active { display: flex; }
+  .modal { background: white; border: 1px solid var(--border); border-radius: var(--radius); width: 90%; max-width: 520px; padding: 2rem; box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+  .modal-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 1.5rem; color: var(--accent); }
+  .modal-field { margin-bottom: 1rem; }
+  .modal-field label { display: block; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); margin-bottom: 0.3rem; }
+  .modal-field input, .modal-field select, .modal-field textarea { width: 100%; padding: 0.6rem 0.8rem; border: 1px solid var(--border); border-radius: var(--radius); font-family: var(--mono); font-size: 0.78rem; color: var(--text); background: white; outline: none; }
+  .modal-field input:focus, .modal-field select:focus, .modal-field textarea:focus { border-color: var(--text-muted); }
+  .modal-field textarea { min-height: 80px; resize: vertical; }
+  .modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem; }
+
+  /* RESPONSIVE */
   @media (max-width: 768px) {
     .sidebar { display: none; }
     .main { padding: 1rem; }
     .topbar { padding: 0 1rem; }
+    .topbar-actions { display: none; }
   }
 </style>
 </head>
 <body>
 
-<!-- ============================================
-     AUTH GATE
-     Password: "bsignal-ops-2026"
-     SHA-256 hash below — change password by updating the hash
-     To generate a new hash, run in browser console:
-       crypto.subtle.digest('SHA-256', new TextEncoder().encode('your-new-password'))
-         .then(b => Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2,'0')).join(''))
-         .then(console.log)
-     ============================================ -->
-
 <div id="auth-gate">
   <div class="auth-box">
     <div class="auth-logo">b.<span>signal</span> — ops</div>
     <div class="auth-input-wrap">
-      <input type="password" id="auth-password" placeholder="Passwort" autofocus
-             onkeydown="if(event.key==='Enter') attemptLogin()">
+      <input type="password" id="auth-password" placeholder="Passwort" autofocus onkeydown="if(event.key==='Enter') attemptLogin()">
     </div>
     <button class="auth-btn" onclick="attemptLogin()">ANMELDEN</button>
     <div class="auth-error" id="auth-error">Falsches Passwort</div>
@@ -468,16 +189,16 @@
   </div>
 </div>
 
-<!-- ============================================
-     APP SHELL
-     ============================================ -->
-
 <div id="app-shell">
-  <!-- Top Bar -->
   <div class="topbar">
     <div class="topbar-left">
       <div class="topbar-brand">b.<span>signal</span> ops</div>
       <div class="topbar-env">solo</div>
+    </div>
+    <div class="topbar-actions">
+      <a class="qa-btn" href="https://www.perplexity.ai/" target="_blank">🔍 Scan</a>
+      <a class="qa-btn" href="https://mail.google.com/" target="_blank">✉ Mail</a>
+      <a class="qa-btn" href="https://bsignal.de" target="_blank">🌐 Site</a>
     </div>
     <div class="topbar-right">
       <div class="topbar-time" id="topbar-time"></div>
@@ -486,7 +207,6 @@
   </div>
 
   <div class="layout">
-    <!-- Sidebar Navigation -->
     <nav class="sidebar">
       <div>
         <div class="nav-section-label">Module</div>
@@ -494,9 +214,9 @@
           <span class="nav-icon">⚡</span> Workflow
           <span class="nav-badge live">live</span>
         </div>
-        <div class="nav-item disabled" data-module="signals">
+        <div class="nav-item" data-module="signals" onclick="switchModule('signals')">
           <span class="nav-icon">📡</span> Signale
-          <span class="nav-badge soon">soon</span>
+          <span class="nav-badge live">live</span>
         </div>
         <div class="nav-item disabled" data-module="users">
           <span class="nav-icon">👤</span> Nutzer
@@ -506,19 +226,23 @@
           <span class="nav-icon">🔔</span> Alerts
           <span class="nav-badge soon">soon</span>
         </div>
+
+        <div class="kw-progress">
+          <div class="kw-progress-label">
+            <span>KW <span id="sidebar-kw"></span></span>
+            <span class="kw-progress-count" id="progress-count">0/9</span>
+          </div>
+          <div class="kw-progress-bar"><div class="kw-progress-fill" id="progress-fill"></div></div>
+          <div class="kw-progress-steps" id="progress-steps"></div>
+        </div>
       </div>
       <div class="sidebar-footer">
-        <div class="sidebar-footer-text">
-          b.signal ops v0.1<br>
-          München Nord-West
-        </div>
+        <div class="sidebar-footer-text">b.signal ops v0.2<br>München Nord-West</div>
       </div>
     </nav>
 
-    <!-- Main Content Area -->
     <main class="main">
-
-      <!-- MODULE: Workflow -->
+      <!-- WORKFLOW -->
       <div class="module-panel active" id="module-workflow">
         <div class="module-header">
           <div class="module-title">Wöchentlicher Workflow</div>
@@ -526,243 +250,206 @@
         </div>
         <div class="workflow-embed" id="workflow-container">
           <div class="workflow-placeholder">
-            <div class="workflow-placeholder-icon">📋</div>
-            <div class="workflow-placeholder-text">
-              Workflow-HTML hier einbetten.<br>
-              Datei als <code>ops/modules/workflow.html</code> ablegen,<br>
-              dann wird sie automatisch geladen.
-            </div>
+            <div style="font-size:2rem;opacity:0.4">📋</div>
+            <div style="font-size:0.8rem;text-align:center;line-height:1.8">Workflow-HTML hier einbetten.<br>Datei als <code>ops/modules/workflow.html</code> ablegen.</div>
           </div>
         </div>
       </div>
 
-      <!-- MODULE: Signale (Placeholder) -->
+      <!-- SIGNALE -->
       <div class="module-panel" id="module-signals">
         <div class="module-header">
           <div class="module-title">Signaldatenbank</div>
-          <div class="module-desc">Erfasste Planungssignale aus RIS, Amtsblättern und lokalen Medien</div>
+          <div class="module-desc">Erfasste Planungssignale — München Nord-West</div>
         </div>
-        <div class="placeholder-grid">
-          <div class="placeholder-card">
-            <div class="placeholder-card-title">Signale gesamt</div>
-            <div class="placeholder-card-value">—</div>
-            <div class="placeholder-card-sub">Wird in Phase 2 aktiv</div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-title">Gesamt</div>
+            <div class="stat-card-value" id="signal-count-total">0</div>
+            <div class="stat-card-sub">Alle Signale</div>
           </div>
-          <div class="placeholder-card">
-            <div class="placeholder-card-title">Diese Woche</div>
-            <div class="placeholder-card-value">—</div>
-            <div class="placeholder-card-sub">Neue Signale KW <span class="kw-span"></span></div>
+          <div class="stat-card">
+            <div class="stat-card-title">Diese Woche</div>
+            <div class="stat-card-value" id="signal-count-week">0</div>
+            <div class="stat-card-sub">KW <span class="kw-span"></span></div>
           </div>
-          <div class="placeholder-card">
-            <div class="placeholder-card-title">Quellen</div>
-            <div class="placeholder-card-value">—</div>
-            <div class="placeholder-card-sub"><span class="status-dot amber"></span>RIS, Amtsblatt, Medien</div>
+          <div class="stat-card">
+            <div class="stat-card-title">⌀ Score</div>
+            <div class="stat-card-value" id="signal-avg-score">—</div>
+            <div class="stat-card-sub">Durchschnitt</div>
           </div>
-          <div class="placeholder-card">
-            <div class="placeholder-card-title">Abdeckung</div>
-            <div class="placeholder-card-value">MUC NW</div>
-            <div class="placeholder-card-sub">München Nord-West Fokus</div>
+          <div class="stat-card">
+            <div class="stat-card-title">Abdeckung</div>
+            <div class="stat-card-value">MUC NW</div>
+            <div class="stat-card-sub"><span class="status-dot green"></span>Aktiv</div>
           </div>
+        </div>
+        <div class="signal-table-wrap">
+          <div class="signal-table-header">
+            <div class="signal-table-title">Alle Signale</div>
+            <div class="signal-table-actions">
+              <button class="st-btn" onclick="exportSignals()">↓ CSV</button>
+              <button class="st-btn primary" onclick="openAddSignal()">+ Signal</button>
+            </div>
+          </div>
+          <table class="signal-table">
+            <thead><tr>
+              <th onclick="sortSignals('score')">Score ↕</th>
+              <th onclick="sortSignals('title')">Signal ↕</th>
+              <th onclick="sortSignals('gemeinde')">Gemeinde ↕</th>
+              <th onclick="sortSignals('quelle')">Quelle</th>
+              <th onclick="sortSignals('datum')">Datum ↕</th>
+              <th></th>
+            </tr></thead>
+            <tbody id="signal-tbody"></tbody>
+          </table>
         </div>
       </div>
 
-      <!-- MODULE: Nutzer (Placeholder) -->
+      <!-- NUTZER -->
       <div class="module-panel" id="module-users">
         <div class="module-header">
           <div class="module-title">Nutzerverwaltung</div>
           <div class="module-desc">Registrierte Piloten und Alpha-Partner</div>
         </div>
         <div class="placeholder-grid">
-          <div class="placeholder-card">
-            <div class="placeholder-card-title">Pilot-Partner</div>
-            <div class="placeholder-card-value">—</div>
-            <div class="placeholder-card-sub">Max. 5 pro Sektor</div>
-          </div>
-          <div class="placeholder-card">
-            <div class="placeholder-card-title">Signups</div>
-            <div class="placeholder-card-value">—</div>
-            <div class="placeholder-card-sub">Via Landing Page</div>
-          </div>
+          <div class="placeholder-card"><div class="placeholder-card-title">Pilot-Partner</div><div class="placeholder-card-value">—</div><div class="placeholder-card-sub">Max. 5 pro Sektor</div></div>
+          <div class="placeholder-card"><div class="placeholder-card-title">Signups</div><div class="placeholder-card-value">—</div><div class="placeholder-card-sub">Via Landing Page</div></div>
         </div>
       </div>
 
-      <!-- MODULE: Alerts (Placeholder) -->
+      <!-- ALERTS -->
       <div class="module-panel" id="module-alerts">
         <div class="module-header">
           <div class="module-title">Alert-Verwaltung</div>
           <div class="module-desc">Automatische Benachrichtigungen bei neuen Planungssignalen</div>
         </div>
         <div class="placeholder-grid">
-          <div class="placeholder-card">
-            <div class="placeholder-card-title">Aktive Alerts</div>
-            <div class="placeholder-card-value">—</div>
-            <div class="placeholder-card-sub"><span class="status-dot green"></span>System bereit in Phase 3</div>
-          </div>
-          <div class="placeholder-card">
-            <div class="placeholder-card-title">Letzte Zustellung</div>
-            <div class="placeholder-card-value">—</div>
-            <div class="placeholder-card-sub">Kein Alert gesendet</div>
-          </div>
+          <div class="placeholder-card"><div class="placeholder-card-title">Aktive Alerts</div><div class="placeholder-card-value">—</div><div class="placeholder-card-sub"><span class="status-dot green"></span>Phase 3</div></div>
+          <div class="placeholder-card"><div class="placeholder-card-title">Letzte Zustellung</div><div class="placeholder-card-value">—</div><div class="placeholder-card-sub">Kein Alert gesendet</div></div>
         </div>
       </div>
-
     </main>
   </div>
 </div>
 
+<!-- Add Signal Modal -->
+<div class="modal-overlay" id="modal-add-signal">
+  <div class="modal">
+    <div class="modal-title">Neues Signal erfassen</div>
+    <div class="modal-row">
+      <div class="modal-field"><label>Score (1–10)</label><input type="number" id="sig-score" min="1" max="10" value="7"></div>
+      <div class="modal-field"><label>Gemeinde</label>
+        <select id="sig-gemeinde">
+          <option>Dachau</option><option>Karlsfeld</option><option>Röhrmoos</option>
+          <option>Germering</option><option>Puchheim</option><option>Olching</option><option>FFB</option>
+          <option>Garching</option><option>Unterschleißheim</option><option>Oberschleißheim</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-field"><label>Titel</label><input type="text" id="sig-title" placeholder="z.B. BP Nr. 123 — Wohngebiet Musterstraße"></div>
+    <div class="modal-field"><label>Beschreibung / Frühsignal</label><textarea id="sig-desc" placeholder="Kurzbeschreibung und Handlungsempfehlung..."></textarea></div>
+    <div class="modal-row">
+      <div class="modal-field"><label>Quelle</label>
+        <select id="sig-quelle"><option value="ris">RIS</option><option value="amtsblatt">Amtsblatt</option><option value="media">Lokale Medien</option></select>
+      </div>
+      <div class="modal-field"><label>Datum</label><input type="date" id="sig-datum"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="st-btn" onclick="closeAddSignal()">Abbrechen</button>
+      <button class="st-btn primary" onclick="saveSignal()">Speichern</button>
+    </div>
+  </div>
+</div>
+
 <script>
-  // ============================================
-  // AUTH SYSTEM
-  // Default password: "bsignal-ops-2026"
-  // To change: generate new SHA-256 hash and replace EXPECTED_HASH
-  // ============================================
-
-  const EXPECTED_HASH = '7b9f8c2e1d3a4b5c6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d';
-  // ^ placeholder — will be computed on first load
-
+  // AUTH
   const SESSION_KEY = 'bsignal_ops_auth';
-  const SESSION_TTL = 8 * 60 * 60 * 1000; // 8 hours
-
-  async function sha256(str) {
-    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-  }
-
-  // The actual hash of "bsignal-ops-2026"
-  // Pre-computed for performance. Regenerate if you change the password.
-  const VALID_HASH = 'a1c3e5b7d9f2a4c6e8b0d2f4a6c8e0b2d4f6a8c0e2b4d6f8a0c2e4b6d8f0a2';
-
+  const SESSION_TTL = 8 * 60 * 60 * 1000;
+  async function sha256(s) { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)); return Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2,'0')).join(''); }
   async function attemptLogin() {
     const input = document.getElementById('auth-password').value;
-    const hash = await sha256(input);
-
-    // Compare against pre-computed hash
-    // For the initial setup, we accept the default password directly
-    // Replace this with pure hash comparison once you've set your final password
     if (input === 'bsignal-ops-2026') {
-      const session = { ts: Date.now(), h: hash.slice(0, 16) };
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+      const h = await sha256(input);
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ ts: Date.now(), h: h.slice(0,16) }));
       showApp();
     } else {
-      const errEl = document.getElementById('auth-error');
-      errEl.classList.add('visible');
+      const e = document.getElementById('auth-error'); e.classList.add('visible');
       document.getElementById('auth-password').value = '';
-      setTimeout(() => errEl.classList.remove('visible'), 2500);
+      setTimeout(() => e.classList.remove('visible'), 2500);
     }
   }
+  function checkSession() { try { const r = sessionStorage.getItem(SESSION_KEY); if (!r) return false; return (Date.now() - JSON.parse(r).ts) < SESSION_TTL; } catch { return false; } }
+  function logout() { sessionStorage.removeItem(SESSION_KEY); location.reload(); }
+  function showApp() { document.getElementById('auth-gate').style.display = 'none'; document.getElementById('app-shell').classList.add('active'); initApp(); }
 
-  function checkSession() {
-    try {
-      const raw = sessionStorage.getItem(SESSION_KEY);
-      if (!raw) return false;
-      const session = JSON.parse(raw);
-      return (Date.now() - session.ts) < SESSION_TTL;
-    } catch { return false; }
-  }
+  // INIT
+  function initApp() { updateClock(); setInterval(updateClock, 60000); setKW(); loadWorkflowModule(); loadSignals(); initProgress(); const h = location.hash.replace('#',''); if (h && document.getElementById('module-'+h)) switchModule(h); }
+  function updateClock() { document.getElementById('topbar-time').textContent = new Date().toLocaleDateString('de-DE', { weekday:'short', day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' }); }
+  function getKW() { const n = new Date(), s = new Date(n.getFullYear(),0,1), d = (n-s+((s.getTimezoneOffset()-n.getTimezoneOffset())*60000)); return Math.ceil((d/604800000+s.getDay()/7)); }
+  function setKW() { const k = getKW(); document.getElementById('current-kw').textContent = k; document.getElementById('sidebar-kw').textContent = k; document.querySelectorAll('.kw-span').forEach(s => s.textContent = k); }
 
-  function logout() {
-    sessionStorage.removeItem(SESSION_KEY);
-    location.reload();
-  }
-
-  function showApp() {
-    document.getElementById('auth-gate').style.display = 'none';
-    document.getElementById('app-shell').classList.add('active');
-    initApp();
-  }
-
-  // ============================================
-  // APP LOGIC
-  // ============================================
-
-  function initApp() {
-    updateClock();
-    setInterval(updateClock, 60000);
-    setKW();
-    loadWorkflowModule();
-
-    // Restore last active module from URL hash
-    const hash = location.hash.replace('#', '');
-    if (hash && document.getElementById('module-' + hash)) {
-      switchModule(hash);
-    }
-  }
-
-  function updateClock() {
-    const now = new Date();
-    const opts = { weekday: 'short', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' };
-    document.getElementById('topbar-time').textContent = now.toLocaleDateString('de-DE', opts);
-  }
-
-  function getKW() {
-    const now = new Date();
-    const start = new Date(now.getFullYear(), 0, 1);
-    const diff = (now - start + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60000));
-    const oneWeek = 604800000;
-    return Math.ceil((diff / oneWeek + start.getDay() / 7));
-  }
-
-  function setKW() {
-    const kw = getKW();
-    const el = document.getElementById('current-kw');
-    if (el) el.textContent = kw;
-    document.querySelectorAll('.kw-span').forEach(s => s.textContent = kw);
-  }
-
-  // ============================================
   // MODULE ROUTER
-  // ============================================
+  function switchModule(name) { const ni = document.querySelector(`.nav-item[data-module="${name}"]`); if (ni && ni.classList.contains('disabled')) return; document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active')); if (ni) ni.classList.add('active'); document.querySelectorAll('.module-panel').forEach(e => e.classList.remove('active')); const p = document.getElementById('module-'+name); if (p) p.classList.add('active'); location.hash = name; }
 
-  function switchModule(name) {
-    // Don't switch to disabled modules
-    const navItem = document.querySelector(`.nav-item[data-module="${name}"]`);
-    if (navItem && navItem.classList.contains('disabled')) return;
+  // WORKFLOW
+  async function loadWorkflowModule() { const c = document.getElementById('workflow-container'); try { const r = await fetch('modules/workflow.html',{method:'HEAD'}); if (r.ok) c.innerHTML = `<iframe src="modules/workflow.html" style="width:100%;height:85vh;border:none;background:#FAF8F4;border-radius:var(--radius);" sandbox="allow-scripts allow-same-origin"></iframe>`; } catch(e) {} }
 
-    // Update nav
-    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    if (navItem) navItem.classList.add('active');
-
-    // Update panels
-    document.querySelectorAll('.module-panel').forEach(el => el.classList.remove('active'));
-    const panel = document.getElementById('module-' + name);
-    if (panel) panel.classList.add('active');
-
-    // Update URL hash (for bookmarking)
-    location.hash = name;
+  // KW PROGRESS
+  const PROGRESS_KEY = 'bsignal_kw_progress';
+  const STEPS = ['Prompt 1 — Behörden-Scan','Amtsblatt-PDFs prüfen','Prompt 2 — Medien-Scan','Rohdaten übergeben','Prompt 3 — Klassifizierung','Scores plausibilisieren','Prompt 4 — Signal-Brief','Brief versenden','Reaktionen notieren'];
+  function getProgress() { try { const r = JSON.parse(localStorage.getItem(PROGRESS_KEY)); if (!r || r.kw !== getKW()) return { kw: getKW(), done: [] }; return r; } catch { return { kw: getKW(), done: [] }; } }
+  function saveProgress(d) { localStorage.setItem(PROGRESS_KEY, JSON.stringify(d)); }
+  function initProgress() { renderProgress(); }
+  function toggleProgressItem(i) { const p = getProgress(); if (p.done.includes(i)) p.done = p.done.filter(x => x!==i); else p.done.push(i); saveProgress(p); renderProgress(); }
+  function renderProgress() {
+    const p = getProgress(), t = STEPS.length, d = p.done.length, pct = Math.round(d/t*100);
+    document.getElementById('progress-count').textContent = `${d}/${t}`;
+    document.getElementById('progress-fill').style.width = `${pct}%`;
+    document.getElementById('progress-steps').innerHTML = STEPS.map((s,i) => {
+      const ok = p.done.includes(i);
+      return `<div class="kw-step" onclick="toggleProgressItem(${i})"><div class="kw-step-dot ${ok?'done':''}"></div><span style="${ok?'text-decoration:line-through;opacity:0.5':''}">${s}</span></div>`;
+    }).join('');
   }
 
-  // ============================================
-  // WORKFLOW MODULE LOADER
-  // Attempts to load ops/modules/workflow.html via fetch
-  // Falls back to placeholder if not found
-  // ============================================
-
-  async function loadWorkflowModule() {
-    const container = document.getElementById('workflow-container');
-    try {
-      const res = await fetch('modules/workflow.html');
-      if (res.ok) {
-        const html = await res.text();
-        // Embed via srcdoc iframe for style isolation
-        container.innerHTML = `<iframe srcdoc="${html.replace(/"/g, '&quot;')}" 
-          style="width:100%; height:80vh; border:none; background:#fff; border-radius: var(--radius);"
-          sandbox="allow-scripts allow-same-origin"></iframe>`;
-      }
-      // If 404, keep the placeholder
-    } catch (e) {
-      // Network error — keep placeholder
-      console.log('Workflow module not found, showing placeholder');
-    }
+  // SIGNALS
+  const SIGNALS_KEY = 'bsignal_signals';
+  function getSignals() { try { return JSON.parse(localStorage.getItem(SIGNALS_KEY)) || []; } catch { return []; } }
+  function saveSignals(s) { localStorage.setItem(SIGNALS_KEY, JSON.stringify(s)); }
+  let sortField = 'score', sortDir = -1;
+  function loadSignals() { renderSignalTable(); updateSignalStats(); }
+  function renderSignalTable() {
+    const sigs = getSignals(), tb = document.getElementById('signal-tbody');
+    if (!sigs.length) { tb.innerHTML = `<tr><td colspan="6" class="signal-empty">Noch keine Signale. Klicke <strong>+ Signal</strong> um das erste zu erfassen.</td></tr>`; return; }
+    const sorted = [...sigs].sort((a,b) => { const av=a[sortField]||'', bv=b[sortField]||''; return (typeof av==='number'?(av-bv):String(av).localeCompare(String(bv)))*sortDir; });
+    const qt = {ris:'tag-ris',amtsblatt:'tag-amtsblatt',media:'tag-media'}, ql = {ris:'RIS',amtsblatt:'Amtsblatt',media:'Medien'};
+    tb.innerHTML = sorted.map((s,i) => `<tr><td class="score ${s.score>=8?'score-high':s.score>=6?'score-mid':'score-low'}">${s.score}</td><td class="title-cell">${s.title}</td><td>${s.gemeinde}</td><td><span class="tag ${qt[s.quelle]||''}">${ql[s.quelle]||s.quelle}</span></td><td>${s.datum||'—'}</td><td><button class="st-btn" onclick="deleteSignal(${i})" style="font-size:0.55rem;padding:0.15rem 0.4rem">✕</button></td></tr>`).join('');
   }
+  function updateSignalStats() {
+    const sigs = getSignals(); document.getElementById('signal-count-total').textContent = sigs.length;
+    const wa = new Date(Date.now()-7*864e5); document.getElementById('signal-count-week').textContent = sigs.filter(s => s.datum && new Date(s.datum)>=wa).length;
+    document.getElementById('signal-avg-score').textContent = sigs.length ? (sigs.reduce((a,s) => a+(s.score||0),0)/sigs.length).toFixed(1) : '—';
+  }
+  function sortSignals(f) { if (sortField===f) sortDir*=-1; else { sortField=f; sortDir=f==='score'?-1:1; } renderSignalTable(); }
+  function deleteSignal(i) { const s=getSignals(); s.splice(i,1); saveSignals(s); loadSignals(); }
+  function openAddSignal() { document.getElementById('sig-datum').value = new Date().toISOString().split('T')[0]; document.getElementById('modal-add-signal').classList.add('active'); }
+  function closeAddSignal() { document.getElementById('modal-add-signal').classList.remove('active'); }
+  function saveSignal() {
+    const s = { score: parseInt(document.getElementById('sig-score').value)||5, title: document.getElementById('sig-title').value.trim(), desc: document.getElementById('sig-desc').value.trim(), gemeinde: document.getElementById('sig-gemeinde').value, quelle: document.getElementById('sig-quelle').value, datum: document.getElementById('sig-datum').value, created: Date.now() };
+    if (!s.title) { alert('Titel fehlt'); return; }
+    const all = getSignals(); all.push(s); saveSignals(all);
+    document.getElementById('sig-title').value=''; document.getElementById('sig-desc').value=''; document.getElementById('sig-score').value='7';
+    closeAddSignal(); loadSignals();
+  }
+  function exportSignals() {
+    const sigs = getSignals(); if (!sigs.length) { alert('Keine Signale'); return; }
+    const csv = [['Score','Titel','Beschreibung','Gemeinde','Quelle','Datum'], ...sigs.map(s=>[s.score,s.title,s.desc,s.gemeinde,s.quelle,s.datum])].map(r=>r.map(c=>`"${String(c||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'})); a.download = `bsignal-signale-kw${getKW()}.csv`; a.click();
+  }
+  document.getElementById('modal-add-signal').addEventListener('click', e => { if (e.target===e.currentTarget) closeAddSignal(); });
 
-  // ============================================
   // BOOT
-  // ============================================
-
-  if (checkSession()) {
-    showApp();
-  }
+  if (checkSession()) showApp();
 </script>
-
 </body>
 </html>
