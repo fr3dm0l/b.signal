@@ -13,25 +13,25 @@
      ============================================ */
 
   :root {
-    --bg: #F7F5F1;
-    --surface: #EFECE6;
-    --surface-2: #E8E4DD;
-    --surface-3: #DDD9D0;
-    --border: #D5D0C8;
-    --border-hover: #C0BAB0;
-    --text: #1A1816;
-    --text-muted: #6B6760;
-    --text-dim: #9B9890;
-    --accent: #1A1816;
-    --green: #2A7B6F;
-    --green-dim: rgba(42, 123, 111, 0.1);
-    --amber: #B8860B;
-    --amber-dim: rgba(184, 134, 11, 0.1);
-    --red: #C43030;
-    --red-dim: rgba(196, 48, 48, 0.08);
-    --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
-    --sans: -apple-system, BlinkMacSystemFont, sans-serif;
-    --radius: 4px;
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --surface-2: #1c1c1c;
+    --surface-3: #242424;
+    --border: #2a2a2a;
+    --border-hover: #3a3a3a;
+    --text: #e0e0e0;
+    --text-muted: #707070;
+    --text-dim: #505050;
+    --accent: #f0f0f0;
+    --green: #2dd4a0;
+    --green-dim: rgba(45, 212, 160, 0.12);
+    --amber: #f5a623;
+    --amber-dim: rgba(245, 166, 35, 0.12);
+    --red: #ef4444;
+    --red-dim: rgba(239, 68, 68, 0.12);
+    --mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --radius: 6px;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -101,7 +101,7 @@
     width: 100%;
     padding: 0.85rem;
     background: var(--accent);
-    color: #FAF8F4;
+    color: var(--bg);
     border: none;
     border-radius: var(--radius);
     font-family: var(--mono);
@@ -740,11 +740,12 @@
   async function loadWorkflowModule() {
     const container = document.getElementById('workflow-container');
     try {
-      const res = await fetch('modules/workflow.html', { method: 'HEAD' });
+      const res = await fetch('modules/workflow.html');
       if (res.ok) {
-        // Direct src reference — robust for complex HTML with fonts, scripts, etc.
-        container.innerHTML = `<iframe src="modules/workflow.html" 
-          style="width:100%; height:85vh; border:none; background:#FAF8F4; border-radius: var(--radius);"
+        const html = await res.text();
+        // Embed via srcdoc iframe for style isolation
+        container.innerHTML = `<iframe srcdoc="${html.replace(/"/g, '&quot;')}" 
+          style="width:100%; height:80vh; border:none; background:#fff; border-radius: var(--radius);"
           sandbox="allow-scripts allow-same-origin"></iframe>`;
       }
       // If 404, keep the placeholder
