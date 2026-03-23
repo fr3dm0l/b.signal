@@ -3,696 +3,148 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>b.signal — KI-gestützte Planungssignale für Projektentwickler | München</title>
-  <meta name="description" content="b.signal scannt Ratsinformationssysteme, Amtsblätter und Lokalmedien automatisch nach Planungssignalen — bevor sie zur Marktnachricht werden. Exklusiv für Projektentwickler in München Nord-West.">
+  <title>b.signal — KI-gestützte Planungssignale für Projektentwickler</title>
+  <meta name="description" content="b.signal scannt Ratsinformationssysteme, Amtsblätter und Lokalmedien automatisch nach Planungssignalen — bevor sie zur Marktnachricht werden. Exklusiv für Projektentwickler.">
   <link rel="canonical" href="https://fr3dm0l.github.io/b.signal/">
-
-  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://fr3dm0l.github.io/b.signal/">
   <meta property="og:title" content="b.signal — Baurecht entsteht in Ausschüssen. Nicht in Portalen.">
-  <meta property="og:description" content="KI-gestützter Intelligence-Dienst für Projektentwickler. Planungssignale identifizieren, bevor sie zur Marktnachricht werden. Pilot: München Nord-West.">
+  <meta property="og:description" content="KI-gestützter Intelligence-Dienst für Projektentwickler. Planungssignale identifizieren, bevor sie zur Marktnachricht werden.">
   <meta property="og:locale" content="de_DE">
-
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="b.signal — Planungssignale vor dem Markt">
   <meta name="twitter:description" content="KI scannt RIS, Amtsblätter und Lokalmedien. Wöchentlicher Intelligence-Report für Projektentwickler.">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Source+Sans+3:wght@300;400;600&family=Source+Serif+4:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
     :root {
-      --paper:      #F8F6F1;
-      --white:      #FFFFFF;
-      --ink:        #0A0A0A;
-      --muted:      #5A5A52;
-      --dim:        #9A9A90;
-      --rule:       #D8D5CC;
-      --coral:      #FF7F50;
-      --coral-dark: #E8663A;
+      --paper: #F8F6F1; --white: #FFFFFF; --ink: #0A0A0A;
+      --muted: #5A5A52; --dim: #9A9A90; --rule: #D8D5CC;
+      --coral: #FF7F50; --coral-dark: #E8663A;
     }
-
     html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Source Serif 4', Georgia, serif;
-      font-weight: 400;
-      color: var(--ink);
-      background: var(--paper);
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .container {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 0 32px;
-    }
-
-    /* ── NAV ─────────────────────────────────── */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: var(--white);
-      border-bottom: 3px solid var(--ink);
-    }
-
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      height: 64px;
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 0 32px;
-    }
-
-    .nav-left, .nav-right {
-      flex: 1;
-      display: flex;
-      align-items: center;
-    }
-
+    body { font-family: 'Source Serif 4', Georgia, serif; font-weight: 400; color: var(--ink); background: var(--paper); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+    nav { position: sticky; top: 0; z-index: 100; background: var(--white); border-bottom: 3px solid var(--ink); }
+    .nav-inner { display: flex; align-items: center; height: 64px; max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+    .nav-left, .nav-right { flex: 1; display: flex; align-items: center; }
     .nav-left { justify-content: flex-start; gap: 28px; }
     .nav-right { justify-content: flex-end; }
-
-    .nav-left a {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: 0.02em;
-      transition: color 0.2s;
-    }
-
+    .nav-left a { font-family: 'Source Sans 3', sans-serif; font-size: 13px; font-weight: 400; color: var(--muted); text-decoration: none; letter-spacing: 0.02em; transition: color 0.2s; }
     .nav-left a:hover { color: var(--ink); }
-
-    .logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 600;
-      font-size: 22px;
-      color: var(--ink);
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
+    .logo { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 22px; color: var(--ink); text-decoration: none; white-space: nowrap; }
     .logo .dot { color: var(--coral); }
-
-    .btn-coral {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--white);
-      background: var(--coral);
-      border: none;
-      padding: 10px 22px;
-      cursor: pointer;
-      letter-spacing: 0.02em;
-      transition: background 0.2s;
-      text-decoration: none;
-      display: inline-block;
-    }
-
+    .btn-coral { font-family: 'Source Sans 3', sans-serif; font-size: 13px; font-weight: 600; color: var(--white); background: var(--coral); border: none; padding: 10px 22px; cursor: pointer; letter-spacing: 0.02em; transition: background 0.2s; text-decoration: none; display: inline-block; }
     .btn-coral:hover { background: var(--coral-dark); }
-
-    /* ── HERO ─────────────────────────────────── */
-    .hero {
-      background: var(--white);
-      padding: 80px 0 88px;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr 380px;
-      gap: 0;
-      align-items: start;
-    }
-
+    .hero { background: var(--white); padding: 80px 0 88px; }
+    .hero-grid { display: grid; grid-template-columns: 1fr 380px; gap: 0; align-items: start; }
     .hero-left { padding-right: 56px; }
-
-    .eyebrow {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--coral);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 20px;
-      font-variant: all-small-caps;
-    }
-
-    .hero-headline {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 80px;
-      font-weight: 300;
-      line-height: 1.05;
-      margin-bottom: 28px;
-      color: var(--ink);
-    }
-
+    .eyebrow { font-family: 'Source Sans 3', sans-serif; font-size: 12px; font-weight: 600; color: var(--coral); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 20px; font-variant: all-small-caps; }
+    .hero-headline { font-family: 'Cormorant Garamond', serif; font-size: 80px; font-weight: 300; line-height: 1.05; margin-bottom: 28px; color: var(--ink); }
     .hero-headline .coral { color: var(--coral); }
-
-    .hero-deck {
-      font-family: 'Source Serif 4', serif;
-      font-style: italic;
-      font-weight: 300;
-      font-size: 18px;
-      line-height: 1.7;
-      color: var(--muted);
-      max-width: 540px;
+    .hero-deck { font-family: 'Source Serif 4', serif; font-style: italic; font-weight: 300; font-size: 18px; line-height: 1.7; color: var(--muted); max-width: 540px; }
+    .hero-right { border-left: 1px solid var(--rule); padding-left: 48px; }
+    .hero-right .form-label { font-family: 'Source Sans 3', sans-serif; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink); margin-bottom: 8px; }
+    .hero-right .form-sub { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; line-height: 1.3; margin-bottom: 14px; color: var(--ink); }
+    .hero-right .form-desc { font-family: 'Source Serif 4', serif; font-style: italic; font-weight: 300; font-size: 15px; line-height: 1.6; color: var(--muted); margin-bottom: 24px; }
+    .form-select {
+      width: 100%; font-family: 'Source Sans 3', sans-serif; font-size: 14px; font-weight: 300;
+      padding: 12px 16px; border: 1px solid var(--rule); background: var(--white); color: var(--ink);
+      outline: none; cursor: pointer; appearance: none; margin-bottom: 8px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A5A52' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 16px center; transition: border-color 0.2s;
     }
-
-    .hero-right {
-      border-left: 1px solid var(--rule);
-      padding-left: 48px;
-    }
-
-    .hero-right .form-label {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--ink);
-      margin-bottom: 8px;
-    }
-
-    .hero-right .form-sub {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 24px;
-      font-weight: 300;
-      line-height: 1.3;
-      margin-bottom: 14px;
-      color: var(--ink);
-    }
-
-    .hero-right .form-desc {
-      font-family: 'Source Serif 4', serif;
-      font-style: italic;
-      font-weight: 300;
-      font-size: 15px;
-      line-height: 1.6;
-      color: var(--muted);
-      margin-bottom: 24px;
-    }
-
-    /* ── FORMS ────────────────────────────────── */
-    .form-row {
-      display: flex;
-      gap: 0;
-    }
-
-    .form-row input[type="email"] {
-      flex: 1;
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 14px;
-      font-weight: 300;
-      padding: 12px 16px;
-      border: 1px solid var(--rule);
-      border-right: none;
-      background: var(--white);
-      color: var(--ink);
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
+    .form-select:focus { border-color: var(--ink); }
+    .cta .form-select { background-color: transparent; border-color: rgba(255,255,255,0.2); color: var(--white); }
+    .cta .form-select option { background: #1a1a1a; color: var(--white); }
+    .form-row { display: flex; gap: 0; }
+    .form-row input[type="email"] { flex: 1; font-family: 'Source Sans 3', sans-serif; font-size: 14px; font-weight: 300; padding: 12px 16px; border: 1px solid var(--rule); border-right: none; background: var(--white); color: var(--ink); outline: none; transition: border-color 0.2s; }
     .form-row input[type="email"]::placeholder { color: var(--dim); }
     .form-row input[type="email"]:focus { border-color: var(--ink); }
-
-    .form-row .btn-coral {
-      white-space: nowrap;
-      border: 1px solid var(--coral);
-      flex-shrink: 0;
-    }
-
-    .form-row .btn-coral .spinner {
-      display: none;
-      width: 14px;
-      height: 14px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: var(--white);
-      border-radius: 50%;
-      animation: spin 0.6s linear infinite;
-    }
-
+    .form-row .btn-coral { white-space: nowrap; border: 1px solid var(--coral); flex-shrink: 0; }
+    .form-row .btn-coral .spinner { display: none; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: var(--white); border-radius: 50%; animation: spin 0.6s linear infinite; }
     .form-row .btn-coral.loading .btn-text { display: none; }
     .form-row .btn-coral.loading .spinner { display: inline-block; }
     .form-row .btn-coral.loading { pointer-events: none; opacity: 0.8; }
-
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    .form-hint {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 11px;
-      color: var(--dim);
-      margin-top: 10px;
-    }
-
-    .form-success {
-      display: none;
-      padding: 16px 20px;
-      background: #f0f7f0;
-      border: 1px solid #c0d8c0;
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 14px;
-      color: var(--ink);
-    }
-
-    .form-error {
-      display: none;
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 13px;
-      color: var(--coral);
-      margin-top: 8px;
-    }
-
-    /* ── SECTION COMMONS ──────────────────────── */
-    .section-tag {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--coral);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 48px;
-      font-variant: all-small-caps;
-    }
-
+    .form-hint { font-family: 'Source Sans 3', sans-serif; font-size: 11px; color: var(--dim); margin-top: 10px; }
+    .form-success { display: none; padding: 16px 20px; background: #f0f7f0; border: 1px solid #c0d8c0; font-family: 'Source Sans 3', sans-serif; font-size: 14px; color: var(--ink); }
+    .form-error { display: none; font-family: 'Source Sans 3', sans-serif; font-size: 13px; color: var(--coral); margin-top: 8px; }
+    .section-tag { font-family: 'Source Sans 3', sans-serif; font-size: 12px; font-weight: 600; color: var(--coral); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 48px; font-variant: all-small-caps; }
     section { padding: 96px 0; }
-
-    /* ── FEATURES ──────────────────────────────── */
     .features { background: var(--paper); }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 48px;
-    }
-
-    .feature-num {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--dim);
-      letter-spacing: 0.08em;
-      margin-bottom: 16px;
-    }
-
-    .feature-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 24px;
-      font-weight: 400;
-      margin-bottom: 6px;
-      color: var(--ink);
-    }
-
-    .feature-subtitle {
-      font-family: 'Source Serif 4', serif;
-      font-style: italic;
-      font-weight: 300;
-      font-size: 15px;
-      color: var(--coral);
-      margin-bottom: 16px;
-    }
-
-    .feature-text {
-      font-family: 'Source Serif 4', serif;
-      font-weight: 300;
-      font-size: 15px;
-      line-height: 1.7;
-      color: var(--muted);
-    }
-
-    /* ── PROBLEM ───────────────────────────────── */
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; }
+    .feature-num { font-family: 'Source Sans 3', sans-serif; font-size: 12px; font-weight: 600; color: var(--dim); letter-spacing: 0.08em; margin-bottom: 16px; }
+    .feature-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; margin-bottom: 6px; color: var(--ink); }
+    .feature-subtitle { font-family: 'Source Serif 4', serif; font-style: italic; font-weight: 300; font-size: 15px; color: var(--coral); margin-bottom: 16px; }
+    .feature-text { font-family: 'Source Serif 4', serif; font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--muted); }
     .problem { background: var(--white); }
-
-    .problem-grid {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      gap: 40px;
-      align-items: start;
-      margin-bottom: 56px;
-    }
-
-    .problem-vs {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 20px;
-      font-weight: 300;
-      font-style: italic;
-      color: var(--dim);
-      padding-top: 40px;
-    }
-
-    .problem-card-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 400;
-      margin-bottom: 20px;
-      color: var(--ink);
-    }
-
-    .problem-item {
-      font-family: 'Source Serif 4', serif;
-      font-weight: 300;
-      font-size: 15px;
-      line-height: 1.7;
-      color: var(--muted);
-      padding: 8px 0;
-    }
-
-    .problem-item::before {
-      content: "—";
-      color: var(--coral);
-      margin-right: 10px;
-      font-weight: 400;
-    }
-
-    .problem-conclusion {
-      text-align: center;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 300;
-      line-height: 1.5;
-      color: var(--ink);
-      max-width: 700px;
-      margin: 0 auto;
-    }
-
-    .problem-conclusion em {
-      font-style: italic;
-      color: var(--coral);
-    }
-
-    /* ── PRODUKT ───────────────────────────────── */
+    .problem-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 40px; align-items: start; margin-bottom: 56px; }
+    .problem-vs { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 300; font-style: italic; color: var(--dim); padding-top: 40px; }
+    .problem-card-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; margin-bottom: 20px; color: var(--ink); }
+    .problem-item { font-family: 'Source Serif 4', serif; font-weight: 300; font-size: 15px; line-height: 1.7; color: var(--muted); padding: 8px 0; }
+    .problem-item::before { content: "—"; color: var(--coral); margin-right: 10px; font-weight: 400; }
+    .problem-conclusion { text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; line-height: 1.5; color: var(--ink); max-width: 700px; margin: 0 auto; }
+    .problem-conclusion em { font-style: italic; color: var(--coral); }
     .produkt { background: var(--paper); }
-
-    .produkt-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border: 1px solid var(--rule);
-    }
-
+    .produkt-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rule); }
     .produkt-card { padding: 48px; }
-
-    .produkt-card.dark {
-      background: var(--ink);
-      color: var(--white);
-    }
-
-    .produkt-card.light {
-      background: var(--white);
-      border-left: 1px solid var(--rule);
-    }
-
-    .produkt-card-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 32px;
-      font-weight: 400;
-      margin-bottom: 24px;
-    }
-
-    .produkt-detail {
-      font-family: 'Source Serif 4', serif;
-      font-weight: 300;
-      font-size: 15px;
-      line-height: 1.7;
-      padding: 4px 0;
-    }
-
+    .produkt-card.dark { background: var(--ink); color: var(--white); }
+    .produkt-card.light { background: var(--white); border-left: 1px solid var(--rule); }
+    .produkt-card-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; margin-bottom: 24px; }
+    .produkt-detail { font-family: 'Source Serif 4', serif; font-weight: 300; font-size: 15px; line-height: 1.7; padding: 4px 0; }
     .produkt-card.dark .produkt-detail { color: rgba(255,255,255,0.7); }
     .produkt-card.light .produkt-detail { color: var(--muted); }
-
-    .produkt-detail::before {
-      content: "—";
-      color: var(--coral);
-      margin-right: 10px;
-    }
-
-    .produkt-footnote {
-      text-align: center;
-      font-family: 'Source Serif 4', serif;
-      font-style: italic;
-      font-weight: 300;
-      font-size: 14px;
-      color: var(--dim);
-      margin-top: 32px;
-    }
-
-    /* ── PRICING ───────────────────────────────── */
+    .produkt-detail::before { content: "—"; color: var(--coral); margin-right: 10px; }
+    .produkt-footnote { text-align: center; font-family: 'Source Serif 4', serif; font-style: italic; font-weight: 300; font-size: 14px; color: var(--dim); margin-top: 32px; }
     .pricing { background: var(--paper); }
-
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
-    }
-
-    .pricing-card {
-      background: var(--white);
-      border: 1px solid var(--rule);
-      padding: 40px 32px;
-      position: relative;
-    }
-
-    .pricing-card.featured {
-      border: 2px solid var(--coral);
-    }
-
-    .pricing-badge {
-      position: absolute;
-      top: -1px;
-      right: 24px;
-      background: var(--coral);
-      color: var(--white);
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      padding: 6px 14px;
-      text-transform: uppercase;
-    }
-
-    .pricing-name {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--dim);
-      margin-bottom: 12px;
-    }
-
-    .pricing-price {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 36px;
-      font-weight: 300;
-      color: var(--ink);
-      margin-bottom: 4px;
-    }
-
-    .pricing-unit {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 13px;
-      color: var(--dim);
-      margin-bottom: 28px;
-    }
-
-    .pricing-feature {
-      font-family: 'Source Serif 4', serif;
-      font-weight: 300;
-      font-size: 14px;
-      color: var(--muted);
-      padding: 6px 0;
-    }
-
-    .pricing-feature::before {
-      content: "—";
-      color: var(--coral);
-      margin-right: 8px;
-    }
-
-    /* ── CTA ───────────────────────────────────── */
-    .cta {
-      background: var(--ink);
-      color: var(--white);
-      text-align: center;
-    }
-
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .pricing-card { background: var(--white); border: 1px solid var(--rule); padding: 40px 32px; position: relative; }
+    .pricing-card.featured { border: 2px solid var(--coral); }
+    .pricing-badge { position: absolute; top: -1px; right: 24px; background: var(--coral); color: var(--white); font-family: 'Source Sans 3', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; padding: 6px 14px; text-transform: uppercase; }
+    .pricing-name { font-family: 'Source Sans 3', sans-serif; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dim); margin-bottom: 12px; }
+    .pricing-price { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--ink); margin-bottom: 4px; }
+    .pricing-unit { font-family: 'Source Sans 3', sans-serif; font-size: 13px; color: var(--dim); margin-bottom: 28px; }
+    .pricing-feature { font-family: 'Source Serif 4', serif; font-weight: 300; font-size: 14px; color: var(--muted); padding: 6px 0; }
+    .pricing-feature::before { content: "—"; color: var(--coral); margin-right: 8px; }
+    .cta { background: var(--ink); color: var(--white); text-align: center; }
     .cta .eyebrow { color: var(--coral); }
-
-    .cta-headline {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 68px;
-      font-weight: 300;
-      line-height: 1.1;
-      margin-bottom: 24px;
-      color: var(--white);
-    }
-
-    .cta-headline em {
-      font-style: italic;
-      opacity: 0.5;
-    }
-
-    .cta-deck {
-      font-family: 'Source Serif 4', serif;
-      font-weight: 300;
-      font-size: 17px;
-      line-height: 1.7;
-      color: rgba(255,255,255,0.6);
-      max-width: 560px;
-      margin: 0 auto 40px;
-    }
-
+    .cta-headline { font-family: 'Cormorant Garamond', serif; font-size: 68px; font-weight: 300; line-height: 1.1; margin-bottom: 24px; color: var(--white); }
+    .cta-headline em { font-style: italic; opacity: 0.5; }
+    .cta-deck { font-family: 'Source Serif 4', serif; font-weight: 300; font-size: 17px; line-height: 1.7; color: rgba(255,255,255,0.6); max-width: 560px; margin: 0 auto 40px; }
     .cta .form-row { max-width: 480px; margin: 0 auto; }
-
-    .cta .form-row input[type="email"] {
-      background: transparent;
-      border-color: rgba(255,255,255,0.2);
-      color: var(--white);
-    }
-
+    .cta .form-select-wrap { max-width: 480px; margin: 0 auto 0; }
+    .cta .form-row input[type="email"] { background: transparent; border-color: rgba(255,255,255,0.2); color: var(--white); }
     .cta .form-row input[type="email"]::placeholder { color: rgba(255,255,255,0.35); }
     .cta .form-row input[type="email"]:focus { border-color: rgba(255,255,255,0.5); }
-
     .cta .form-hint { color: rgba(255,255,255,0.35); text-align: center; }
     .cta .form-error { text-align: center; }
-
-    .cta .form-success {
-      background: rgba(255,255,255,0.08);
-      border-color: rgba(255,255,255,0.15);
-      color: var(--white);
-    }
-
-    /* ── FOOTER ────────────────────────────────── */
-    footer {
-      background: var(--white);
-      border-top: 3px solid var(--ink);
-      padding: 32px 0;
-    }
-
-    .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 24px;
-    }
-
-    .footer-links a {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 13px;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
+    .cta .form-success { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); color: var(--white); max-width: 480px; margin: 0 auto; }
+    footer { background: var(--white); border-top: 3px solid var(--ink); padding: 32px 0; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-family: 'Source Sans 3', sans-serif; font-size: 13px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .footer-links a:hover { color: var(--ink); }
-
-    .footer-copy {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 12px;
-      color: var(--dim);
-    }
-
-    /* ── SOCIAL PROOF BAR ──────────────────────── */
-    .social-proof-bar {
-      background: var(--ink);
-      padding: 14px 48px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-    .sp-item {
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 13px;
-      color: rgba(255,255,255,0.55);
-      letter-spacing: 0.03em;
-    }
+    .footer-copy { font-family: 'Source Sans 3', sans-serif; font-size: 12px; color: var(--dim); }
+    .social-proof-bar { background: var(--ink); padding: 14px 48px; display: flex; justify-content: center; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .sp-item { font-family: 'Source Sans 3', sans-serif; font-size: 13px; color: rgba(255,255,255,0.55); letter-spacing: 0.03em; }
     .sp-item strong { color: white; font-weight: 600; }
     .sp-divider { color: rgba(255,255,255,0.2); }
-
-    /* ── PRICING CTAs ─────────────────────────── */
-    .price-cta {
-      display: block;
-      margin-top: 24px;
-      padding: 12px;
-      background: var(--coral);
-      color: white;
-      text-align: center;
-      font-family: 'Source Sans 3', sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      transition: background 0.15s;
-    }
+    .price-cta { display: block; margin-top: 24px; padding: 12px; background: var(--coral); color: white; text-align: center; font-family: 'Source Sans 3', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: background 0.15s; }
     .price-cta:hover { background: var(--coral-dark); }
-    .price-cta-ghost {
-      background: transparent;
-      color: var(--ink);
-      border: 1px solid var(--rule);
-    }
+    .price-cta-ghost { background: transparent; color: var(--ink); border: 1px solid var(--rule); }
     .price-cta-ghost:hover { background: var(--paper); }
-
-    /* ── FAQ ───────────────────────────────────── */
-    .faq-wrap {
-      padding: 72px 48px;
-      background: var(--white);
-      border-top: 1px solid var(--rule);
-    }
-    .faq-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      margin-top: 48px;
-    }
-    .faq-item {
-      border-top: 1px solid var(--rule);
-      padding-top: 24px;
-    }
-    .faq-item h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 20px;
-      font-weight: 400;
-      margin-bottom: 12px;
-      line-height: 1.3;
-    }
-    .faq-item p {
-      font-family: 'Source Serif 4', serif;
-      font-size: 15px;
-      line-height: 1.75;
-      color: var(--muted);
-    }
-
-    /* ── SCROLL REVEAL ─────────────────────────── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ── RESPONSIVE ────────────────────────────── */
+    .faq-wrap { padding: 72px 48px; background: var(--white); border-top: 1px solid var(--rule); }
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 48px; }
+    .faq-item { border-top: 1px solid var(--rule); padding-top: 24px; }
+    .faq-item h3 { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; margin-bottom: 12px; line-height: 1.3; }
+    .faq-item p { font-family: 'Source Serif 4', serif; font-size: 15px; line-height: 1.75; color: var(--muted); }
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
     @media (max-width: 900px) {
-      .hero-grid {
-        grid-template-columns: 1fr;
-      }
+      .hero-grid { grid-template-columns: 1fr; }
       .hero-left { padding-right: 0; margin-bottom: 48px; }
       .hero-right { border-left: none; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 40px; }
       .hero-headline { font-size: 52px; }
@@ -707,7 +159,6 @@
       .cta-headline { font-size: 44px; }
       .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
     }
-
     @media (max-width: 600px) {
       .nav-left { display: none; }
       .nav-right { flex: 0; }
@@ -720,8 +171,6 @@
   </style>
 </head>
 <body>
-
-  <!-- NAV -->
   <nav>
     <div class="nav-inner">
       <div class="nav-left">
@@ -736,7 +185,6 @@
     </div>
   </nav>
 
-  <!-- HERO -->
   <section class="hero">
     <div class="container">
       <div class="hero-grid">
@@ -748,8 +196,14 @@
         <div class="hero-right reveal">
           <div class="form-label">Pilotbericht anfordern</div>
           <div class="form-sub">Der erste Report gehört Ihnen — kostenlos.</div>
-          <p class="form-desc">Tragen Sie Ihre E-Mail ein. Wir senden Ihnen den Pilotbericht für den Sektor München Nord-West direkt zu.</p>
+          <p class="form-desc">Wählen Sie Ihren Markt und tragen Sie Ihre E-Mail ein. Wir senden Ihnen den Pilotbericht direkt zu.</p>
           <form id="heroForm" onsubmit="return handleSubmit(event, 'hero')">
+            <select class="form-select" id="heroSektor" required>
+              <option value="" disabled selected>Sektor auswählen</option>
+              <option value="München Nord-West">München Nord-West — Pilot (verfügbar)</option>
+              <option value="Stuttgart" disabled>Stuttgart — demnächst</option>
+              <option value="Berlin-Speckgürtel" disabled>Berlin-Speckgürtel — demnächst</option>
+            </select>
             <div class="form-row">
               <input type="email" placeholder="name@unternehmen.de" required>
               <button type="submit" class="btn-coral">
@@ -760,13 +214,12 @@
             <div class="form-hint">Kostenlos · Kein Spam · Jederzeit abmeldbar · <a href='#' style='color:inherit'>Datenschutz</a></div>
             <div class="form-error"></div>
           </form>
-          <div class="form-success">Vielen Dank. Ihr Pilotbericht für München Nord-West wird Ihnen in Kürze zugestellt.</div>
+          <div class="form-success">Vielen Dank. Ihr Pilotbericht wird Ihnen in Kürze zugestellt.</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SOCIAL PROOF BAR -->
   <div class="social-proof-bar">
     <span class="sp-item">Scannt <strong>täglich</strong> über 200 kommunale Portale</span>
     <span class="sp-divider">·</span>
@@ -775,7 +228,6 @@
     <span class="sp-item"><strong>10 Partner</strong> pro Sektor — limitiert</span>
   </div>
 
-  <!-- FEATURES -->
   <section class="features">
     <div class="container">
       <div class="section-tag reveal">Was b.signal leistet</div>
@@ -802,7 +254,6 @@
     </div>
   </section>
 
-  <!-- PROBLEM -->
   <section class="problem" id="problem">
     <div class="container">
       <div class="section-tag reveal">Die Informations-Lücke</div>
@@ -830,7 +281,6 @@
     </div>
   </section>
 
-  <!-- PRODUKT -->
   <section class="produkt" id="produkt">
     <div class="container">
       <div class="section-tag reveal">Das Produkt</div>
@@ -857,7 +307,6 @@
     </div>
   </section>
 
-  <!-- PRICING -->
   <section class="pricing" id="pricing">
     <div class="container">
       <div class="section-tag reveal">Preismodell</div>
@@ -896,14 +345,13 @@
     </div>
   </section>
 
-  <!-- FAQ -->
   <section class="faq-wrap">
     <div class="container">
       <div class="section-tag reveal">Häufige Fragen</div>
       <div class="faq-grid reveal">
         <div class="faq-item">
           <h3>Wie lange dauert es bis zum ersten Bericht?</h3>
-          <p>Nach Ihrer Anmeldung erhalten Sie innerhalb von 24 Stunden Ihren ersten Pilotbericht für den Sektor München Nord-West.</p>
+          <p>Nach Ihrer Anmeldung erhalten Sie innerhalb von 24 Stunden Ihren ersten Pilotbericht für Ihren gewählten Sektor.</p>
         </div>
         <div class="faq-item">
           <h3>Wie exklusiv ist der Zugang wirklich?</h3>
@@ -921,14 +369,21 @@
     </div>
   </section>
 
-  <!-- CTA -->
   <section class="cta" id="cta">
     <div class="container">
       <div class="eyebrow reveal">Werden Sie Teil des Pilotprogramms</div>
       <h2 class="cta-headline reveal">10 Plätze.<br><em>Einer davon gehört Ihnen.</em></h2>
-      <p class="cta-deck reveal">Der Zugang zum Pilotprogramm für München Nord-West ist auf zehn Partner limitiert. Das garantiert Ihnen einen echten Wettbewerbsvorteil.</p>
+      <p class="cta-deck reveal">Der Zugang zum Pilotprogramm ist auf zehn Partner pro Sektor limitiert. Das garantiert Ihnen einen echten Wettbewerbsvorteil.</p>
       <div class="reveal">
         <form id="ctaForm" onsubmit="return handleSubmit(event, 'cta')">
+          <div class="cta-form-select-wrap">
+            <select class="form-select" id="ctaSektor" required>
+              <option value="" disabled selected>Sektor auswählen</option>
+              <option value="München Nord-West">München Nord-West — Pilot (verfügbar)</option>
+              <option value="Stuttgart" disabled>Stuttgart — demnächst</option>
+              <option value="Berlin-Speckgürtel" disabled>Berlin-Speckgürtel — demnächst</option>
+            </select>
+          </div>
           <div class="form-row">
             <input type="email" placeholder="name@unternehmen.de" required>
             <button type="submit" class="btn-coral">
@@ -939,12 +394,11 @@
           <div class="form-hint">Kostenlos · Kein Spam · Jederzeit abmeldbar · <a href='#' style='color:inherit'>Datenschutz</a></div>
           <div class="form-error"></div>
         </form>
-        <div class="form-success">Vielen Dank. Ihr Pilotbericht für München Nord-West wird Ihnen in Kürze zugestellt.</div>
+        <div class="form-success">Vielen Dank. Ihr Pilotbericht wird Ihnen in Kürze zugestellt.</div>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer>
     <div class="container">
       <div class="footer-inner">
@@ -960,28 +414,22 @@
   </footer>
 
   <script>
-    // Scroll reveal
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
+        if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
       });
     }, { threshold: 0.12 });
-
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // Form submission via Cloudflare Worker proxy
-    async function submitForm(email) {
+    async function submitForm(email, sektor) {
       const res = await fetch('https://bsignal-worker.bsignal-fm.workers.dev/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({ email, sektor })
       });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
-      if (!(data.success === true || (data.content && data.content.length > 0))) throw new Error(data.error || 'unknown');
+      if (!data.success) throw new Error(data.error || 'unknown');
     }
 
     async function handleSubmit(e, formId) {
@@ -989,18 +437,17 @@
       const form = e.target;
       const wrapper = form.parentElement;
       const input = form.querySelector('input[type="email"]');
+      const selectEl = form.querySelector('.form-select');
       const btn = form.querySelector('.btn-coral');
       const errorEl = form.querySelector('.form-error');
       const successEl = wrapper.querySelector('.form-success');
       const email = input.value.trim();
-
-      if (!email) return false;
-
+      const sektor = selectEl ? selectEl.value : 'München Nord-West';
+      if (!email || !sektor) return false;
       errorEl.style.display = 'none';
       btn.classList.add('loading');
-
       try {
-        await submitForm(email);
+        await submitForm(email, sektor);
         form.style.display = 'none';
         successEl.style.display = 'block';
       } catch (err) {
@@ -1009,29 +456,8 @@
       } finally {
         btn.classList.remove('loading');
       }
-
       return false;
     }
   </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "b.signal",
-    "description": "KI-gestützter Intelligence-Dienst für Projektentwickler im deutschen Immobilienmarkt",
-    "applicationCategory": "BusinessApplication",
-    "offers": {
-      "@type": "Offer",
-      "price": "150",
-      "priceCurrency": "EUR"
-    },
-    "areaServed": {
-      "@type": "City",
-      "name": "München"
-    }
-  }
-  </script>
-
 </body>
 </html>
