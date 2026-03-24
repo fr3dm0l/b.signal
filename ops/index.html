@@ -57,6 +57,11 @@
   .topbar-brand { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
   .topbar-brand span { color: var(--green); }
   .topbar-env { font-size: 0.6rem; padding: 0.2rem 0.5rem; background: var(--green-dim); color: var(--green); border-radius: 3px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .sector-select { font-family: var(--mono); font-size: 0.65rem; padding: 0.3rem 0.5rem; border: 1px solid var(--border); border-radius: 3px; background: white; color: var(--text-muted); cursor: pointer; outline: none; }
+  .sector-select:focus { border-color: var(--green); }
+  .sector-status { font-size: 0.55rem; padding: 0.15rem 0.4rem; border-radius: 2px; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 600; }
+  .sector-status.active { background: var(--green-dim); color: var(--green); }
+  .sector-status.planned { background: var(--amber-dim); color: var(--amber); }
   .topbar-actions { display: flex; align-items: center; gap: 0.5rem; }
   .qa-btn { font-size: 0.65rem; font-family: var(--mono); padding: 0.3rem 0.7rem; border: 1px solid var(--border); border-radius: 3px; background: white; color: var(--text-muted); cursor: pointer; text-decoration: none; transition: all 0.15s; display: flex; align-items: center; gap: 0.35rem; }
   .qa-btn:hover { border-color: var(--green); color: var(--green); background: var(--green-dim); }
@@ -193,7 +198,8 @@
   <div class="topbar">
     <div class="topbar-left">
       <div class="topbar-brand">b.<span>signal</span> ops</div>
-      <div class="topbar-env">solo</div>
+      <select class="sector-select" id="sector-select" onchange="switchSector(this.value)"></select>
+      <span class="sector-status" id="sector-status"></span>
     </div>
     <div class="topbar-actions">
       <a class="qa-btn" href="https://www.perplexity.ai/" target="_blank">🔍 Scan</a>
@@ -237,7 +243,7 @@
         </div>
       </div>
       <div class="sidebar-footer">
-        <div class="sidebar-footer-text">b.signal ops v0.2<br>München Nord-West</div>
+        <div class="sidebar-footer-text">b.signal ops v0.3<br><span id="sidebar-sector-name"></span></div>
       </div>
     </nav>
 
@@ -260,7 +266,7 @@
       <div class="module-panel" id="module-signals">
         <div class="module-header">
           <div class="module-title">Signaldatenbank</div>
-          <div class="module-desc">Erfasste Planungssignale — München Nord-West</div>
+          <div class="module-desc">Erfasste Planungssignale — <span id="signals-sector-label"></span></div>
         </div>
         <div class="stats-grid">
           <div class="stat-card">
@@ -280,8 +286,8 @@
           </div>
           <div class="stat-card">
             <div class="stat-card-title">Abdeckung</div>
-            <div class="stat-card-value">MUC NW</div>
-            <div class="stat-card-sub"><span class="status-dot green"></span>Aktiv</div>
+            <div class="stat-card-value" id="signal-coverage-label"></div>
+            <div class="stat-card-sub" id="signal-coverage-status"></div>
           </div>
         </div>
         <div class="signal-table-wrap">
@@ -340,11 +346,7 @@
     <div class="modal-row">
       <div class="modal-field"><label>Score (1–10)</label><input type="number" id="sig-score" min="1" max="10" value="7"></div>
       <div class="modal-field"><label>Gemeinde</label>
-        <select id="sig-gemeinde">
-          <option>Dachau</option><option>Karlsfeld</option><option>Röhrmoos</option>
-          <option>Germering</option><option>Puchheim</option><option>Olching</option><option>FFB</option>
-          <option>Garching</option><option>Unterschleißheim</option><option>Oberschleißheim</option>
-        </select>
+        <select id="sig-gemeinde"></select>
       </div>
     </div>
     <div class="modal-field"><label>Titel</label><input type="text" id="sig-title" placeholder="z.B. BP Nr. 123 — Wohngebiet Musterstraße"></div>
@@ -363,6 +365,64 @@
 </div>
 
 <script>
+  // SECTORS
+  const SECTORS = [
+    { id: 'muc-nw', name: 'München Nord-West Umland', region: 'LK Dachau / FFB / München Nord', shortName: 'MUC NW', status: 'active', gemeinden: ['Dachau','Karlsfeld','Röhrmoos','Germering','Puchheim','Olching','FFB','Garching','Unterschleißheim','Oberschleißheim'] },
+    { id: 'muc-so', name: 'München Süd-Ost Umland', region: 'LK Ebersberg / München Ost / Rosenheim Nord', shortName: 'MUC SO', status: 'planned', gemeinden: [] },
+    { id: 'muc-stadt', name: 'München Stadt', region: '25 Bezirksausschüsse', shortName: 'MUC Stadt', status: 'planned', gemeinden: [] },
+    { id: 'stgt', name: 'Stuttgart Region', region: 'LK Böblingen / Ludwigsburg / Esslingen', shortName: 'STGT', status: 'planned', gemeinden: [] }
+  ];
+  let currentSector = SECTORS[0];
+
+  function getSectorById(id) { return SECTORS.find(s => s.id === id) || SECTORS[0]; }
+
+  function initSectorSelect() {
+    const sel = document.getElementById('sector-select');
+    sel.innerHTML = SECTORS.map(s => `<option value="${s.id}">${s.shortName} — ${s.name}</option>`).join('');
+    const saved = localStorage.getItem('bsignal_sector');
+    if (saved && SECTORS.some(s => s.id === saved)) sel.value = saved;
+    else sel.value = SECTORS[0].id;
+    applySector(sel.value);
+  }
+
+  function switchSector(id) {
+    localStorage.setItem('bsignal_sector', id);
+    applySector(id);
+    loadWorkflowModule();
+    loadSignals();
+    initProgress();
+  }
+
+  function applySector(id) {
+    currentSector = getSectorById(id);
+    // Status badge
+    const badge = document.getElementById('sector-status');
+    badge.textContent = currentSector.status;
+    badge.className = 'sector-status ' + currentSector.status;
+    // Sidebar footer
+    document.getElementById('sidebar-sector-name').textContent = currentSector.name;
+    // Signals header
+    const sl = document.getElementById('signals-sector-label');
+    if (sl) sl.textContent = currentSector.name;
+    // Coverage card
+    document.getElementById('signal-coverage-label').textContent = currentSector.shortName;
+    const cs = document.getElementById('signal-coverage-status');
+    cs.innerHTML = currentSector.status === 'active'
+      ? '<span class="status-dot green"></span>Aktiv'
+      : '<span class="status-dot" style="background:var(--amber)"></span>Geplant';
+    // Gemeinde dropdown in modal
+    const gsel = document.getElementById('sig-gemeinde');
+    if (currentSector.gemeinden.length) {
+      gsel.innerHTML = currentSector.gemeinden.map(g => `<option>${g}</option>`).join('');
+    } else {
+      gsel.innerHTML = '<option>(keine Gemeinden definiert)</option>';
+    }
+  }
+
+  // SECTOR-SCOPED STORAGE KEYS
+  function signalsKey() { return 'bsignal_signals_' + currentSector.id; }
+  function progressKey() { return 'bsignal_kw_progress_' + currentSector.id; }
+
   // AUTH
   const SESSION_KEY = 'bsignal_ops_auth';
   const SESSION_TTL = 8 * 60 * 60 * 1000;
@@ -384,7 +444,13 @@
   function showApp() { document.getElementById('auth-gate').style.display = 'none'; document.getElementById('app-shell').classList.add('active'); initApp(); }
 
   // INIT
-  function initApp() { updateClock(); setInterval(updateClock, 60000); setKW(); loadWorkflowModule(); loadSignals(); initProgress(); const h = location.hash.replace('#',''); if (h && document.getElementById('module-'+h)) switchModule(h); }
+  function initApp() {
+    updateClock(); setInterval(updateClock, 60000); setKW();
+    initSectorSelect();
+    loadWorkflowModule(); loadSignals(); initProgress();
+    const h = location.hash.replace('#','');
+    if (h && document.getElementById('module-'+h)) switchModule(h);
+  }
   function updateClock() { document.getElementById('topbar-time').textContent = new Date().toLocaleDateString('de-DE', { weekday:'short', day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' }); }
   function getKW() { const n = new Date(), s = new Date(n.getFullYear(),0,1), d = (n-s+((s.getTimezoneOffset()-n.getTimezoneOffset())*60000)); return Math.ceil((d/604800000+s.getDay()/7)); }
   function setKW() { const k = getKW(); document.getElementById('current-kw').textContent = k; document.getElementById('sidebar-kw').textContent = k; document.querySelectorAll('.kw-span').forEach(s => s.textContent = k); }
@@ -392,14 +458,31 @@
   // MODULE ROUTER
   function switchModule(name) { const ni = document.querySelector(`.nav-item[data-module="${name}"]`); if (ni && ni.classList.contains('disabled')) return; document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active')); if (ni) ni.classList.add('active'); document.querySelectorAll('.module-panel').forEach(e => e.classList.remove('active')); const p = document.getElementById('module-'+name); if (p) p.classList.add('active'); location.hash = name; }
 
-  // WORKFLOW
-  async function loadWorkflowModule() { const c = document.getElementById('workflow-container'); try { const r = await fetch('modules/workflow.html',{method:'HEAD'}); if (r.ok) c.innerHTML = `<iframe src="modules/workflow.html" style="width:100%;height:85vh;border:none;background:#FAF8F4;border-radius:var(--radius);" sandbox="allow-scripts allow-same-origin"></iframe>`; } catch(e) {} }
+  // WORKFLOW — loads sector-specific file with fallback
+  async function loadWorkflowModule() {
+    const c = document.getElementById('workflow-container');
+    const sectorFile = 'modules/workflow-' + currentSector.id + '.html';
+    const fallbackFile = 'modules/workflow.html';
+    try {
+      let r = await fetch(sectorFile, { method: 'HEAD' });
+      if (r.ok) {
+        c.innerHTML = `<iframe src="${sectorFile}" style="width:100%;height:85vh;border:none;background:#FAF8F4;border-radius:var(--radius);" sandbox="allow-scripts allow-same-origin"></iframe>`;
+        return;
+      }
+    } catch(e) {}
+    try {
+      let r = await fetch(fallbackFile, { method: 'HEAD' });
+      if (r.ok) {
+        c.innerHTML = `<iframe src="${fallbackFile}" style="width:100%;height:85vh;border:none;background:#FAF8F4;border-radius:var(--radius);" sandbox="allow-scripts allow-same-origin"></iframe>`;
+        return;
+      }
+    } catch(e) {}
+  }
 
-  // KW PROGRESS
-  const PROGRESS_KEY = 'bsignal_kw_progress';
+  // KW PROGRESS — per sector
   const STEPS = ['Prompt 1 — Behörden-Scan','Amtsblatt-PDFs prüfen','Prompt 2 — Medien-Scan','Rohdaten übergeben','Prompt 3 — Klassifizierung','Scores plausibilisieren','Prompt 4 — Signal-Brief','Brief versenden','Reaktionen notieren'];
-  function getProgress() { try { const r = JSON.parse(localStorage.getItem(PROGRESS_KEY)); if (!r || r.kw !== getKW()) return { kw: getKW(), done: [] }; return r; } catch { return { kw: getKW(), done: [] }; } }
-  function saveProgress(d) { localStorage.setItem(PROGRESS_KEY, JSON.stringify(d)); }
+  function getProgress() { try { const r = JSON.parse(localStorage.getItem(progressKey())); if (!r || r.kw !== getKW()) return { kw: getKW(), done: [] }; return r; } catch { return { kw: getKW(), done: [] }; } }
+  function saveProgress(d) { localStorage.setItem(progressKey(), JSON.stringify(d)); }
   function initProgress() { renderProgress(); }
   function toggleProgressItem(i) { const p = getProgress(); if (p.done.includes(i)) p.done = p.done.filter(x => x!==i); else p.done.push(i); saveProgress(p); renderProgress(); }
   function renderProgress() {
@@ -412,10 +495,9 @@
     }).join('');
   }
 
-  // SIGNALS
-  const SIGNALS_KEY = 'bsignal_signals';
-  function getSignals() { try { return JSON.parse(localStorage.getItem(SIGNALS_KEY)) || []; } catch { return []; } }
-  function saveSignals(s) { localStorage.setItem(SIGNALS_KEY, JSON.stringify(s)); }
+  // SIGNALS — per sector
+  function getSignals() { try { return JSON.parse(localStorage.getItem(signalsKey())) || []; } catch { return []; } }
+  function saveSignals(s) { localStorage.setItem(signalsKey(), JSON.stringify(s)); }
   let sortField = 'score', sortDir = -1;
   function loadSignals() { renderSignalTable(); updateSignalStats(); }
   function renderSignalTable() {
@@ -444,7 +526,7 @@
   function exportSignals() {
     const sigs = getSignals(); if (!sigs.length) { alert('Keine Signale'); return; }
     const csv = [['Score','Titel','Beschreibung','Gemeinde','Quelle','Datum'], ...sigs.map(s=>[s.score,s.title,s.desc,s.gemeinde,s.quelle,s.datum])].map(r=>r.map(c=>`"${String(c||'').replace(/"/g,'""')}"`).join(',')).join('\n');
-    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'})); a.download = `bsignal-signale-kw${getKW()}.csv`; a.click();
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'})); a.download = `bsignal-signale-${currentSector.id}-kw${getKW()}.csv`; a.click();
   }
   document.getElementById('modal-add-signal').addEventListener('click', e => { if (e.target===e.currentTarget) closeAddSignal(); });
 
