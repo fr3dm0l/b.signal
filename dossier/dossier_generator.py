@@ -9,7 +9,7 @@ from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML
 from weasyprint.text.fonts import FontConfiguration
 
-from dummy_data import DOSSIER_META, EXECUTIVE_SUMMARY, SIGNALE, RADAR
+from dummy_data import DOSSIER_META, SIGNALE, RADAR
 
 
 def generate_dossier(output_filename: str = None):
@@ -37,7 +37,6 @@ def generate_dossier(output_filename: str = None):
 
     html_content = template.render(
         meta=DOSSIER_META,
-        executive_summary=EXECUTIVE_SUMMARY,
         signale=sorted_signale,
         radar=RADAR,
         css_path=css_path,

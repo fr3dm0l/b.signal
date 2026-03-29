@@ -213,14 +213,6 @@ body {
     margin-bottom: 8mm;
 }
 
-.cover-rule {
-    width: 48px;
-    height: 0;
-    border: none;
-    border-top: 0.5pt solid #D4D4D4;
-    margin-bottom: 8mm;
-}
-
 .cover-trust {
     font-family: 'Source Sans 3', sans-serif;
     font-size: 9pt;
@@ -267,13 +259,13 @@ body {
 }
 
 /* ============================================================
-   3. EXECUTIVE SUMMARY
+   3. INHALTSVERZEICHNIS (Table of Contents)
    ============================================================ */
-.exec-section {
+.toc-section {
     margin-bottom: 0;
 }
 
-.exec-title {
+.toc-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 22pt;
     font-weight: 600;
@@ -281,63 +273,32 @@ body {
     margin-bottom: 2mm;
 }
 
-.exec-subtitle {
+.toc-subtitle {
     font-family: 'Source Sans 3', sans-serif;
     font-size: 9.5pt;
     color: #999999;
     margin-bottom: 8mm;
 }
 
-.exec-entry {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 6mm;
+.toc-entry {
+    margin-bottom: 4mm;
     page-break-inside: avoid;
 }
 
-.exec-nummer {
+.toc-entry-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 24pt;
-    font-weight: 600;
-    color: #FF7F50;
-    width: 10mm;
-    min-width: 10mm;
-    text-align: right;
-    line-height: 1;
-    padding-top: 1mm;
-}
-
-.exec-divider {
-    width: 0;
-    min-width: 0;
-    border-left: 0.5pt solid #D4D4D4;
-    align-self: stretch;
-    margin: 0 4mm;
-}
-
-.exec-content {
-    flex: 1;
-}
-
-.exec-entry-header {
-    display: flex;
-    align-items: baseline;
-    gap: 2mm;
-    margin-bottom: 1.5mm;
-}
-
-.exec-entry-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 13pt;
+    font-size: 12pt;
     font-weight: 600;
     color: #1A1A1A;
 }
 
-.exec-entry-text {
-    font-family: 'Source Serif 4', serif;
-    font-size: 9.5pt;
-    color: #1A1A1A;
-    line-height: 1.5;
+.toc-entry-quelle {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 8.5pt;
+    font-weight: 300;
+    color: #666666;
+    margin-top: 0.5mm;
+    padding-left: 0;
 }
 
 /* ============================================================
@@ -350,8 +311,11 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     padding: 0.5mm 2mm;
+    border-radius: 2px;
     display: inline-block;
     white-space: nowrap;
+    vertical-align: baseline;
+    margin-right: 1.5mm;
 }
 
 .relevanz-hoch {
@@ -364,8 +328,30 @@ body {
     color: #1A1A1A;
 }
 
+.relevanz-radar {
+    background-color: transparent;
+    color: #FF7F50;
+    border: 0.5pt solid #FF7F50;
+}
+
 /* ============================================================
-   5. SIGNALBEREICH
+   5. TAG CHIPS
+   ============================================================ */
+.tag-chip {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 8pt;
+    font-weight: 400;
+    color: #1A1A1A;
+    background-color: #EEEEEE;
+    padding: 2px 6px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-right: 1.5mm;
+    margin-bottom: 1mm;
+}
+
+/* ============================================================
+   6. SIGNALBEREICH
    ============================================================ */
 .section-label {
     font-family: 'Source Sans 3', sans-serif;
@@ -374,22 +360,22 @@ body {
     text-transform: uppercase;
     color: #999999;
     letter-spacing: 0.05em;
-    margin-bottom: 4mm;
+    margin-bottom: 3mm;
     margin-top: 2mm;
 }
 
 .signal-card {
     border: 0.5px solid #D4D4D4;
-    padding: 5mm 5.5mm;
-    margin-bottom: 4mm;
+    padding: 3.5mm 5mm;
+    margin-bottom: 3mm;
     page-break-inside: avoid;
 }
 
 .signal-header {
     display: flex;
     align-items: baseline;
-    gap: 2.5mm;
-    margin-bottom: 2mm;
+    gap: 2mm;
+    margin-bottom: 1.5mm;
 }
 
 .signal-titel {
@@ -399,16 +385,15 @@ body {
     color: #1A1A1A;
 }
 
-.signal-meta {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 9pt;
-    color: #666666;
-    margin-bottom: 1.5mm;
+.signal-tags {
+    margin-bottom: 1mm;
 }
 
 .signal-quellen-link {
     font-family: 'Source Sans 3', sans-serif;
     font-size: 9pt;
+    font-weight: 300;
+    color: #666666;
     margin-bottom: 0;
 }
 
@@ -423,27 +408,26 @@ body {
 .signal-rule {
     border: none;
     border-top: 0.5pt solid #D4D4D4;
-    margin-top: 2.5mm;
-    margin-bottom: 3mm;
+    margin-top: 2mm;
+    margin-bottom: 2mm;
 }
 
 .signal-text {
     font-family: 'Source Serif 4', serif;
     font-size: 10pt;
     color: #1A1A1A;
-    line-height: 1.55;
-    text-align: justify;
-    hyphens: auto;
-    -webkit-hyphens: auto;
+    line-height: 1.5;
+    text-align: left;
 }
 
 /* ============================================================
-   6. RADAR
+   7. RADAR
    ============================================================ */
 .radar-box {
     background-color: #FFF0EB;
     padding: 5mm 5.5mm;
     page-break-inside: avoid;
+    margin-top: 3mm;
 }
 
 .radar-label {
@@ -475,8 +459,24 @@ body {
 .radar-entry-quelle {
     font-family: 'Source Sans 3', sans-serif;
     font-size: 8.5pt;
+    font-weight: 300;
     color: #666666;
+    margin-bottom: 0.5mm;
+}
+
+.radar-quellen-link {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 8.5pt;
+    font-weight: 300;
     margin-bottom: 1mm;
+}
+
+.radar-quellen-link a {
+    color: #1A1A1A;
+    text-decoration: underline;
+    text-decoration-thickness: 0.5px;
+    text-underline-offset: 2px;
+    text-decoration-color: #D4D4D4;
 }
 
 .radar-entry-text {
@@ -488,7 +488,7 @@ body {
 
 .radar-rule {
     border: none;
-    border-top: 0.5pt solid #FFD4C4;
+    border-top: 0.5pt solid #D4D4D4;
     margin-top: 3mm;
     margin-bottom: 3mm;
 }

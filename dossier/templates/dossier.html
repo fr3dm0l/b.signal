@@ -37,7 +37,6 @@
         <div class="cover-kw">{{ meta.kw }}</div>
         <div class="cover-signal-info">{{ meta.signal_count }} Signale, davon {{ meta.signal_count_hoch }} mit hoher Relevanz</div>
         <div class="cover-signal-sub">Quellen: Amtsblätter, Ratsinformationssysteme, Planungsbehörden</div>
-        <hr class="cover-rule">
         <div class="cover-trust">Vertraulich · Wöchentlich · Für Entwickler</div>
     </div>
 
@@ -56,23 +55,25 @@
 <div class="inner-content">
 
 {# ============================================================
-   2. EXECUTIVE SUMMARY
+   2. INHALTSVERZEICHNIS
    ============================================================ #}
-<div class="exec-section">
-    <div class="exec-title">Diese Woche</div>
-    <div class="exec-subtitle">Die wichtigsten Planungssignale aus {{ meta.sektor }} — {{ meta.kw }}</div>
+<div class="toc-section">
+    <div class="toc-title">Signale dieser Woche</div>
+    <div class="toc-subtitle">{{ meta.sektor }} — {{ meta.kw }}</div>
 
-    {% for entry in executive_summary %}
-    <div class="exec-entry">
-        <div class="exec-nummer">{{ entry.nummer }}</div>
-        <div class="exec-divider"></div>
-        <div class="exec-content">
-            <div class="exec-entry-header">
-                <span class="relevanz-tag relevanz-{{ entry.relevanz }}">{{ entry.relevanz }}</span>
-                <span class="exec-entry-title">{{ entry.titel }}</span>
-            </div>
-            <div class="exec-entry-text">{{ entry.text }}</div>
-        </div>
+    {% for signal in signale %}
+    <div class="toc-entry">
+        <span class="relevanz-tag relevanz-{{ signal.relevanz }}">{{ signal.relevanz }}</span>
+        <span class="toc-entry-title">{{ signal.titel }}</span>
+        <div class="toc-entry-quelle">{{ signal.quelle }} · {{ signal.datum }}</div>
+    </div>
+    {% endfor %}
+
+    {% for entry in radar %}
+    <div class="toc-entry">
+        <span class="relevanz-tag relevanz-radar">Radar</span>
+        <span class="toc-entry-title">{{ entry.titel }}</span>
+        <div class="toc-entry-quelle">{{ entry.quelle }}</div>
     </div>
     {% endfor %}
 </div>
@@ -89,7 +90,11 @@
         <span class="relevanz-tag relevanz-{{ signal.relevanz }}">{{ signal.relevanz }}</span>
         <span class="signal-titel">{{ signal.titel }}</span>
     </div>
-    <div class="signal-meta">{{ signal.quelle }} · {{ signal.datum }} · {{ signal.typ }} · {{ signal.nutzung }}</div>
+    <div class="signal-tags">
+        <span class="tag-chip">{{ signal.typ }}</span>
+        <span class="tag-chip">{{ signal.nutzung }}</span>
+        <span class="tag-chip">{{ signal.datum }}</span>
+    </div>
     <div class="signal-quellen-link">
         <a href="{{ signal.quellen_link_url }}">{{ signal.quellen_link_text }}</a>
     </div>
@@ -101,7 +106,6 @@
 {# ============================================================
    4. RADAR
    ============================================================ #}
-<div class="page-break"></div>
 <div class="radar-box">
     <div class="radar-label">Radar — Signale unter Beobachtung</div>
 
@@ -109,6 +113,9 @@
     <div class="radar-entry">
         <div class="radar-entry-title">{{ entry.titel }}</div>
         <div class="radar-entry-quelle">{{ entry.quelle }}</div>
+        <div class="radar-quellen-link">
+            <a href="{{ entry.quellen_link_url }}">{{ entry.quellen_link_text }}</a>
+        </div>
         <div class="radar-entry-text">{{ entry.text }}</div>
     </div>
     {% if not loop.last %}
