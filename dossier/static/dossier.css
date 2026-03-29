@@ -1,0 +1,499 @@
+/* ============================================================
+   b.signal Dossier — Print CSS (WeasyPrint)
+   ============================================================ */
+
+/* --- Font Faces --- */
+@font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('../fonts/CormorantGaramond-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('../fonts/CormorantGaramond-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Source Serif 4';
+    src: url('../fonts/SourceSerif4-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Source Sans 3';
+    src: url('../fonts/SourceSans3-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Source Sans 3';
+    src: url('../fonts/SourceSans3-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Source Sans 3';
+    src: url('../fonts/SourceSans3-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+/* --- Base --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 10pt;
+    color: #1A1A1A;
+    background-color: #FAFAF8;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+/* --- Running elements for header/footer --- */
+.running-header {
+    position: running(pageHeader);
+}
+
+
+/* --- Page Setup --- */
+@page {
+    size: A4 portrait;
+    margin: 25mm 22mm 20mm 28mm;
+    background-color: #FAFAF8;
+}
+
+@page cover {
+    margin: 0;
+    background-color: #FAFAF8;
+    @top-left { content: none; }
+    @top-right { content: none; }
+    @bottom-left { content: none; }
+    @bottom-right { content: none; }
+}
+
+@page inner {
+    margin: 25mm 22mm 20mm 28mm;
+    background-color: #FAFAF8;
+
+    @top-center {
+        content: element(pageHeader);
+        width: 100%;
+        vertical-align: bottom;
+        padding-bottom: 3mm;
+    }
+
+    @bottom-left {
+        content: "Vertraulich · Wöchentlich · Für Entwickler";
+        font-family: 'Source Sans 3', sans-serif;
+        font-size: 7.5pt;
+        color: #999999;
+        border-top: 0.5pt solid #D4D4D4;
+        padding-top: 3mm;
+        vertical-align: top;
+    }
+
+    @bottom-right {
+        /* content is overridden in HTML <style> block with dossier ID */
+        content: "Seite " counter(page);
+        font-family: 'Source Sans 3', sans-serif;
+        font-size: 7.5pt;
+        color: #999999;
+        border-top: 0.5pt solid #D4D4D4;
+        padding-top: 3mm;
+        vertical-align: top;
+    }
+}
+
+/* --- Header/Footer content styling --- */
+.header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 3mm;
+    border-bottom: 0.5pt solid #D4D4D4;
+}
+
+.header-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11pt;
+    font-weight: 400;
+    color: #999999;
+}
+
+.coral-dot {
+    color: #FF7F50;
+}
+
+.header-meta {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 8pt;
+    font-weight: 400;
+    color: #999999;
+}
+
+
+/* ============================================================
+   1. DECKBLATT (Cover Page)
+   ============================================================ */
+.cover {
+    page: cover;
+    page-break-after: always;
+    width: 210mm;
+    height: 297mm;
+    position: relative;
+    overflow: hidden;
+}
+
+.cover-coral-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: #FF7F50;
+}
+
+.cover-content {
+    position: absolute;
+    top: 0;
+    left: 28mm;
+    right: 22mm;
+    height: 198mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.cover-eyebrow {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 10pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #FF7F50;
+    letter-spacing: 0.15em;
+    margin-bottom: 16mm;
+}
+
+.cover-sektor {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36pt;
+    font-weight: 600;
+    color: #1A1A1A;
+    line-height: 1.1;
+    margin-bottom: 4mm;
+}
+
+.cover-kw {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20pt;
+    font-weight: 400;
+    color: #666666;
+    margin-bottom: 6mm;
+}
+
+.cover-signal-info {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 11pt;
+    color: #666666;
+    margin-bottom: 2mm;
+}
+
+.cover-signal-sub {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 11pt;
+    color: #999999;
+    margin-bottom: 8mm;
+}
+
+.cover-rule {
+    width: 48px;
+    height: 0;
+    border: none;
+    border-top: 0.5pt solid #D4D4D4;
+    margin-bottom: 8mm;
+}
+
+.cover-trust {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 9pt;
+    color: #999999;
+}
+
+.cover-footer {
+    position: absolute;
+    bottom: 20mm;
+    left: 28mm;
+    right: 22mm;
+}
+
+.cover-footer-rule {
+    border: none;
+    border-top: 0.5pt solid #D4D4D4;
+    margin-bottom: 3mm;
+}
+
+.cover-footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.cover-footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11pt;
+    font-weight: 400;
+    color: #999999;
+}
+
+.cover-footer-id {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 8pt;
+    color: #999999;
+}
+
+/* ============================================================
+   2. INNER CONTENT
+   ============================================================ */
+.inner-content {
+    page: inner;
+}
+
+/* ============================================================
+   3. EXECUTIVE SUMMARY
+   ============================================================ */
+.exec-section {
+    margin-bottom: 0;
+}
+
+.exec-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22pt;
+    font-weight: 600;
+    color: #1A1A1A;
+    margin-bottom: 2mm;
+}
+
+.exec-subtitle {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 9.5pt;
+    color: #999999;
+    margin-bottom: 8mm;
+}
+
+.exec-entry {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 6mm;
+    page-break-inside: avoid;
+}
+
+.exec-nummer {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24pt;
+    font-weight: 600;
+    color: #FF7F50;
+    width: 10mm;
+    min-width: 10mm;
+    text-align: right;
+    line-height: 1;
+    padding-top: 1mm;
+}
+
+.exec-divider {
+    width: 0;
+    min-width: 0;
+    border-left: 0.5pt solid #D4D4D4;
+    align-self: stretch;
+    margin: 0 4mm;
+}
+
+.exec-content {
+    flex: 1;
+}
+
+.exec-entry-header {
+    display: flex;
+    align-items: baseline;
+    gap: 2mm;
+    margin-bottom: 1.5mm;
+}
+
+.exec-entry-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13pt;
+    font-weight: 600;
+    color: #1A1A1A;
+}
+
+.exec-entry-text {
+    font-family: 'Source Serif 4', serif;
+    font-size: 9.5pt;
+    color: #1A1A1A;
+    line-height: 1.5;
+}
+
+/* ============================================================
+   4. RELEVANZ TAGS
+   ============================================================ */
+.relevanz-tag {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 8.5pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.5mm 2mm;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.relevanz-hoch {
+    background-color: #FF7F50;
+    color: white;
+}
+
+.relevanz-mittel {
+    background-color: #FFD4C4;
+    color: #1A1A1A;
+}
+
+/* ============================================================
+   5. SIGNALBEREICH
+   ============================================================ */
+.section-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 8.5pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #999999;
+    letter-spacing: 0.05em;
+    margin-bottom: 4mm;
+    margin-top: 2mm;
+}
+
+.signal-card {
+    border: 0.5px solid #D4D4D4;
+    padding: 5mm 5.5mm;
+    margin-bottom: 4mm;
+    page-break-inside: avoid;
+}
+
+.signal-header {
+    display: flex;
+    align-items: baseline;
+    gap: 2.5mm;
+    margin-bottom: 2mm;
+}
+
+.signal-titel {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14pt;
+    font-weight: 600;
+    color: #1A1A1A;
+}
+
+.signal-meta {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 9pt;
+    color: #666666;
+    margin-bottom: 1.5mm;
+}
+
+.signal-quellen-link {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 9pt;
+    margin-bottom: 0;
+}
+
+.signal-quellen-link a {
+    color: #1A1A1A;
+    text-decoration: underline;
+    text-decoration-thickness: 0.5px;
+    text-underline-offset: 2px;
+    text-decoration-color: #D4D4D4;
+}
+
+.signal-rule {
+    border: none;
+    border-top: 0.5pt solid #D4D4D4;
+    margin-top: 2.5mm;
+    margin-bottom: 3mm;
+}
+
+.signal-text {
+    font-family: 'Source Serif 4', serif;
+    font-size: 10pt;
+    color: #1A1A1A;
+    line-height: 1.55;
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+}
+
+/* ============================================================
+   6. RADAR
+   ============================================================ */
+.radar-box {
+    background-color: #FFF0EB;
+    padding: 5mm 5.5mm;
+    page-break-inside: avoid;
+}
+
+.radar-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 8.5pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #FF7F50;
+    letter-spacing: 0.05em;
+    margin-bottom: 4mm;
+}
+
+.radar-entry {
+    margin-bottom: 3mm;
+}
+
+.radar-entry:last-child {
+    margin-bottom: 0;
+}
+
+.radar-entry-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12pt;
+    font-weight: 600;
+    color: #1A1A1A;
+    margin-bottom: 0.5mm;
+}
+
+.radar-entry-quelle {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 8.5pt;
+    color: #666666;
+    margin-bottom: 1mm;
+}
+
+.radar-entry-text {
+    font-family: 'Source Serif 4', serif;
+    font-size: 9pt;
+    color: #666666;
+    line-height: 1.45;
+}
+
+.radar-rule {
+    border: none;
+    border-top: 0.5pt solid #FFD4C4;
+    margin-top: 3mm;
+    margin-bottom: 3mm;
+}
+
+/* --- Page break helpers --- */
+.page-break {
+    page-break-before: always;
+}

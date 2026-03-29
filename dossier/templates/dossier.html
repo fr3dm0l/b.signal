@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>b.signal Dossier — {{ meta.sektor }} — {{ meta.kw }}</title>
+    <link rel="stylesheet" href="{{ css_path }}">
+    <style>
+        @page inner {
+            @bottom-right {
+                content: "Seite " counter(page) " · {{ meta.dossier_id }}";
+            }
+        }
+    </style>
+</head>
+<body>
+
+{# ============================================================
+   Running Header & Footer (picked up by @page inner)
+   ============================================================ #}
+<div class="running-header">
+    <div class="header-inner">
+        <div class="header-brand">b<span class="coral-dot">.</span>signal</div>
+        <div class="header-meta">{{ meta.sektor }} · {{ meta.kw }}</div>
+    </div>
+</div>
+
+
+{# ============================================================
+   1. DECKBLATT
+   ============================================================ #}
+<div class="cover">
+    <div class="cover-coral-bar"></div>
+
+    <div class="cover-content">
+        <div class="cover-eyebrow">Planungssignale · Bevor sie Marktwissen werden</div>
+        <div class="cover-sektor">{{ meta.sektor }}</div>
+        <div class="cover-kw">{{ meta.kw }}</div>
+        <div class="cover-signal-info">{{ meta.signal_count }} Signale, davon {{ meta.signal_count_hoch }} mit hoher Relevanz</div>
+        <div class="cover-signal-sub">Quellen: Amtsblätter, Ratsinformationssysteme, Planungsbehörden</div>
+        <hr class="cover-rule">
+        <div class="cover-trust">Vertraulich · Wöchentlich · Für Entwickler</div>
+    </div>
+
+    <div class="cover-footer">
+        <hr class="cover-footer-rule">
+        <div class="cover-footer-content">
+            <div class="cover-footer-brand">b<span class="coral-dot">.</span>signal</div>
+            <div class="cover-footer-id">{{ meta.dossier_id }}</div>
+        </div>
+    </div>
+</div>
+
+{# ============================================================
+   All inner content uses @page inner with running header/footer
+   ============================================================ #}
+<div class="inner-content">
+
+{# ============================================================
+   2. EXECUTIVE SUMMARY
+   ============================================================ #}
+<div class="exec-section">
+    <div class="exec-title">Diese Woche</div>
+    <div class="exec-subtitle">Die wichtigsten Planungssignale aus {{ meta.sektor }} — {{ meta.kw }}</div>
+
+    {% for entry in executive_summary %}
+    <div class="exec-entry">
+        <div class="exec-nummer">{{ entry.nummer }}</div>
+        <div class="exec-divider"></div>
+        <div class="exec-content">
+            <div class="exec-entry-header">
+                <span class="relevanz-tag relevanz-{{ entry.relevanz }}">{{ entry.relevanz }}</span>
+                <span class="exec-entry-title">{{ entry.titel }}</span>
+            </div>
+            <div class="exec-entry-text">{{ entry.text }}</div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{# ============================================================
+   3. SIGNALBEREICH
+   ============================================================ #}
+<div class="page-break"></div>
+<div class="section-label">Signale</div>
+
+{% for signal in signale %}
+<div class="signal-card">
+    <div class="signal-header">
+        <span class="relevanz-tag relevanz-{{ signal.relevanz }}">{{ signal.relevanz }}</span>
+        <span class="signal-titel">{{ signal.titel }}</span>
+    </div>
+    <div class="signal-meta">{{ signal.quelle }} · {{ signal.datum }} · {{ signal.typ }} · {{ signal.nutzung }}</div>
+    <div class="signal-quellen-link">
+        <a href="{{ signal.quellen_link_url }}">{{ signal.quellen_link_text }}</a>
+    </div>
+    <hr class="signal-rule">
+    <div class="signal-text">{{ signal.text }}</div>
+</div>
+{% endfor %}
+
+{# ============================================================
+   4. RADAR
+   ============================================================ #}
+<div class="page-break"></div>
+<div class="radar-box">
+    <div class="radar-label">Radar — Signale unter Beobachtung</div>
+
+    {% for entry in radar %}
+    <div class="radar-entry">
+        <div class="radar-entry-title">{{ entry.titel }}</div>
+        <div class="radar-entry-quelle">{{ entry.quelle }}</div>
+        <div class="radar-entry-text">{{ entry.text }}</div>
+    </div>
+    {% if not loop.last %}
+    <hr class="radar-rule">
+    {% endif %}
+    {% endfor %}
+</div>
+
+</div>{# /inner-content #}
+
+</body>
+</html>
