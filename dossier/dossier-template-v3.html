@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>b.signal Dossier — München Nord-West — KW 14 / 2026</title>
+<style>
+/* ============================================================
+   b.signal Dossier V3.3 — Print CSS (WeasyPrint)
+   ============================================================ */
+
+/* --- Font Faces (local TTF) --- */
+@font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('fonts/CormorantGaramond-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Cormorant Garamond';
+    src: url('fonts/CormorantGaramond-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Source Serif 4';
+    src: url('fonts/SourceSerif4-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Source Sans 3';
+    src: url('fonts/SourceSans3-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Source Sans 3';
+    src: url('fonts/SourceSans3-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Source Sans 3';
+    src: url('fonts/SourceSans3-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+/* --- Reset --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 10pt;
+    color: #1A1A1A;
+    background-color: #FAFAF8;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+/* --- Running elements --- */
+.running-header {
+    position: running(pageHeader);
+}
+
+.running-footer {
+    position: running(pageFooter);
+}
+
+.footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-top: 0.5pt solid #D4D4D4;
+    padding-top: 2.5mm;
+    white-space: nowrap;
+}
+
+.footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 8pt;
+    font-weight: 400;
+    color: #999999;
+    white-space: nowrap;
+}
+
+.footer-page {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 7.5pt;
+    color: #999999;
+    white-space: nowrap;
+}
+
+.page-number::before {
+    content: counter(page);
+}
+
+/* --- Page Setup --- */
+@page {
+    size: A4 portrait;
+    margin: 20mm 25mm 20mm 25mm;
+    background-color: #FAFAF8;
+}
+
+@page :first {
+    margin: 0;
+    background-color: #FAFAF8;
+    @top-left { content: none; }
+    @top-right { content: none; }
+    @bottom-left { content: none; }
+    @bottom-right { content: none; }
+}
+
+@page inner {
+    margin: 20mm 25mm 20mm 25mm;
+    background-color: #FAFAF8;
+
+    @top-center {
+        content: element(pageHeader);
+        width: 100%;
+        vertical-align: bottom;
+        padding-bottom: 3mm;
+    }
+
+    @bottom-center {
+        content: element(pageFooter);
+        width: 100%;
+        vertical-align: top;
+    }
+}
+
+/* --- Running Header styling --- */
+.header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 3mm;
+    border-bottom: 0.5pt solid #D4D4D4;
+}
+
+.header-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11pt;
+    font-weight: 400;
+    color: #999999;
+}
+
+.coral-dot {
+    color: #FF7F50;
+    font-size: 125%;
+}
+
+.header-meta {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 8pt;
+    font-weight: 400;
+    color: #999999;
+}
+
+/* ============================================================
+   1. DECKBLATT
+   ============================================================ */
+.cover {
+    page-break-after: always;
+    width: 210mm;
+    height: 297mm;
+    position: relative;
+    overflow: hidden;
+}
+
+.cover-coral-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: #FF7F50;
+}
+
+.cover-content {
+    position: absolute;
+    top: 60mm;
+    left: 25mm;
+    right: 25mm;
+}
+
+.cover-eyebrow {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 10pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #FF7F50;
+    letter-spacing: 1.5px;
+    margin-bottom: 14mm;
+}
+
+.cover-sektor {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36pt;
+    font-weight: 600;
+    color: #1A1A1A;
+    line-height: 1.1;
+    margin-bottom: 4mm;
+}
+
+.cover-kw {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20pt;
+    font-weight: 400;
+    color: #666666;
+    margin-bottom: 10mm;
+}
+
+.cover-signal-info {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 11pt;
+    color: #666666;
+    margin-bottom: 2mm;
+}
+
+.cover-signal-sub {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 10pt;
+    color: #999999;
+    margin-bottom: 6mm;
+}
+
+.cover-footer {
+    position: absolute;
+    bottom: 20mm;
+    left: 25mm;
+    right: 25mm;
+}
+
+.cover-footer-rule {
+    border: none;
+    border-top: 0.5pt solid #D4D4D4;
+    margin-bottom: 3mm;
+}
+
+.cover-footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.cover-footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11pt;
+    font-weight: 400;
+    color: #999999;
+}
+
+.cover-footer-id {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 8pt;
+    color: #999999;
+}
+
+/* ============================================================
+   2. INNER CONTENT
+   ============================================================ */
+.inner-content {
+    page: inner;
+}
+
+/* ============================================================
+   3. ÜBERSICHTSSEITE (Table of Contents)
+   ============================================================ */
+.toc-section {
+    margin-bottom: 0;
+}
+
+.toc-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22pt;
+    font-weight: 600;
+    color: #1A1A1A;
+    margin-bottom: 2mm;
+}
+
+.toc-subtitle {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 9.5pt;
+    color: #666666;
+    margin-bottom: 12mm;
+}
+
+.toc-group {
+    padding-left: 4.5mm;
+    margin-bottom: 2mm;
+}
+
+.toc-group-signal {
+    border-left: 4px solid #FF7F50;
+}
+
+.toc-group-entwicklung {
+    border-left: 4px solid #FFD4C4;
+}
+
+.toc-group-radar {
+    border-left: 4px solid #2C2C34;
+}
+
+.toc-group-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 8pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #999999;
+    margin-bottom: 3mm;
+}
+
+.toc-group-rule {
+    border: none;
+    border-top: 0.5pt solid #D4D4D4;
+    margin-top: 4mm;
+    margin-bottom: 4mm;
+}
+
+.toc-entry {
+    margin-bottom: 3mm;
+    break-inside: avoid;
+}
+
+.toc-entry:last-child {
+    margin-bottom: 0;
+}
+
+.toc-entry-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12pt;
+    font-weight: 600;
+    color: #1A1A1A;
+}
+
+.toc-entry-quelle {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 8.5pt;
+    font-weight: 300;
+    color: #666666;
+    margin-top: 0.5mm;
+}
+
+/* ============================================================
+   4. REIFEGRAD TAGS
+   ============================================================ */
+.reifegrad-tag {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 8pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 1px 6px;
+    border-radius: 2px;
+    display: inline-block;
+    white-space: nowrap;
+    vertical-align: baseline;
+    margin-right: 1.5mm;
+}
+
+.reifegrad-signal {
+    background-color: #FF7F50;
+    color: white;
+}
+
+.reifegrad-entwicklung {
+    background-color: #FFF0EB;
+    color: #1A1A1A;
+}
+
+.reifegrad-radar {
+    background-color: #2C2C34;
+    color: white;
+}
+
+/* ============================================================
+   5. META TAG CHIPS
+   ============================================================ */
+.meta-tags {
+    margin-bottom: 1.5mm;
+    margin-top: 1.5mm;
+}
+
+.meta-tag {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 8pt;
+    font-weight: 400;
+    color: #1A1A1A;
+    border: 0.5px solid #D4D4D4;
+    padding: 1px 5px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-right: 1.5mm;
+    margin-bottom: 1mm;
+}
+
+/* ============================================================
+   6. SIGNALBEREICH
+   ============================================================ */
+.section-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 11pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #2C2C34;
+    letter-spacing: 1.5px;
+    margin-bottom: 4mm;
+    margin-top: 2mm;
+}
+
+.signal-card {
+    border: 0.5px solid #D4D4D4;
+    border-radius: 2px;
+    padding: 4mm 5mm;
+    margin-bottom: 3mm;
+    break-inside: avoid;
+}
+
+.signal-card-signal {
+    border-left: 4px solid #FF7F50;
+}
+
+.signal-card-entwicklung {
+    border-left: 4px solid #FFD4C4;
+}
+
+.signal-titel {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13pt;
+    font-weight: 600;
+    color: #1A1A1A;
+    margin-bottom: 1.5mm;
+}
+
+.signal-quellen-link {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 9pt;
+    font-weight: 400;
+    color: #666666;
+    margin-bottom: 0;
+}
+
+.signal-quellen-link a {
+    color: #FF7F50;
+    text-decoration: none;
+}
+
+.signal-rule {
+    border: none;
+    border-top: 0.5pt solid #D4D4D4;
+    margin-top: 2mm;
+    margin-bottom: 2.5mm;
+}
+
+.signal-text {
+    font-family: 'Source Serif 4', serif;
+    font-size: 10pt;
+    color: #1A1A1A;
+    line-height: 1.5;
+    text-align: left;
+}
+
+/* ============================================================
+   7. RADAR
+   ============================================================ */
+.radar-box {
+    background-color: #FFF0EB;
+    padding: 5mm 5.5mm;
+    break-inside: avoid;
+    margin-top: 6mm;
+    border-radius: 2px;
+}
+
+.radar-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 8.5pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #FF7F50;
+    letter-spacing: 1.5px;
+    margin-bottom: 4mm;
+}
+
+.radar-entry {
+    margin-bottom: 3mm;
+}
+
+.radar-entry:last-child {
+    margin-bottom: 0;
+}
+
+.radar-entry-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11.5pt;
+    font-weight: 600;
+    color: #1A1A1A;
+    margin-bottom: 0.5mm;
+}
+
+.radar-entry-quelle {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 8.5pt;
+    font-weight: 400;
+    color: #666666;
+    margin-bottom: 1mm;
+}
+
+.radar-entry-quelle a {
+    color: #FF7F50;
+    text-decoration: none;
+}
+
+.radar-entry-text {
+    font-family: 'Source Serif 4', serif;
+    font-size: 9pt;
+    color: #666666;
+    line-height: 1.45;
+}
+
+.radar-rule {
+    border: none;
+    border-top: 0.5pt solid #D4D4D4;
+    margin-top: 3mm;
+    margin-bottom: 3mm;
+}
+
+/* --- Helpers --- */
+.page-break {
+    break-before: page;
+}
+</style>
+</head>
+<body>
+
+<!-- Running Header (picked up by @page inner @top-center) -->
+<div class="running-header">
+    <div class="header-inner">
+        <div class="header-brand">b<span class="coral-dot">.</span>signal</div>
+        <div class="header-meta">München Nord-West · KW 14 / 2026</div>
+    </div>
+</div>
+
+<!-- Running Footer (picked up by @page inner @bottom-center) -->
+<div class="running-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">b<span class="coral-dot">.</span>signal</div>
+        <div class="footer-page">Seite <span class="page-number"></span> · BSG-MNW-2026-14-0042</div>
+    </div>
+</div>
+
+<!-- ============================================================
+     1. DECKBLATT
+     ============================================================ -->
+<div class="cover">
+    <div class="cover-coral-bar"></div>
+
+    <div class="cover-content">
+        <div class="cover-eyebrow">Planungssignale · Bevor sie Marktwissen werden</div>
+        <div class="cover-sektor">München Nord-West</div>
+        <div class="cover-kw">KW 14 / 2026</div>
+        <div class="cover-signal-info">12 Signale · 4 Beschlüsse · 4 Entwicklungen · 3 Radar</div>
+        <div class="cover-signal-sub">Quellen: Amtsblätter, Ratsinformationssysteme, Planungsbehörden</div>
+    </div>
+
+    <div class="cover-footer">
+        <hr class="cover-footer-rule">
+        <div class="cover-footer-content">
+            <div class="cover-footer-brand">b<span class="coral-dot">.</span>signal</div>
+            <div class="cover-footer-id">BSG-MNW-2026-14-0042</div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     INNER CONTENT (all pages after cover)
+     ============================================================ -->
+<div class="inner-content">
+
+<!-- ============================================================
+     2. ÜBERSICHTSSEITE
+     ============================================================ -->
+<div class="toc-section">
+    <div class="toc-title">Signale dieser Woche</div>
+    <div class="toc-subtitle">München Nord-West — KW 14 / 2026</div>
+
+    <!-- SIGNAL -->
+    <div class="toc-group toc-group-signal">
+        <div class="toc-group-label">Signal · 4</div>
+        <div class="toc-entry">
+            <div class="toc-entry-title">Aufstellungsbeschluss Bebauungsplan Nr. 2147 — Gewerbegebiet Feldmoching-Hasenbergl</div>
+            <div class="toc-entry-quelle">Stadtrat München · 18.03.2026</div>
+        </div>
+        <div class="toc-entry">
+            <div class="toc-entry-title">Flächennutzungsplan-Änderung Nr. 89 — Umwidmung Agrarfläche Karlsfeld</div>
+            <div class="toc-entry-quelle">Landratsamt Dachau · 22.03.2026</div>
+        </div>
+        <div class="toc-entry">
+            <div class="toc-entry-title">Städtebaulicher Wettbewerb Oberwiesenfeld-Nord</div>
+            <div class="toc-entry-quelle">Referat für Stadtplanung München · 25.03.2026</div>
+        </div>
+        <div class="toc-entry">
+            <div class="toc-entry-title">Vorkaufsrechtssatzung Allach-Untermenzing erweitert</div>
+            <div class="toc-entry-quelle">Stadtrat München · 19.03.2026</div>
+        </div>
+    </div>
+
+    <hr class="toc-group-rule">
+
+    <!-- ENTWICKLUNG -->
+    <div class="toc-group toc-group-entwicklung">
+        <div class="toc-group-label">Entwicklung · 4</div>
+        <div class="toc-entry">
+            <div class="toc-entry-title">Machbarkeitsstudie S-Bahn-Verlängerung Dachau–Petershausen</div>
+            <div class="toc-entry-quelle">Bayer. Staatsministerium für Wohnen, Bau und Verkehr · 20.03.2026</div>
+        </div>
+        <div class="toc-entry">
+            <div class="toc-entry-title">Änderung des Flächennutzungsplans — Erweiterung Gewerbegebiet Bergkirchen</div>
+            <div class="toc-entry-quelle">Amtsblatt Dachau · 15.03.2026</div>
+        </div>
+        <div class="toc-entry">
+            <div class="toc-entry-title">Neubau Grundschule und Kita Ludwigsfeld</div>
+            <div class="toc-entry-quelle">Referat für Bildung und Sport München · 17.03.2026</div>
+        </div>
+        <div class="toc-entry">
+            <div class="toc-entry-title">Lärmaktionsplan Autobahn A99 — Abschnitt Feldmoching</div>
+            <div class="toc-entry-quelle">Landratsamt München · 21.03.2026</div>
+        </div>
+    </div>
+
+    <hr class="toc-group-rule">
+
+    <!-- RADAR -->
+    <div class="toc-group toc-group-radar">
+        <div class="toc-group-label">Radar · 3</div>
+        <div class="toc-entry">
+            <div class="toc-entry-title">Bürgerinitiative gegen Verdichtung in Oberschleißheim</div>
+            <div class="toc-entry-quelle">Gemeinderat Oberschleißheim · 02.04.2026</div>
+        </div>
+        <div class="toc-entry">
+            <div class="toc-entry-title">Voranfrage Hotelneubau am Dachauer Bahnhof</div>
+            <div class="toc-entry-quelle">Stadt Dachau · 22.03.2026</div>
+        </div>
+        <div class="toc-entry">
+            <div class="toc-entry-title">Regionalplanänderung Siedlungsschwerpunkte Münchner Norden</div>
+            <div class="toc-entry-quelle">Regierung von Oberbayern · 2026</div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     3. SIGNAL-DETAILKARTEN
+     ============================================================ -->
+<div class="page-break"></div>
+<div class="section-label">Signale</div>
+
+<!-- Signal 1 — SIGNAL -->
+<div class="signal-card signal-card-signal">
+    <div class="signal-titel">Aufstellungsbeschluss Bebauungsplan Nr. 2147 — Gewerbegebiet Feldmoching-Hasenbergl</div>
+    <div class="meta-tags">
+        <span class="reifegrad-tag reifegrad-signal">Signal</span>
+        <span class="meta-tag">Bebauungsplan</span>
+        <span class="meta-tag">Gewerbe / Mixed-Use</span>
+        <span class="meta-tag">Feldmoching-Hasenbergl</span>
+        <span class="meta-tag">18.03.2026</span>
+    </div>
+    <div class="signal-quellen-link">
+        <a href="https://risi.muenchen.de/risi/vorlage/detail/7654321">Stadtrat München — Beschlussvorlage Nr. 20-26/V 12847</a>
+    </div>
+    <hr class="signal-rule">
+    <div class="signal-text">Aufstellungsbeschluss für 4,2 Hektar Mischnutzung nördlich der Feldmochinger Straße. GFZ bis 1,8, Öffentlichkeitsbeteiligung Q3/2026.</div>
+</div>
+
+<!-- Signal 2 — SIGNAL -->
+<div class="signal-card signal-card-signal">
+    <div class="signal-titel">Flächennutzungsplan-Änderung Nr. 89 — Umwidmung Agrarfläche Karlsfeld</div>
+    <div class="meta-tags">
+        <span class="reifegrad-tag reifegrad-signal">Signal</span>
+        <span class="meta-tag">Flächennutzung</span>
+        <span class="meta-tag">Wohnen</span>
+        <span class="meta-tag">Karlsfeld</span>
+        <span class="meta-tag">22.03.2026</span>
+    </div>
+    <div class="signal-quellen-link">
+        <a href="https://www.landratsamt-dachau.de/bekanntmachungen/fnp-89">Landratsamt Dachau — Bekanntmachung FNP-Änderung Nr. 89</a>
+    </div>
+    <hr class="signal-rule">
+    <div class="signal-text">6,8 Hektar südlich der B304 werden von Agrarfläche zu Wohnbaufläche umgewidmet. Bebauungsplan-Verfahren voraussichtlich Herbst 2026.</div>
+</div>
+
+<!-- Signal 3 — SIGNAL -->
+<div class="signal-card signal-card-signal">
+    <div class="signal-titel">Städtebaulicher Wettbewerb Oberwiesenfeld-Nord</div>
+    <div class="meta-tags">
+        <span class="reifegrad-tag reifegrad-signal">Signal</span>
+        <span class="meta-tag">Wettbewerb</span>
+        <span class="meta-tag">Wohnen / Gewerbe</span>
+        <span class="meta-tag">Oberwiesenfeld</span>
+        <span class="meta-tag">25.03.2026</span>
+    </div>
+    <div class="signal-quellen-link">
+        <a href="https://risi.muenchen.de/risi/vorlage/detail/7654400">Referat für Stadtplanung — Auslobung Wettbewerb Nr. 2026-07</a>
+    </div>
+    <hr class="signal-rule">
+    <div class="signal-text">Städtebaulicher Wettbewerb für 8,5 Hektar am Oberwiesenfeld. Bis zu 1.200 Wohneinheiten und Quartierszentrum geplant.</div>
+</div>
+
+<!-- Signal 4 — SIGNAL -->
+<div class="signal-card signal-card-signal">
+    <div class="signal-titel">Vorkaufsrechtssatzung Allach-Untermenzing erweitert</div>
+    <div class="meta-tags">
+        <span class="reifegrad-tag reifegrad-signal">Signal</span>
+        <span class="meta-tag">Satzung</span>
+        <span class="meta-tag">Wohnen</span>
+        <span class="meta-tag">Allach-Untermenzing</span>
+        <span class="meta-tag">19.03.2026</span>
+    </div>
+    <div class="signal-quellen-link">
+        <a href="https://risi.muenchen.de/risi/vorlage/detail/7654500">Stadtrat München — Sitzungsvorlage Nr. 20-26/V 12903</a>
+    </div>
+    <hr class="signal-rule">
+    <div class="signal-text">Erweiterung der Vorkaufsrechtssatzung auf drei zusätzliche Gebiete in Allach-Untermenzing. Betrifft ca. 12 Hektar.</div>
+</div>
+
+<!-- Signal 5 — ENTWICKLUNG -->
+<div class="signal-card signal-card-entwicklung">
+    <div class="signal-titel">Machbarkeitsstudie S-Bahn-Verlängerung Dachau–Petershausen</div>
+    <div class="meta-tags">
+        <span class="reifegrad-tag reifegrad-entwicklung">Entwicklung</span>
+        <span class="meta-tag">Infrastruktur</span>
+        <span class="meta-tag">ÖPNV / Verkehr</span>
+        <span class="meta-tag">Dachau–Petershausen</span>
+        <span class="meta-tag">20.03.2026</span>
+    </div>
+    <div class="signal-quellen-link">
+        <a href="https://www.stmb.bayern.de/med/pressemitteilungen/pm-78-2026.htm">StMB — Pressemitteilung Nr. 78/2026</a>
+    </div>
+    <hr class="signal-rule">
+    <div class="signal-text">Drei Trassenvarianten für die S2-Verlängerung werden untersucht. Wertsteigerungspotenzial entlang potenzieller Haltestellen.</div>
+</div>
+
+<!-- Signal 6 — ENTWICKLUNG -->
+<div class="signal-card signal-card-entwicklung">
+    <div class="signal-titel">Änderung des Flächennutzungsplans — Erweiterung Gewerbegebiet Bergkirchen</div>
+    <div class="meta-tags">
+        <span class="reifegrad-tag reifegrad-entwicklung">Entwicklung</span>
+        <span class="meta-tag">Flächennutzung</span>
+        <span class="meta-tag">Gewerbe / Logistik</span>
+        <span class="meta-tag">Bergkirchen</span>
+        <span class="meta-tag">15.03.2026</span>
+    </div>
+    <div class="signal-quellen-link">
+        <a href="https://www.bergkirchen.de/amtsblatt/2026-12">Amtsblatt Nr. 12/2026 — Gemeinde Bergkirchen</a>
+    </div>
+    <hr class="signal-rule">
+    <div class="signal-text">Erweiterung des Gewerbegebiets um 3,1 Hektar. Öffentliche Auslegung ab 01.04.2026.</div>
+</div>
+
+<!-- Signal 7 — ENTWICKLUNG -->
+<div class="signal-card signal-card-entwicklung">
+    <div class="signal-titel">Neubau Grundschule und Kita Ludwigsfeld</div>
+    <div class="meta-tags">
+        <span class="reifegrad-tag reifegrad-entwicklung">Entwicklung</span>
+        <span class="meta-tag">Soziale Infrastruktur</span>
+        <span class="meta-tag">Bildung</span>
+        <span class="meta-tag">Ludwigsfeld</span>
+        <span class="meta-tag">17.03.2026</span>
+    </div>
+    <div class="signal-quellen-link">
+        <a href="https://risi.muenchen.de/risi/vorlage/detail/7654600">RBS München — Projektbeschluss Nr. RBS-2026-0412</a>
+    </div>
+    <hr class="signal-rule">
+    <div class="signal-text">Neubau einer dreizügigen Grundschule mit Kita auf 1,8 Hektar in Ludwigsfeld. Baubeginn voraussichtlich Q1/2027.</div>
+</div>
+
+<!-- Signal 8 — ENTWICKLUNG -->
+<div class="signal-card signal-card-entwicklung">
+    <div class="signal-titel">Lärmaktionsplan Autobahn A99 — Abschnitt Feldmoching</div>
+    <div class="meta-tags">
+        <span class="reifegrad-tag reifegrad-entwicklung">Entwicklung</span>
+        <span class="meta-tag">Umwelt</span>
+        <span class="meta-tag">Lärmschutz</span>
+        <span class="meta-tag">Feldmoching</span>
+        <span class="meta-tag">21.03.2026</span>
+    </div>
+    <div class="signal-quellen-link">
+        <a href="https://www.landkreis-muenchen.de/bekanntmachungen/lap-a99">Landratsamt München — Bekanntmachung LAP A99</a>
+    </div>
+    <hr class="signal-rule">
+    <div class="signal-text">Neue Lärmschutzmaßnahmen entlang der A99 können Bauauflagen in angrenzenden Gebieten verschärfen.</div>
+</div>
+
+<!-- ============================================================
+     4. RADAR
+     ============================================================ -->
+<div class="radar-box">
+    <div class="radar-label">Radar — Signale unter Beobachtung</div>
+
+    <div class="radar-entry">
+        <div class="radar-entry-title">Bürgerinitiative gegen Verdichtung in Oberschleißheim</div>
+        <div class="radar-entry-quelle"><a href="https://www.oberschleissheim.de/ratsinformation/sitzung/2026-14">Gemeinderat Oberschleißheim · 02.04.2026</a></div>
+        <div class="radar-entry-text">Gemeinderat diskutiert Einwände gegen geplante Nachverdichtung im Ortszentrum.</div>
+    </div>
+    <hr class="radar-rule">
+    <div class="radar-entry">
+        <div class="radar-entry-title">Voranfrage Hotelneubau am Dachauer Bahnhof</div>
+        <div class="radar-entry-quelle"><a href="https://www.dachau.de/ratsinformation/bauausschuss/2026-03">Stadt Dachau · 22.03.2026</a></div>
+        <div class="radar-entry-text">Noch kein förmlicher Antrag — Bauvoranfrage im Gespräch mit der Stadtverwaltung.</div>
+    </div>
+    <hr class="radar-rule">
+    <div class="radar-entry">
+        <div class="radar-entry-title">Regionalplanänderung Siedlungsschwerpunkte Münchner Norden</div>
+        <div class="radar-entry-quelle"><a href="https://www.regierung.oberbayern.bayern.de/regionalplan/fortschreibung-2026">Regierung von Oberbayern · 2026</a></div>
+        <div class="radar-entry-text">Potenzielle Neudefinition der Siedlungsschwerpunkte — betrifft langfristig Baulandausweisung.</div>
+    </div>
+</div>
+
+</div><!-- /inner-content -->
+
+</body>
+</html>
